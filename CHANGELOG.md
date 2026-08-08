@@ -47,6 +47,8 @@ to use semantic versioning after its first release.
 - Rails 8.1-compatible authorization callbacks across every review controller.
 - Packaged-install diagnostics recognize Rails' timestamped engine migration filenames.
 - Explicit Markdown MIME registration for Rails 8.0 export downloads.
+- Reproducible Ruby 3.2/3.4 and Rails 8.0/8.1 appraisal matrix, including a
+  clean dummy-host Active Storage fixture and cross-version schema loading.
 
 ### Security
 
