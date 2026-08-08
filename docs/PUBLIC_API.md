@@ -106,3 +106,13 @@ bundle exec page_feedback help
 bundle exec page_feedback docs
 bundle exec page_feedback version
 ```
+
+The install generator is idempotent and supports a local mount path, route,
+layout, and Stimulus skip options plus explicit forced replacement with a visible
+diff. Its destroy form removes only exact generated files and insertions.
+
+The Rails doctor task and standalone `doctor` command use the same
+`PageFeedback::Diagnostics` report. Human output is the default;
+`PAGE_FEEDBACK_FORMAT=json` or `doctor --json` emits stable `version`, `ok`, and
+`checks` keys. Required failures return a nonzero status, while warnings—most
+notably the open authorization defaults—do not.

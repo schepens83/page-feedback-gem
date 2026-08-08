@@ -26,6 +26,8 @@ module PageFeedback
         @migration_context = options[:migration_context]
       end
 
+      # Run every check in stable public order.
+      # @return [Array<PageFeedback::Diagnostics::Check>]
       def call
         [
           gem_version_check, rails_version_check, dependencies_check,

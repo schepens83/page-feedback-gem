@@ -4,6 +4,7 @@ module PageFeedback
   class Diagnostics
     # Checks host files, routing, migrations, tables, and documentation.
     module HostChecks
+      # Required engine tables in dependency order.
       TABLES = %w[page_feedback_comments page_feedback_exports page_feedback_export_items].freeze
 
       private

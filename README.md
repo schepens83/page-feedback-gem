@@ -9,10 +9,10 @@ collected into immutable Markdown exports.
 host page → capture → pending review → approved revision → immutable export
 ```
 
-> **Status:** capture, contextual review, and immutable Markdown exports are
-> implemented. Installation tooling and source-app adoption remain roadmap work.
+> **Status:** capture, contextual review, immutable Markdown exports, and host
+> installation diagnostics are implemented. Source-app adoption remains roadmap work.
 
-Open [the standalone Phase 6 report](page-feedback.html) for an easy-to-scan,
+Open [the standalone Phase 7 report](page-feedback.html) for an easy-to-scan,
 printable view of the current outcome, verification evidence, and roadmap.
 
 ## Compatibility
@@ -44,9 +44,11 @@ The generated initializer is deliberately open by default:
 
 ```ruby
 PageFeedback.configure do |config|
-  config.current_actor = ->(_controller) { nil }
-  config.capture_authorizer = ->(_controller) { true }
-  config.review_authorizer = ->(_controller) { true }
+  config.current_actor = lambda do |controller|
+    controller.respond_to?(:current_user, true) ? controller.send(:current_user) : nil
+  end
+  config.capture_authorizer = PageFeedback::Configuration::DEFAULT_AUTHORIZER
+  config.review_authorizer = PageFeedback::Configuration::DEFAULT_AUTHORIZER
 end
 ```
 
@@ -63,6 +65,10 @@ end
 Open `/feedback/review/pages` to review captured feedback. The export screen
 previews ready comments, stores an exact Markdown snapshot, and lets reviewers
 copy or download that stored body.
+
+The doctor checks the mount, host files, callbacks, migrations, tables, assets,
+formatter, and packaged docs. Use `PAGE_FEEDBACK_FORMAT=json` for stable machine
+output; warnings such as intentionally open authorization do not make it fail.
 
 ## Documentation
 

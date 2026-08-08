@@ -18,6 +18,10 @@ The default mount path is `/feedback`. The generator supports
 `--force`. It is idempotent and does not overwrite customized files without an
 explicit force option and visible diff.
 
+The generator creates both capture and clipboard Stimulus proxies. Run
+`bin/rails destroy page_feedback:install` to remove exact generated files and
+insertions; copied migrations, tables, and data are intentionally preserved.
+
 ## Authorization
 
 The generated initializer allows anonymous capture and open review so the engine
@@ -33,6 +37,21 @@ Stimulus proxy are the only layout/runtime seams. If the host lacks the standard
 Stimulus controller loader, register the engine controller manually using the
 instructions printed by the generator rather than starting a second Stimulus
 application.
+
+## Diagnostics
+
+`bin/rails page_feedback:doctor` checks compatible runtime dependencies, the
+engine mount, initializer and callbacks, open authorization, installed and
+pending migrations, tables, layout helpers, Stimulus proxies, resolvable assets,
+the default category, formatter contract, and documentation. Warnings remain a
+successful exit; missing required integration returns nonzero.
+
+Use stable JSON for automation:
+
+```bash
+PAGE_FEEDBACK_FORMAT=json bin/rails page_feedback:doctor
+bundle exec page_feedback doctor --json
+```
 
 ## Upgrades
 

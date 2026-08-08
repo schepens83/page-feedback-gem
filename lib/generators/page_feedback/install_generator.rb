@@ -4,6 +4,7 @@ require "rails/generators"
 require_relative "installation_diff"
 
 module PageFeedback
+  # Rails generators shipped for host application integration.
   module Generators
     # Installs PageFeedback's explicit integration seams into a host Rails app.
     class InstallGenerator < Rails::Generators::Base
@@ -37,10 +38,12 @@ module PageFeedback
         raise Thor::Error, "--mount-path must be a local path without a query or fragment"
       end
 
+      # Validate the configured mount and create the host initializer.
       def create_initializer
         install_template "page_feedback.rb", "config/initializers/page_feedback.rb"
       end
 
+      # Add the engine mount unless a PageFeedback mount already exists.
       def mount_engine
         return if options[:skip_route]
 
@@ -50,6 +53,7 @@ module PageFeedback
         route %(mount PageFeedback::Engine => "#{mount_path}")
       end
 
+      # Add capture helpers to the host's primary application layout.
       def integrate_layout
         return if options[:skip_layout]
 
@@ -60,6 +64,7 @@ module PageFeedback
         change_layout(layout, "page_feedback_widget", "</body>")
       end
 
+      # Create host-loader proxies for each engine Stimulus controller.
       def create_stimulus_proxies
         return if options[:skip_stimulus]
 
@@ -67,6 +72,7 @@ module PageFeedback
         install_template "copy_controller.js", "app/javascript/controllers/page_feedback_copy_controller.js"
       end
 
+      # Print commands and URLs required to finish installation.
       def print_next_steps
         return if behavior == :revoke
 

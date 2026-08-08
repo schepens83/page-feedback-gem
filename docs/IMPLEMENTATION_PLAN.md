@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 6 implementation and automated verification complete; Phase 7 next
+**Status:** Phase 7 implementation and automated verification complete; Phase 8 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1440,11 +1440,11 @@ idempotence, and JSON output.
 
 Automated verification:
 
-- [ ] Install generator suite passes.
-- [ ] Re-running install makes no duplicate changes.
-- [ ] Doctor detects every intentionally broken fixture.
-- [ ] JSON output schema is stable.
-- [ ] `--help`, `docs`, and `version` exit successfully.
+- [x] Install generator suite passes.
+- [x] Re-running install makes no duplicate changes.
+- [x] Doctor detects every intentionally broken fixture.
+- [x] JSON output schema is stable.
+- [x] `--help`, `docs`, and `version` exit successfully.
 
 Manual verification:
 

@@ -37,6 +37,10 @@ to use semantic versioning after its first release.
   grouping, source context, reviewer notes, and collision-safe code fences.
 - RESTful export preview, creation, history, copy, and exact stored-body download
   with ordered membership, freshness rechecks, and formatter substitution.
+- Idempotent install generator with mount, layout, and Stimulus options, safe
+  reversal, mount validation, and visible forced-overwrite differences.
+- Shared installation diagnostics with complete human output, stable JSON,
+  warning-aware status, Rails tasks, and a standalone executable.
 
 ### Security
 

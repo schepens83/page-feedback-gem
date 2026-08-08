@@ -71,6 +71,13 @@ and revision fingerprints. History, HTML display, clipboard copy, and Markdown
 download all read that stored body. The default formatter groups deterministically
 and escapes untrusted text while choosing safe fences for captured code.
 
+Phase 7 makes host integration reproducible and observable. The generator owns
+only recognizable mount, initializer, layout, and Stimulus-proxy seams, so it is
+idempotent and can reverse generated content without touching migrations or
+data. One diagnostics object checks the running host in stable order; the Rails
+task and standalone executable render that same report as human text or JSON
+and return failure only for required integration errors, not warnings.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

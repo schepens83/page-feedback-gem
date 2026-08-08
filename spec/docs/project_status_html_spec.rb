@@ -6,10 +6,10 @@ require "spec_helper"
 RSpec.describe "page-feedback.html" do
   subject(:document) { Nokogiri::HTML5(File.read("page-feedback.html")) }
 
-  it "is a self-contained Phase 6 report" do
-    expect(document.at_css("title").text).to include("PageFeedback", "Phase 6")
+  it "is a self-contained Phase 7 report" do
+    expect(document.at_css("title").text).to include("PageFeedback", "Phase 7")
     expect(document.css("script[src], link[rel='stylesheet']")).to be_empty
-    expect(document.text).to include("Phase 6 implemented", "101 examples, 0 failures")
+    expect(document.text).to include("Phase 7 implemented", "129 examples, 0 failures")
   end
 
   it "links only to local documentation that exists" do

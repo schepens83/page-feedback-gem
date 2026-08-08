@@ -5,6 +5,7 @@ require_relative "../page_feedback"
 module PageFeedback
   # Implements the packaged PageFeedback command-line interface.
   class Command
+    # Complete standalone CLI usage text.
     HELP = <<~HELP
       Usage: page_feedback COMMAND [options]
 

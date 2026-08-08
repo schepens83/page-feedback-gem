@@ -4,6 +4,7 @@ module PageFeedback
   class Diagnostics
     # Checks runtime versions, dependencies, configuration, and packaged assets.
     module RuntimeChecks
+      # Supported runtime gem versions keyed by package name.
       DEPENDENCIES = {
         "rails" => Gem::Requirement.new(">= 8.0", "< 9.0"),
         "importmap-rails" => Gem::Requirement.new(">= 2.0"),

@@ -42,6 +42,11 @@ generated from both dummy-host and engine migration paths.
 - Generator and diagnostics specs cover idempotence, skip options, broken host
   fixtures, human output, and stable JSON.
 
+Phase 7 additionally executes the packaged help, docs, and version entry points,
+checks safe installer reversal and forced-overwrite visibility, verifies every
+declared broken-host fixture, and asserts that Rails exposes both doctor and
+migration-install tasks.
+
 ## Compatibility
 
 The minimum contract is Ruby 3.2 and Rails 8.0; the current track is Ruby 3.4
