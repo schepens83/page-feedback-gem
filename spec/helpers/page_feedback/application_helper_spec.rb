@@ -32,6 +32,15 @@ RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
     expect(widget).to include(*capture_integration_attributes)
   end
 
+  it "can keep keyboard capture while hiding the floating trigger" do
+    PageFeedback.configuration.trigger_visible = false
+
+    widget = helper.page_feedback_widget
+
+    expect(widget).to include(*capture_integration_attributes)
+    expect(widget).not_to include("Give page feedback")
+  end
+
   it "omits the widget when host capture policy denies access" do
     callback_controller = nil
     PageFeedback.configuration.capture_authorizer = lambda do |controller|

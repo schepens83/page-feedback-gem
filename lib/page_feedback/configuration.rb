@@ -42,6 +42,9 @@ module PageFeedback
     # @return [Hash<Symbol, Object>] modifier and key settings for capture activation
     attr_accessor :activation_shortcut
 
+    # @return [Boolean] whether the floating capture trigger is rendered
+    attr_accessor :trigger_visible
+
     # @return [Array<String>] runtime CSS classes omitted from generated selectors
     attr_accessor :ignored_css_classes
 
@@ -71,6 +74,7 @@ module PageFeedback
       @categories = DEFAULT_CATEGORIES.dup
       @default_category = "idea"
       @activation_shortcut = { alt: true, key: "f" }
+      @trigger_visible = true
       @ignored_css_classes = []
     end
   end

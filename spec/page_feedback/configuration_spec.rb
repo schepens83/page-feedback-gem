@@ -27,6 +27,7 @@ RSpec.describe PageFeedback::Configuration do
 
     it "provides browser integration defaults" do
       expect(configuration.activation_shortcut).to eq(alt: true, key: "f")
+      expect(configuration.trigger_visible).to be(true)
       expect(configuration.ignored_css_classes).to eq([])
     end
 
