@@ -3,6 +3,9 @@
 require "rails"
 require "rails/engine"
 require "importmap-rails"
+require "propshaft"
+require "propshaft/railtie"
+require "stimulus-rails"
 require "turbo-rails"
 
 module PageFeedback

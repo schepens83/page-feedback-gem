@@ -3,6 +3,18 @@
 require "rails_helper"
 
 RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
+  let(:capture_integration_attributes) do
+    [
+      'data-controller="page-feedback-capture"',
+      "data-page-feedback-capture-controller-action-value=",
+      "data-page-feedback-capture-default-category-value=\"idea\"",
+      "data-page-feedback-capture-ignored-classes-value=\"[]\"",
+      "data-page-feedback-capture-shortcut-value=",
+      'id="page_feedback_modal_comment"',
+      'action="/feedback/comments"'
+    ]
+  end
+
   after { PageFeedback.reset_configuration! }
 
   it "emits namespaced head assets only once" do
@@ -17,11 +29,7 @@ RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
     widget = helper.page_feedback_widget
 
     expect(widget).to be_html_safe
-    expect(widget).to include(
-      'data-controller="page-feedback-capture"',
-      'id="page_feedback_modal_comment"',
-      'action="/feedback/comments"'
-    )
+    expect(widget).to include(*capture_integration_attributes)
   end
 
   it "omits the widget when host capture policy denies access" do

@@ -1,7 +1,12 @@
-<div id="page_feedback_widget"
-     class="page-feedback-widget"
-     data-controller="page-feedback-capture"
-     data-page-feedback-capture-shortcut-value="<%= PageFeedback.configuration.activation_shortcut.to_json %>">
+<%= tag.div id: "page_feedback_widget",
+            class: "page-feedback-widget",
+            data: {
+              controller: "page-feedback-capture",
+              page_feedback_capture_shortcut_value: PageFeedback.configuration.activation_shortcut.to_json,
+              page_feedback_capture_ignored_classes_value: PageFeedback.configuration.ignored_css_classes.to_json,
+              page_feedback_capture_default_category_value: PageFeedback.configuration.default_category,
+              page_feedback_capture_controller_action_value: controller_action
+            } do %>
   <button type="button" class="page-feedback-widget__trigger" data-action="page-feedback-capture#activate">
     Give page feedback
   </button>
@@ -9,4 +14,4 @@
   <div id="<%= dom_id(PageFeedback::Comment, :page_feedback_toasts) %>"
        class="page-feedback-toasts"
        aria-live="polite"></div>
-</div>
+<% end %>

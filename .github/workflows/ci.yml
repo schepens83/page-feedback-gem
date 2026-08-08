@@ -23,7 +23,11 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - run: bundle exec rake spec
+      - run: npm test
       - run: bundle exec rubocop
       - run: bundle exec rbs -I sig validate
       - run: bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/'

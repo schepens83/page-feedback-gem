@@ -3,7 +3,7 @@
 module PageFeedback
   # View integration helpers for the isolated engine.
   module ApplicationHelper
-    # Placeholder for engine stylesheet and replay module tags.
+    # Emit the engine stylesheet and replay module tags once per request.
     #
     # @return [ActiveSupport::SafeBuffer]
     def page_feedback_head
@@ -18,7 +18,7 @@ module PageFeedback
       )
     end
 
-    # Placeholder for capture UI markup.
+    # Render authorized capture UI at the engine's actual mount path.
     #
     # @return [ActiveSupport::SafeBuffer]
     def page_feedback_widget
@@ -28,7 +28,8 @@ module PageFeedback
       render(
         "page_feedback/comments/widget",
         comment: PageFeedback::Comment.new,
-        comments_path: page_feedback_mounted_routes.comments_path
+        comments_path: page_feedback_mounted_routes.comments_path,
+        controller_action: "#{controller.controller_path}##{controller.action_name}"
       )
     end
 

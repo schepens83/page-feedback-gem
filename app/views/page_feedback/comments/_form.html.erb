@@ -1,7 +1,15 @@
 <%= form_with url: comments_path,
               scope: :comment,
               class: "page-feedback-form",
-              data: { action: "turbo:submit-end->page-feedback-capture#submitted" } do |form| %>
+              data: {
+                page_feedback_capture_target: "form",
+                action: "turbo:submit-end->page-feedback-capture#submitted"
+              } do |form| %>
+  <header class="page-feedback-form__header">
+    <h2 data-page-feedback-capture-target="tagName">Page feedback</h2>
+    <p data-page-feedback-capture-target="selectorLabel"><%= comment.css_selector %></p>
+  </header>
+
   <% if comment.errors.any? %>
     <div class="page-feedback-errors" role="alert">
       <strong>Feedback could not be saved</strong>
@@ -16,13 +24,22 @@
   <%= form.label :category, "Category" %>
   <%= form.select :category,
                   PageFeedback.configuration.categories.map { |key, label| [label, key] },
-                  { selected: comment.category || PageFeedback.configuration.default_category } %>
+                  { selected: comment.category || PageFeedback.configuration.default_category },
+                  { data: { page_feedback_capture_target: "categoryInput" } } %>
+
+  <div class="page-feedback-form__preview">
+    <code data-page-feedback-capture-target="preview"><%= truncate(comment.element_html, length: 300) %></code>
+  </div>
 
   <%= form.label :comment_text, "Feedback" %>
   <%= form.text_area :comment_text,
                      required: true,
                      maxlength: PageFeedback::Comment::MAX_COMMENT_TEXT_LENGTH,
-                     data: { page_feedback_capture_target: "commentText" } %>
+                     placeholder: "What should change here?",
+                     data: {
+                       page_feedback_capture_target: "commentText",
+                       action: "keydown->page-feedback-capture#submitWithShortcut"
+                     } %>
 
   <% %w[page_path page_title controller_action css_selector element_html].each do |field| %>
     <%= form.hidden_field field, data: { page_feedback_capture_target: field.camelize(:lower) } %>
@@ -34,7 +51,8 @@
   <% end %>
 
   <div class="page-feedback-form__actions">
-    <button type="button" data-action="page-feedback-capture#close">Cancel</button>
+    <button type="button" class="page-feedback-button page-feedback-button--quiet"
+            data-action="page-feedback-capture#close">Cancel</button>
     <%= form.submit "Send feedback" %>
   </div>
 <% end %>
