@@ -1,10 +1,11 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Ready for implementation  
+**Status:** Phase 0 in progress  
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
-**Source application:** `/home/sander/Projects/diagnostic-engine`
+**Source application:** `/home/sander/Projects/diagnostic-engine`  
+**Source baseline:** `058e92c75b79d4592b622f6a16ca1f62d9b9c493`
 
 This document is a self-contained handoff for creating a new repository and
 giving an implementation LLM enough product, architectural, API, workflow, and
@@ -1567,4 +1568,3 @@ Use this after copying the blueprint into the new repository:
 - [Rails plugins](https://guides.rubyonrails.org/plugins.html)
 - [Rails engines](https://guides.rubyonrails.org/engines.html)
 - [Importmap composition](https://github.com/rails/importmap-rails#composing-import-maps)
-
