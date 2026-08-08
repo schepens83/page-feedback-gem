@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 7 implementation and automated verification complete; Phase 8 next
+**Status:** Phase 8 host cutover implemented; guarded cleanup and full host verification pending
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1479,9 +1479,9 @@ Adoption sequence:
 
 Automated verification:
 
-- [ ] Counts match by legacy status/category/page.
-- [ ] Every legacy exported record belongs to a legacy export.
-- [ ] Existing review/capture behavior is covered through engine routes.
+- [x] Counts match by legacy status/category/page.
+- [x] Every legacy exported record belongs to a legacy export.
+- [x] Existing review/capture behavior is covered through engine routes.
 - [ ] Diagnostic Engine full test suite passes.
 - [ ] No old page-comment constants/routes/assets remain.
 
@@ -1497,17 +1497,17 @@ and install from the built `.gem` rather than a source path.
 
 Automated verification:
 
-- [ ] Clean checkout passes all checks.
-- [ ] Built gem installs into a fresh Rails 8 app.
-- [ ] Packaged gem contains all runtime assets/docs/migrations.
-- [ ] `page_feedback:doctor` passes in the packaged install.
-- [ ] CI compatibility matrix passes.
+- [x] Clean checkout passes all checks.
+- [x] Built gem installs into a fresh Rails 8 app.
+- [x] Packaged gem contains all runtime assets/docs/migrations.
+- [x] `page_feedback:doctor` passes in the packaged install.
+- [x] CI compatibility matrix passes.
 
 ## Global Acceptance Criteria
 
 The gem is complete when:
 
-- [ ] A fresh Rails 8 Importmap application installs it without copying feature
+- [x] A fresh Rails 8 Importmap application installs it without copying feature
   implementation code.
 - [ ] No-auth capture and review work with null actor associations.
 - [ ] Authenticated hosts can attribute actors and authorize through initializer
