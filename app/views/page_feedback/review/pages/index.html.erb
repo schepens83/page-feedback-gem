@@ -4,7 +4,10 @@
       <p class="page-feedback-review-eyebrow">Review queue</p>
       <h1>Commented pages</h1>
     </div>
-    <p><%= @page_rows.length %> matching <%= "page".pluralize(@page_rows.length) %></p>
+    <div>
+      <p><%= @page_rows.length %> matching <%= "page".pluralize(@page_rows.length) %></p>
+      <%= link_to "Export ready feedback", new_review_export_path, class: "page-feedback-review-link" %>
+    </div>
   </header>
 
   <nav class="page-feedback-filter-tabs" aria-label="Feedback state">

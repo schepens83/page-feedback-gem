@@ -1,0 +1,25 @@
+<article class="page-feedback-detail">
+  <header>
+    <%= link_to "← Export history", review_exports_path %>
+    <p class="page-feedback-review-eyebrow">Immutable Markdown</p>
+    <h1>Export #<%= @export.id %></h1>
+    <p><%= pluralize(@export.export_items.length, "revision") %> · <%= @export.created_at.to_fs(:long) %></p>
+  </header>
+  <div class="page-feedback-review-actions"
+       data-controller="page-feedback-copy"
+       data-page-feedback-copy-text-value="<%= @export.body %>">
+    <button type="button" class="page-feedback-review-action page-feedback-review-action--approve"
+            data-action="page-feedback-copy#copy">Copy Markdown</button>
+    <%= link_to "Download Markdown", review_export_path(@export, format: :md), class: "page-feedback-review-action" %>
+    <span data-page-feedback-copy-target="status" role="status"></span>
+  </div>
+  <pre class="page-feedback-export-body"><%= @export.body %></pre>
+  <section class="page-feedback-detail__section">
+    <h2>Included revisions</h2>
+    <ol>
+      <% @export.export_items.each do |item| %>
+        <li><%= link_to item.comment.effective_text, review_comment_path(item.comment) %></li>
+      <% end %>
+    </ol>
+  </section>
+</article>

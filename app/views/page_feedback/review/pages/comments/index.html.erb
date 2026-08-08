@@ -96,7 +96,10 @@
         <summary>Captured context</summary>
         <pre><%= JSON.pretty_generate(@current.context) %></pre>
       </details>
-      <%= link_to "Full detail →", review_comment_path(@current), class: "page-feedback-review-link" %>
+      <div class="page-feedback-review-actions">
+        <%= link_to "Full detail →", review_comment_path(@current), class: "page-feedback-review-link" %>
+        <%= link_to "Export ready →", new_review_export_path(comment_ids: [@current.id]), class: "page-feedback-review-link" if @current.ready_for_export? %>
+      </div>
     </aside>
   <% else %>
     <div class="page-feedback-review-empty">

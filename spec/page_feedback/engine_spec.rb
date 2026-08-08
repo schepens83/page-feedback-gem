@@ -5,8 +5,9 @@ require "rails_helper"
 RSpec.describe PageFeedback::Engine do
   let(:browser_modules) do
     %w[
-      page_feedback/capture_controller_support page_feedback/context_recorder
-      page_feedback/controllers/capture_controller page_feedback/element_capture
+      page_feedback/capture_controller_support page_feedback/clipboard page_feedback/context_recorder
+      page_feedback/controllers/capture_controller page_feedback/controllers/copy_controller
+      page_feedback/element_capture
       page_feedback/feedback_picker page_feedback/review_highlight
     ]
   end

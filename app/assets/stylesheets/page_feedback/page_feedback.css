@@ -611,6 +611,25 @@ body.page-feedback-capture-mode * {
   margin-top: 0;
 }
 
+.page-feedback-export-form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.page-feedback-export-body {
+  max-height: 65vh;
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--page-feedback-border);
+  border-radius: 0.6rem;
+  background: var(--page-feedback-surface);
+  color: var(--page-feedback-text);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 58rem) {
   .page-feedback-page-row {
     grid-template-columns: 1fr;

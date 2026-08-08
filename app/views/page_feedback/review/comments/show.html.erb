@@ -13,6 +13,14 @@
       <dt>Element</dt><dd><code><%= @comment.css_selector.presence || "Page level" %></code></dd>
       <dt>Controller</dt><dd><code><%= @comment.controller_action.presence || "Unknown" %></code></dd>
       <dt>Export state</dt><dd><%= @comment.export_state.humanize %></dd>
+      <% if @comment.export_items.any? %>
+        <dt>Exports</dt>
+        <dd>
+          <% @comment.export_items.each do |item| %>
+            <%= link_to "##{item.export_id}", review_export_path(item.export_id) %>
+          <% end %>
+        </dd>
+      <% end %>
     </dl>
   </section>
 

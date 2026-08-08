@@ -1,0 +1,18 @@
+<section class="page-feedback-detail">
+  <header>
+    <%= link_to "← Export history", review_exports_path %>
+    <p class="page-feedback-review-eyebrow">Ready revisions</p>
+    <h1>Preview export</h1>
+  </header>
+  <% if @comments.any? %>
+    <%= form_with url: review_exports_path, method: :post, class: "page-feedback-export-form" do %>
+      <% @comments.each do |comment| %>
+        <%= hidden_field_tag "comment_ids[]", comment.id %>
+      <% end %>
+      <%= submit_tag "Create immutable export", class: "page-feedback-review-action page-feedback-review-action--approve" %>
+    <% end %>
+    <pre class="page-feedback-export-body"><%= @preview_body %></pre>
+  <% else %>
+    <div class="page-feedback-review-empty"><h2>No feedback is ready to export</h2></div>
+  <% end %>
+</section>

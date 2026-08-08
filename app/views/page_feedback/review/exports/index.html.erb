@@ -1,0 +1,24 @@
+<section class="page-feedback-detail">
+  <header>
+    <p class="page-feedback-review-eyebrow">Immutable history</p>
+    <h1>Exports</h1>
+    <%= link_to "Create export", new_review_export_path, class: "page-feedback-review-link" %>
+  </header>
+  <% if @exports.any? %>
+    <div class="page-feedback-page-list">
+      <% @exports.each do |export| %>
+        <article class="page-feedback-page-row">
+          <div class="page-feedback-page-row__identity">
+            <h2>Export #<%= export.id %></h2>
+            <time datetime="<%= export.created_at.iso8601 %>"><%= export.created_at.to_fs(:long) %></time>
+          </div>
+          <p><%= pluralize(export.export_items.length, "revision") %></p>
+          <code><%= export.body_digest.first(12) %></code>
+          <%= link_to "Open export", review_export_path(export), class: "page-feedback-review-link" %>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="page-feedback-review-empty"><h2>No exports yet</h2></div>
+  <% end %>
+</section>
