@@ -13,6 +13,10 @@ module PageFeedback
   class Engine < ::Rails::Engine
     isolate_namespace PageFeedback
 
+    initializer "page_feedback.mime_types" do
+      Mime::Type.register("text/markdown", :md) unless Mime::Type.lookup_by_extension(:md)
+    end
+
     initializer "page_feedback.importmap", before: "importmap" do |app|
       importmap_path = root.join("config/importmap.rb")
       javascript_path = root.join("app/assets/javascripts")

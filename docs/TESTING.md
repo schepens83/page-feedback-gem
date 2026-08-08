@@ -12,6 +12,14 @@ bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/' # inline AP
 gem build page_feedback.gemspec          # package contents and metadata
 ```
 
+The CI compatibility graphs are reproducible locally through their committed
+matrix Gemfiles:
+
+```bash
+BUNDLE_GEMFILE=gemfiles/rails_8_0.gemfile bundle exec rake spec
+BUNDLE_GEMFILE=gemfiles/rails_8_1.gemfile bundle exec rake spec
+```
+
 The dummy Rails application supplies real routing, database, controller, asset,
 and host-integration boundaries. Tests should not replace those boundaries with
 mocks when observable behavior is practical.

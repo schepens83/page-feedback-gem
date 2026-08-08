@@ -22,6 +22,10 @@ RSpec.describe PageFeedback::Engine do
     expect(PageFeedback::ApplicationController.superclass).to equal(ApplicationController)
   end
 
+  it "registers Markdown responses on every supported Rails version" do
+    expect(Mime::Type.lookup_by_extension(:md).to_s).to eq("text/markdown")
+  end
+
   it "registers the engine importmap and watches its JavaScript" do
     importmap_path = described_class.root.join("config/importmap.rb")
     javascript_path = described_class.root.join("app/assets/javascripts")
