@@ -43,6 +43,7 @@ to use semantic versioning after its first release.
   warning-aware status, Rails tasks, and a standalone executable.
 - Optional immutable export labels for visible legacy-import provenance in
   export history and detail views.
+- Export detail metadata for the stored format and host-resolved creator label.
 
 ### Security
 

@@ -4,7 +4,14 @@
     <p class="page-feedback-review-eyebrow">Immutable Markdown</p>
     <h1><%= @export.label.presence || "Export ##{@export.id}" %></h1>
     <% if @export.label.present? %><p>Export #<%= @export.id %></p><% end %>
-    <p><%= pluralize(@export.export_items.length, "revision") %> · <%= @export.created_at.to_fs(:long) %></p>
+    <p>
+      <%= pluralize(@export.export_items.length, "revision") %> ·
+      <%= @export.format.titleize %> ·
+      <%= @export.created_at.to_fs(:long) %>
+      <% if @export.created_by.present? %>
+        · Created by <%= PageFeedback.configuration.actor_label.call(@export.created_by) %>
+      <% end %>
+    </p>
   </header>
   <div class="page-feedback-review-actions"
        data-controller="page-feedback-copy"

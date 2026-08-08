@@ -52,13 +52,15 @@ RSpec.describe "PageFeedback exports" do
   end
 
   it "shows the exact stored body and included feedback", :aggregate_failures do
+    actor = create(:user, email: "reviewer@example.test")
     comment = ready_comment(comment_text: "Stored once")
-    export = PageFeedback::Export.create_from!(comments: [comment], label: "Imported snapshot")
+    export = PageFeedback::Export.create_from!(comments: [comment], actor:, label: "Imported snapshot")
 
     get "/feedback/review/exports/#{export.id}"
     expect(response.parsed_body.at_css(".page-feedback-export-body").text).to eq(export.body)
     expect(response.body).to include(comment.comment_text)
     expect(response.body).to include("Imported snapshot", "Export ##{export.id}")
+    expect(response.body).to include("Markdown", "Created by reviewer@example.test")
     expect(response.body).to include("data-page-feedback-copy-text-value=")
   end
 
