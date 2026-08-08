@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 0 complete; ready for review before Phase 1
+**Status:** Phase 1 complete; Phase 2 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1353,11 +1353,11 @@ predicates.
 
 Automated verification:
 
-- [ ] Open defaults return nil actor and permit capture/review.
-- [ ] Custom callbacks receive the current engine controller.
-- [ ] Denied authorization returns 403.
-- [ ] Importmap exposes engine modules.
-- [ ] Configuration public API matches RBS and YARD docs.
+- [x] Open defaults return nil actor and permit capture/review.
+- [x] Custom callbacks receive the current engine controller.
+- [x] Denied authorization returns 403.
+- [x] Importmap exposes engine modules.
+- [x] Configuration public API matches RBS and YARD docs.
 
 ### Phase 2 — Persistence and domain state
 

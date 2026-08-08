@@ -13,6 +13,9 @@ to use semantic versioning after its first release.
 - Bootable isolated Rails engine scaffold and dummy host application.
 - RSpec, RuboCop, gem packaging, and compatibility-matrix CI foundations.
 - Self-contained HTML implementation report for repository review.
+- Typed configuration defaults and host callback contracts.
+- Server-side capture/review authorization with preserved host CSRF behavior.
+- Host helper registration and composed engine Importmap module pins.
 
 ### Security
 

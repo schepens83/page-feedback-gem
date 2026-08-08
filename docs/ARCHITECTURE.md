@@ -33,6 +33,11 @@ Host page in sandboxed iframe ← review queue ← reviewer decision
 - Browser modules select elements, record bounded context, and replay highlights.
 - The installer and diagnostics object make host integration observable.
 
+Phase 1 establishes the first integration boundaries as executable seams:
+configuration is typed and documented, engine controllers inherit the host
+controller, capture and review policy failures return 403, host helpers are
+registered, and the engine Importmap is composed before the host map is drawn.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

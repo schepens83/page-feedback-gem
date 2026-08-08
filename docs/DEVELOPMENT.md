@@ -9,6 +9,8 @@ baseline checks:
 bundle install
 bundle exec rake spec
 bundle exec rubocop
+bundle exec rbs -I sig validate
+bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/'
 gem build page_feedback.gemspec
 ```
 

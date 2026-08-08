@@ -1,7 +1,8 @@
 # Public API
 
-This document is the compatibility contract for host applications. APIs are
-planned until their implementation phase is complete.
+This document is the compatibility contract for host applications. Configuration,
+authorization, helper registration, and Importmap composition are implemented;
+domain and workflow APIs remain planned until their roadmap phases complete.
 
 ## Configuration
 
@@ -29,6 +30,11 @@ The formatter responds to `.call(comments:, generated_at:)` and returns a UTF-8
 String without persisting or mutating comments. `PageFeedback.reset_configuration!`
 is public for test isolation.
 
+Configuration is process-global and intended to be assigned during host boot.
+Each reset receives fresh mutable category, shortcut, and ignored-class values.
+The default formatter is callable now; Phase 6 supplies its complete grouped
+Markdown behavior.
+
 ## Helpers
 
 ```erb
@@ -39,6 +45,9 @@ is public for test isolation.
 The head helper emits namespaced CSS and the replay module once. The widget
 helper returns an empty safe string when capture is denied and suppresses capture
 chrome in replay mode. Server authorization remains authoritative.
+
+During Phase 1 both helpers are registered with the host and return empty safe
+buffers. Phase 3 adds capture markup and Phase 4 adds final asset tags.
 
 ## Domain methods
 
@@ -57,6 +66,10 @@ domain behavior must remain compatible.
 The engine provides capture at `POST /comments`; review pages, comments,
 approval/rejection resources, bulk resources, and immutable exports below
 `/review`. The host chooses the mount prefix, `/feedback` by default.
+
+The Phase 1 capture and page-index resources enforce policy and return 501 after
+successful authorization. Their application behavior is implemented in Phases 3
+and 5 respectively; denied access already returns 403 for every format.
 
 ```bash
 bin/rails generate page_feedback:install --help

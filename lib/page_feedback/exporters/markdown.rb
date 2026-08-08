@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module PageFeedback
+  # Vendor-neutral representations of approved feedback revisions.
   module Exporters
     # Public formatter boundary. Phase 6 adds the complete grouped Markdown body.
     class Markdown

@@ -6,6 +6,8 @@
 bundle exec rspec path/to/spec.rb        # focused red-green cycle
 bundle exec rake spec                    # complete Ruby suite
 bundle exec rubocop                      # static style checks
+bundle exec rbs -I sig validate          # public Ruby signatures
+bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/' # inline API docs
 gem build page_feedback.gemspec          # package contents and metadata
 ```
 

@@ -7,6 +7,10 @@ must enforce their respective callback on the server for HTML, Turbo, and JSON.
 A denied request returns 403. Open defaults are supported but must remain obvious
 in generated configuration and diagnostics.
 
+The Phase 1 request contract verifies that denied capture and review callbacks
+return 403 and receive the active engine controller. Capture requests without a
+valid authenticity token are rejected before policy or endpoint behavior runs.
+
 Actor identity always comes from `current_actor`; submitter, reviewer, and export
 creator IDs in request parameters are ignored. The engine keeps Rails CSRF
 protection enabled, including browser-originated JSON requests.

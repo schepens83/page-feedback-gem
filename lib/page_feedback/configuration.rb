@@ -3,17 +3,22 @@
 module PageFeedback
   # Host-controlled callbacks and presentation settings for the engine.
   class Configuration
+    # Stable default stored category keys and their English display labels.
     DEFAULT_CATEGORIES = {
       "bug" => "Bug",
       "idea" => "Idea",
       "question" => "Question",
       "compliment" => "Compliment"
     }.freeze
+    # Default actor resolver for anonymous hosts.
     DEFAULT_CURRENT_ACTOR = ->(_controller) {}.freeze
+    # Default policy used by open capture and review installations.
     DEFAULT_AUTHORIZER = ->(_controller) { true }.freeze
+    # Default human-readable actor label resolver.
     DEFAULT_ACTOR_LABEL = lambda do |actor|
       actor.respond_to?(:email) ? actor.email : actor.to_s
     end.freeze
+    # Default source resolver when a host has no code-location mapping.
     DEFAULT_SOURCE_LOCATOR = ->(_comment) {}.freeze
 
     # @return [Proc] receives an engine controller and returns an actor or nil

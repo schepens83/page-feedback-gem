@@ -5,6 +5,7 @@ module PageFeedback
   class CommentsController < ApplicationController
     before_action :ensure_capture_authorized, only: :create
 
+    # Authorize capture before the Phase 3 persistence endpoint runs.
     def create
       head :not_implemented
     end
