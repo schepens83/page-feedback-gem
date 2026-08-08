@@ -20,6 +20,10 @@ to use semantic versioning after its first release.
 - Review transitions, polymorphic actors, and page/category/state scopes.
 - Canonical export fingerprints and never-exported/current/changed derivation.
 - Atomic immutable export snapshots with exact ordered membership.
+- Authorized Turbo, HTML, and JSON feedback capture with trusted actor
+  attribution, normalized bounded context, and server-side validation.
+- Mount-aware host helpers with idempotent asset tags, replay suppression, and
+  policy-aware server-rendered modal and toast fragments.
 
 ### Security
 

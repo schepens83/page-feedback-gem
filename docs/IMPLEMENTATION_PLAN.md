@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 2 complete; Phase 3 next
+**Status:** Phase 3 complete; Phase 4 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1379,11 +1379,11 @@ authorization, format responses, modal/toast partials, and head/widget helpers.
 
 Automated verification:
 
-- [ ] Turbo/HTML/JSON request specs pass.
-- [ ] CSRF remains enabled.
-- [ ] Submitted actor params cannot spoof attribution.
-- [ ] Invalid paths and oversized fields are rejected.
-- [ ] Unauthorized widget is omitted and unauthorized POST is forbidden.
+- [x] Turbo/HTML/JSON request specs pass.
+- [x] CSRF remains enabled.
+- [x] Submitted actor params cannot spoof attribution.
+- [x] Invalid paths and oversized fields are rejected.
+- [x] Unauthorized widget is omitted and unauthorized POST is forbidden.
 
 ### Phase 4 — Browser capture assets
 

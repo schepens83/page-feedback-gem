@@ -22,6 +22,12 @@ Views escape them, captured markup is displayed as text, and formatters fence or
 escape content so it cannot accidentally restructure an export. Client limits
 are backed by server-side limits.
 
+The capture endpoint currently caps feedback at 10,000 characters, local paths
+at 2,000, page titles at 500, controller/action labels at 255, selectors at
+2,000, selected-element HTML at 2,500, and parent HTML at 1,250. It retains at
+most 10 console summaries and 5 navigation entries, each reduced to its approved
+content and timestamp keys.
+
 ## Replay
 
 Only paths beginning with exactly one `/` are replayable. Protocol-relative,

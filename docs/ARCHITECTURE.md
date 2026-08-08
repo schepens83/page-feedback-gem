@@ -44,6 +44,12 @@ atomic snapshot creation; export items own immutable ordered membership. A
 comment's export state is derived from its current fingerprint and history, never
 stored as a review status.
 
+Phase 3 implements the capture request boundary. The host helper evaluates the
+same policy contract used by the endpoint, produces mount-aware server-rendered
+markup, and disappears during replay. `CommentsController#create` permits only
+capture fields, resolves actor identity from the host callback, normalizes
+bounded context, and negotiates Turbo Stream, HTML, or JSON responses.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

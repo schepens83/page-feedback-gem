@@ -1,9 +1,9 @@
 # Public API
 
 This document is the compatibility contract for host applications. Configuration,
-authorization, helper registration, Importmap composition, and the Phase 2 domain
-model are implemented; request workflows remain planned until their roadmap
-phases complete.
+authorization, helper registration, Importmap composition, the domain model, and
+the capture request boundary are implemented; review workflows remain planned
+until their roadmap phases complete.
 
 ## Configuration
 
@@ -43,12 +43,10 @@ Markdown behavior.
 <body><%= page_feedback_widget %><%= yield %></body>
 ```
 
-The head helper emits namespaced CSS and the replay module once. The widget
-helper returns an empty safe string when capture is denied and suppresses capture
-chrome in replay mode. Server authorization remains authoritative.
-
-During Phase 1 both helpers are registered with the host and return empty safe
-buffers. Phase 3 adds capture markup and Phase 4 adds final asset tags.
+The head helper emits namespaced CSS and the replay module at most once per
+request. The widget renders the server-owned capture form at the engine's actual
+mount path. It returns an empty safe string when capture is denied and suppresses
+capture chrome in replay mode. Server authorization remains authoritative.
 
 ## Domain methods
 
@@ -78,9 +76,11 @@ The engine provides capture at `POST /comments`; review pages, comments,
 approval/rejection resources, bulk resources, and immutable exports below
 `/review`. The host chooses the mount prefix, `/feedback` by default.
 
-The Phase 1 capture and page-index resources enforce policy and return 501 after
-successful authorization. Their application behavior is implemented in Phases 3
-and 5 respectively; denied access already returns 403 for every format.
+Capture accepts Turbo Stream, HTML, and JSON at `POST /comments`. It normalizes
+legacy camelCase context, ignores submitted actor and review-state fields,
+persists a pending comment, and returns validation errors in the requested
+format. The page-index resource still returns 501 after successful review
+authorization until Phase 5; denied access returns 403 for every format.
 
 ```bash
 bin/rails generate page_feedback:install --help
