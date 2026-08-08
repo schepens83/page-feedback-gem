@@ -1,0 +1,7 @@
+PageFeedback is not yet licensed for distribution.
+
+Copyright (c) 2026 Sander Schepens. All rights reserved.
+
+No permission is granted to use, copy, modify, merge, publish, distribute,
+sublicense, or sell copies of this software until the copyright holder selects
+and publishes license terms.
