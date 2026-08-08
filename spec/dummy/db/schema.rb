@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_08_000004) do
+ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
   create_table "page_feedback_comments", force: :cascade do |t|
     t.datetime "approved_at"
     t.string "category", default: "idea", null: false
