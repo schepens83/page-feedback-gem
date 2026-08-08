@@ -9,11 +9,13 @@ authorizes independently, strips query strings and fragments from local paths,
 normalizes context keys, resolves any actor from host code, and creates a pending
 comment.
 
-The server half of this workflow is implemented. HTML submissions redirect back
-to the host page, Turbo submissions replace the modal and append a toast, and
-JSON submissions return either the new identifier and pending state or a field
-error object. Invalid context collections normalize to empty arrays; client actor
-and status fields are never permitted.
+The capture workflow is implemented. The picker excludes interactive controls
+and engine chrome, removes configured runtime classes from stable selectors, and
+records capped HTML, console, navigation, viewport, and scroll context. HTML
+submissions redirect back to the host page, Turbo submissions replace the modal
+and append a toast, and JSON submissions return either the new identifier and
+pending state or a field error object. Invalid context collections normalize to
+empty arrays; client actor and status fields are never permitted.
 
 ## Review state
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>PageFeedback — Phase 3 Review</title>
+  <title>PageFeedback — Phase 4 Review</title>
   <style>
     :root {
       --ink: #1f2328;
@@ -248,7 +248,7 @@
 
   <main>
     <header class="hero shell">
-      <p class="eyebrow">Phase 3 implementation report · 8 August 2026</p>
+      <p class="eyebrow">Phase 4 implementation report · 8 August 2026</p>
       <h1>Contextual feedback, ready to become code.</h1>
       <p class="lede">
         PageFeedback packages a proven Rails feedback loop: select an element,
@@ -256,7 +256,8 @@
         exact approved revision for a coding agent.
       </p>
       <div class="chips" aria-label="Project status">
-        <span class="chip ok"><span class="dot"></span> Phase 3 complete</span>
+        <span class="chip ok"><span class="dot"></span> Phase 4 implemented</span>
+        <span class="chip">Manual browser QA pending</span>
         <span class="chip">Rails 8 isolated engine</span>
         <span class="chip">Version 0.1.0</span>
         <span class="chip">License undecided</span>
@@ -266,9 +267,9 @@
     <section id="outcome" class="shell">
       <h2>What exists now</h2>
       <p class="section-intro">
-        The engine now accepts contextual feedback through a policy-aware,
-        mount-aware host widget. It normalizes and bounds browser context,
-        resolves trusted host actors, and responds through Turbo, HTML, or JSON.
+        The capture loop now runs end to end: Alt+F selection, stable selectors,
+        bounded browser context, an accessible modal, trusted persistence, and
+        resilient in-page replay all ship as namespaced engine assets.
       </p>
       <div class="grid">
         <article class="card">
@@ -278,10 +279,10 @@
             workflow, security, and implementation details.</p>
         </article>
         <article class="card">
-          <div class="number">4</div>
-          <h3>Roadmap phases complete</h3>
-          <p>Scaffolding, engine boundaries, domain state, and the complete
-            server capture path are finished. Browser behavior is next.</p>
+          <div class="number">5</div>
+          <h3>Roadmap phases implemented</h3>
+          <p>The complete capture path now spans Rails, Turbo, Stimulus,
+            Importmap, Propshaft, and bounded browser context. Review is next.</p>
         </article>
         <article class="card">
           <div class="number">0</div>
@@ -296,17 +297,18 @@
       <h2>Verification</h2>
       <div class="proof">
         <div>
-          <strong>Phase 3 automated gates pass</strong>
-          <p>70 examples, 0 failures. Capture authorization, CSRF, trusted actor
-            attribution, path and payload limits, context normalization, host
-            helpers, and Turbo/HTML/JSON responses join the domain coverage.
-            RuboCop, RBS, and 100% YARD coverage remain green.</p>
+          <strong>Phase 4 automated gates pass</strong>
+          <p>75 examples, 0 failures, plus five green JavaScript test files.
+            Selector stability, HTML caps, context ring buffers, shortcuts,
+            picker interception, replay resilience, asset resolution, and CSS
+            namespaces are covered. Manual light/dark browser QA remains open.</p>
         </div>
         <pre aria-label="Verification commands">bundle exec rake spec
 bundle exec rubocop
 bundle exec rbs -I sig validate
 bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/'
 gem build page_feedback.gemspec
+npm test
 
 # Local stack
 Ruby 4.0.3 · Rails 8.1.3.1</pre>
@@ -355,10 +357,10 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
             active engine controller and denied requests return 403.</p>
         </article>
         <article class="card wide">
-          <h3>Server-rendered capture responses</h3>
-          <p>The host widget posts to the engine's real mount path. Turbo replaces
-            the modal and appends a toast, while HTML and JSON retain complete
-            non-Turbo contracts.</p>
+          <h3>Browser modules stay independently testable</h3>
+          <p>Pure selector, recorder, shortcut, picker, and replay modules sit
+            behind a thin Stimulus adapter. Hosts need no Node runtime or second
+            Stimulus application.</p>
         </article>
       </div>
     </section>
@@ -372,8 +374,8 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
         <details class="done" open><summary><span class="phase-number">1</span> Configuration and engine boundary <span class="status">Complete</span></summary><p>Typed public defaults, host callbacks, REST-scoped authorization predicates, Importmap composition, and safe layout helper stubs.</p></details>
         <details class="done" open><summary><span class="phase-number">2</span> Persistence and domain state <span class="status">Complete</span></summary><p>Portable migrations, actor associations, review transitions, canonical fingerprints, freshness derivation, and atomic immutable export membership.</p></details>
         <details class="done" open><summary><span class="phase-number">3</span> Capture backend and host helpers <span class="status">Complete</span></summary><p>Authorized capture endpoint, trusted actor attribution, bounded normalization, Turbo/HTML/JSON responses, and mount-aware layout helpers.</p></details>
-        <details><summary><span class="phase-number">4</span> Browser capture assets <span class="status">Next</span></summary><p>Element picker, context recorder, capture controller, replay highlighter, and namespaced visual system.</p></details>
-        <details><summary><span class="phase-number">5</span> Review queue and decisions</summary><p>Page-grouped queues, iframe replay, reviewer edits, decisions, bulk resources, filters, and navigation.</p></details>
+        <details class="done" open><summary><span class="phase-number">4</span> Browser capture assets <span class="status">Implemented</span></summary><p>Configurable picker, stable selectors, bounded context, keyboard workflow, replay highlighter, and fully namespaced visual system. Manual browser QA remains.</p></details>
+        <details><summary><span class="phase-number">5</span> Review queue and decisions <span class="status">Next</span></summary><p>Page-grouped queues, iframe replay, reviewer edits, decisions, bulk resources, filters, and navigation.</p></details>
         <details><summary><span class="phase-number">6</span> Export batches and Markdown</summary><p>Preview, create, history, copy, download, default formatter, custom formatter contract, and freshness UI.</p></details>
         <details><summary><span class="phase-number">7</span> Installer, doctor, and executable</summary><p>Idempotent host integration, human and JSON diagnostics, Rake tasks, and complete command help.</p></details>
         <details><summary><span class="phase-number">8</span> Diagnostic Engine adoption</summary><p>Migrate the source application at baseline <code>058e92c…</code>, verify parity and data, then remove its local implementation.</p></details>
@@ -398,7 +400,7 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
   </main>
 
   <footer class="shell">
-    Generated from the repository state after Phase 3. This page is a review
+    Generated from the repository state after Phase 4 implementation. This page is a review
     surface; the linked Markdown files remain canonical.
   </footer>
 

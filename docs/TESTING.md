@@ -5,6 +5,7 @@
 ```bash
 bundle exec rspec path/to/spec.rb        # focused red-green cycle
 bundle exec rake spec                    # complete Ruby suite
+npm test                                 # dependency-free browser module suite
 bundle exec rubocop                      # static style checks
 bundle exec rbs -I sig validate          # public Ruby signatures
 bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/' # inline API docs
@@ -14,6 +15,9 @@ gem build page_feedback.gemspec          # package contents and metadata
 The dummy Rails application supplies real routing, database, controller, asset,
 and host-integration boundaries. Tests should not replace those boundaries with
 mocks when observable behavior is practical.
+
+Browser modules use Node's built-in test runner and require no npm packages.
+`bundle exec rake javascript` is a convenience alias for `npm test`.
 
 FactoryBot definitions live in `spec/factories` and are registered explicitly
 because `Rails.root` points at `spec/dummy`. The committed dummy schema is

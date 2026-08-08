@@ -48,6 +48,13 @@ request. The widget renders the server-owned capture form at the engine's actual
 mount path. It returns an empty safe string when capture is denied and suppresses
 capture chrome in replay mode. Server authorization remains authoritative.
 
+The widget's Stimulus controller uses `activation_shortcut` (Alt+F by default),
+removes every class listed in `ignored_css_classes` from generated selectors,
+and populates only the documented capture fields. The picker excludes
+PageFeedback chrome and interactive controls. Element and parent markup, console
+errors, and navigation entries are capped before submission as well as on the
+server.
+
 ## Domain methods
 
 `PageFeedback::Comment` exposes status predicates, `effective_text`,

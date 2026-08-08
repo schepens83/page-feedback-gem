@@ -50,12 +50,20 @@ markup, and disappears during replay. `CommentsController#create` permits only
 capture fields, resolves actor identity from the host callback, normalizes
 bounded context, and negotiates Turbo Stream, HTML, or JSON responses.
 
+Phase 4 implements the browser boundary as small Importmap modules. Pure selector,
+context, shortcut, and replay functions remain independently testable; the
+Stimulus controller only coordinates those modules with server-rendered targets.
+The engine loads the Propshaft and Stimulus railties explicitly, pins every
+module import, and ships CSS whose selectors and custom properties are scoped to
+`page-feedback`.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and
 Propshaft. Browser code is shipped as importmap modules; the host's existing
-Stimulus application loads small generated proxies. No Node package or second
-Stimulus application is introduced.
+Stimulus application loads small generated proxies. Node is used only for the
+dependency-free development test suite, never as a host runtime dependency, and
+the engine does not start a second Stimulus application.
 
 ## Data flow
 

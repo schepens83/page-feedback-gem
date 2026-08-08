@@ -9,10 +9,10 @@ collected into immutable Markdown exports.
 host page → capture → pending review → approved revision → immutable export
 ```
 
-> **Status:** early implementation. The installation commands below describe
-> the intended public workflow and will become executable phase by phase.
+> **Status:** capture backend and browser assets are implemented. Review,
+> export, and installation workflows remain roadmap work.
 
-Open [the standalone Phase 0 report](page-feedback.html) for an easy-to-scan,
+Open [the standalone Phase 4 report](page-feedback.html) for an easy-to-scan,
 printable view of the current outcome, verification evidence, and roadmap.
 
 ## Compatibility

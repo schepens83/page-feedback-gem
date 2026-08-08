@@ -24,6 +24,10 @@ to use semantic versioning after its first release.
   attribution, normalized bounded context, and server-side validation.
 - Mount-aware host helpers with idempotent asset tags, replay suppression, and
   policy-aware server-rendered modal and toast fragments.
+- Namespaced element picker, bounded browser context recorder, configurable
+  capture shortcuts, Stimulus adapter, and resilient replay highlighter.
+- Propshaft and Importmap asset-resolution checks plus a dependency-free Node
+  test suite wired into CI.
 
 ### Security
 
