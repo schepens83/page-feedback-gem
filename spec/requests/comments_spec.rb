@@ -104,6 +104,10 @@ RSpec.describe "PageFeedback comments" do
 
     expect(response).to have_http_status(:see_other)
     expect(response).to redirect_to("http://www.example.com/projects/42")
+    expect(PageFeedback::Comment.last.context).to include(
+      "viewport" => "1440x900",
+      "scroll_y" => 812
+    )
   end
 
   it "renders a usable HTML validation response" do

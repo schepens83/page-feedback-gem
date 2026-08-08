@@ -34,9 +34,8 @@ module PageFeedback
 
     def normalized_comment_attributes
       submitted_comment = params.require(:comment)
-      submitted_comment.permit(*CAPTURE_FIELDS).to_h.merge(
-        "context" => normalize_context(submitted_comment[:context])
-      )
+      permitted_comment = submitted_comment.permit(*CAPTURE_FIELDS, context: {})
+      permitted_comment.to_h.merge("context" => normalize_context(permitted_comment[:context]))
     end
 
     def normalize_context(raw_context)
