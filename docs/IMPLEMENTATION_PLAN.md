@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 0 in progress  
+**Status:** Phase 0 complete; ready for review before Phase 1
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1334,15 +1334,15 @@ README, docs listed above, ADR skeletons, and changelog.
 
 Automated verification:
 
-- [ ] `bundle exec rake spec` boots the dummy app.
-- [ ] `bundle exec rubocop` passes.
-- [ ] `gem build page_feedback.gemspec` succeeds.
-- [ ] All gemspec files include README, docs, migrations, assets, executable.
-- [ ] Documentation links have no missing local targets.
+- [x] `bundle exec rake spec` boots the dummy app.
+- [x] `bundle exec rubocop` passes.
+- [x] `gem build page_feedback.gemspec` succeeds.
+- [x] All gemspec files include README, docs, migrations, assets, executable.
+- [x] Documentation links have no missing local targets.
 
 Manual verification:
 
-- [ ] A fresh LLM reading only `AGENTS.md` can identify purpose, required docs,
+- [x] A fresh LLM reading only `AGENTS.md` can identify purpose, required docs,
   repository map, and exact validation commands.
 
 ### Phase 1 — Configuration and engine boundary

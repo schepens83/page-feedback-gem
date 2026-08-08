@@ -1,5 +1,6 @@
 /.bundle/
 /.yardoc/
+/*.gem
 /coverage/
 /pkg/
 /spec/dummy/db/*.sqlite3*

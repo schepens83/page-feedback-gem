@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir.chdir(__dir__) do
     patterns = ["{app,config,db,docs,exe,lib,sig}/**/*", "AGENTS.md", "CHANGELOG.md",
-                "LICENSE.txt", "README.md"]
+                "LICENSE.txt", "README.md", "page-feedback.html"]
     Dir.glob(patterns, File::FNM_DOTMATCH).reject { |path| File.directory?(path) }
   end
   spec.bindir = "exe"

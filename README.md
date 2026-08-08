@@ -12,6 +12,9 @@ host page → capture → pending review → approved revision → immutable exp
 > **Status:** early implementation. The installation commands below describe
 > the intended public workflow and will become executable phase by phase.
 
+Open [the standalone Phase 0 report](page-feedback.html) for an easy-to-scan,
+printable view of the current outcome, verification evidence, and roadmap.
+
 ## Compatibility
 
 | Component | Supported |

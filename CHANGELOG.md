@@ -10,6 +10,9 @@ to use semantic versioning after its first release.
 
 - Initial architecture and implementation plan.
 - Documentation spine for consumers, maintainers, and coding agents.
+- Bootable isolated Rails engine scaffold and dummy host application.
+- RSpec, RuboCop, gem packaging, and compatibility-matrix CI foundations.
+- Self-contained HTML implementation report for repository review.
 
 ### Security
 
