@@ -44,6 +44,7 @@ to use semantic versioning after its first release.
 - Optional immutable export labels for visible legacy-import provenance in
   export history and detail views.
 - Export detail metadata for the stored format and host-resolved creator label.
+- Rails 8.1-compatible authorization callbacks across every review controller.
 
 ### Security
 
