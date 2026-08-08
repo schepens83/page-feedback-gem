@@ -1,3 +1,54 @@
 module PageFeedback
   VERSION: String
+
+  interface _ControllerCallback
+    def call: (untyped controller) -> untyped
+  end
+
+  interface _Authorizer
+    def call: (untyped controller) -> bool
+  end
+
+  interface _ActorLabel
+    def call: (untyped actor) -> String
+  end
+
+  interface _SourceLocator
+    def call: (untyped comment) -> String?
+  end
+
+  interface _ExportFormatter
+    def call: (comments: untyped, generated_at: untyped) -> String
+  end
+
+  class Configuration
+    DEFAULT_CATEGORIES: Hash[String, String]
+    DEFAULT_CURRENT_ACTOR: _ControllerCallback
+    DEFAULT_AUTHORIZER: _Authorizer
+    DEFAULT_ACTOR_LABEL: _ActorLabel
+    DEFAULT_SOURCE_LOCATOR: _SourceLocator
+
+    attr_accessor current_actor: _ControllerCallback
+    attr_accessor capture_authorizer: _Authorizer
+    attr_accessor review_authorizer: _Authorizer
+    attr_accessor actor_label: _ActorLabel
+    attr_accessor categories: Hash[String, String]
+    attr_accessor default_category: String
+    attr_accessor activation_shortcut: Hash[Symbol, bool | String]
+    attr_accessor ignored_css_classes: Array[String]
+    attr_accessor source_locator: _SourceLocator
+    attr_accessor export_formatter: _ExportFormatter
+
+    def initialize: () -> void
+  end
+
+  def self.configuration: () -> Configuration
+  def self.configure: () { (Configuration) -> untyped } -> Configuration
+  def self.reset_configuration!: () -> Configuration
+
+  module Exporters
+    class Markdown
+      def self.call: (comments: untyped, generated_at: untyped) -> String
+    end
+  end
 end
