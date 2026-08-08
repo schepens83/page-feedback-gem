@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV["RAILS_ENV"] ||= "test"
+
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
 RSpec.configure do |config|

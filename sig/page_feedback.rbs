@@ -42,6 +42,41 @@ module PageFeedback
     def initialize: () -> void
   end
 
+  class Diagnostics
+    class Check
+      attr_accessor name: String
+      attr_accessor label: String
+      attr_accessor status: String
+      attr_accessor details: String
+
+      def to_h: () -> Hash[String, String]
+    end
+
+    class Report
+      attr_accessor version: String
+      attr_accessor rails_version: String
+      attr_accessor checks: Array[Check]
+      attr_accessor review_path: String
+      attr_accessor docs_path: String
+
+      def ok?: () -> bool
+      def to_h: () -> Hash[String, untyped]
+      def to_json: (*untyped) -> String
+      def to_text: () -> String
+    end
+
+    def initialize: (?application: untyped, ?root: untyped, ?configuration: Configuration, **untyped) -> void
+    def call: () -> Report
+  end
+
+  class Command
+    HELP: String
+
+    def self.run: (Array[String] arguments, **untyped) -> Integer
+    def initialize: (Array[String] arguments, **untyped) -> void
+    def run: () -> Integer
+  end
+
   def self.configuration: () -> Configuration
   def self.configure: () { (Configuration) -> untyped } -> Configuration
   def self.reset_configuration!: () -> Configuration

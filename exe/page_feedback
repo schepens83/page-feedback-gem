@@ -1,30 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "page_feedback/version"
+require_relative "../lib/page_feedback/command"
 
-command = ARGV.first || "help"
-
-case command
-when "version", "--version", "-v"
-  puts PageFeedback::VERSION
-when "docs"
-  root = File.expand_path("..", __dir__)
-  puts "PageFeedback documentation:"
-  puts "  #{File.join(root, 'README.md')}"
-  puts "  #{File.join(root, 'docs')}"
-when "help", "--help", "-h"
-  puts <<~HELP
-    Usage: page_feedback COMMAND
-
-    Commands:
-      docs       Print installed documentation paths
-      version    Print the PageFeedback version
-      help       Show this help
-
-    Rails installation and doctor commands will be added in Phase 7.
-  HELP
-else
-  warn "Unknown command: #{command}"
-  exit 1
-end
+exit PageFeedback::Command.run(ARGV)
