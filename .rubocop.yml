@@ -17,6 +17,7 @@ RSpec/ExampleLength:
 RSpec/DescribeClass:
   Exclude:
     - "spec/docs/**/*"
+    - "spec/requests/**/*"
 
 RSpec/MultipleExpectations:
   Max: 3
