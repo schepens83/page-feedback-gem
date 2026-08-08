@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 8 host cutover implemented; guarded cleanup and full host verification pending
+**Status:** Phases 0–9 implemented; automated gates green and manual browser QA pending
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1482,8 +1482,8 @@ Automated verification:
 - [x] Counts match by legacy status/category/page.
 - [x] Every legacy exported record belongs to a legacy export.
 - [x] Existing review/capture behavior is covered through engine routes.
-- [ ] Diagnostic Engine full test suite passes.
-- [ ] No old page-comment constants/routes/assets remain.
+- [x] Diagnostic Engine full test suite passes.
+- [x] No old page-comment constants/routes/assets remain.
 
 Manual verification:
 
@@ -1502,6 +1502,7 @@ Automated verification:
 - [x] Packaged gem contains all runtime assets/docs/migrations.
 - [x] `page_feedback:doctor` passes in the packaged install.
 - [x] CI compatibility matrix passes.
+- [x] Version, changelog, gem metadata, release task, and MIT license are final.
 
 ## Global Acceptance Criteria
 
@@ -1524,7 +1525,7 @@ The gem is complete when:
 - [x] `AGENTS.md` routes coding agents to canonical docs and commands.
 - [x] README gets a human to first success quickly.
 - [x] Public APIs have inline and long-form documentation.
-- [ ] Diagnostic Engine can replace its local implementation with the gem.
+- [x] Diagnostic Engine can replace its local implementation with the gem.
 
 ## Architectural Invariants
 

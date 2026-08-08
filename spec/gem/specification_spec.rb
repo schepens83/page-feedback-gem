@@ -4,7 +4,13 @@ require "spec_helper"
 require "rubygems"
 
 RSpec.describe Gem::Specification do
-  subject(:files) { described_class.load("page_feedback.gemspec").files }
+  subject(:files) { specification.files }
+
+  let(:specification) { described_class.load("page_feedback.gemspec") }
+
+  it "declares the MIT license" do
+    expect(specification.licenses).to eq(["MIT"])
+  end
 
   it "includes documentation" do
     expect(files).to include(

@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   DESCRIPTION
   spec.homepage = "https://github.com/schepens83/page-feedback-gem"
   spec.required_ruby_version = Gem::Requirement.new(">= 3.2")
-  spec.licenses = ["Nonstandard"]
+  spec.licenses = ["MIT"]
 
   spec.metadata = {
     "allowed_push_host" => "https://rubygems.org",

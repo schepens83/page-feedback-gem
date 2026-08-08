@@ -10,9 +10,11 @@ RSpec.describe "page-feedback.html" do
     expect(document.at_css("title").text).to include("PageFeedback", "Phase 8")
     expect(document.css("script[src], link[rel='stylesheet']")).to be_empty
     expect(document.text).to include(
-      "Host cutover implemented",
-      "131 gem examples pass",
-      "Compatibility CI green"
+      "Host cutover complete",
+      "132 gem examples pass",
+      "152 host",
+      "Compatibility CI green",
+      "MIT licensed"
     )
   end
 

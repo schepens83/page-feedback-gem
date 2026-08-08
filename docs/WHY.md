@@ -69,12 +69,13 @@ belongs in the gem.
 - Diagnostic Engine at commit
   `058e92c75b79d4592b622f6a16ca1f62d9b9c493` is the fidelity baseline for the
   original browser and review behavior.
-- Licensing and publication terms are intentionally undecided during the
-  initial scaffold; release metadata must not imply a license that has not been
-  chosen.
+- The gem uses the MIT License so Rails hosts can adopt, inspect, and extend the
+  integration without a custom licensing negotiation.
 
 ## Future intent
 
-The first release should be proven by replacing Diagnostic Engine's local page
-feedback implementation with the packaged engine. Broader integrations belong
-after that adoption demonstrates parity and exposes concrete needs.
+The first release is being proven by replacing Diagnostic Engine's local page
+feedback implementation with the packaged engine and a provenance-preserving
+legacy import. The guarded cleanup and full host verification now pass, and the
+first release uses the MIT License. Broader integrations belong after that
+adoption exposes concrete needs.

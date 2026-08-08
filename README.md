@@ -82,4 +82,4 @@ output; warnings such as intentionally open authorization do not make it fail.
 - [Testing](docs/TESTING.md)
 - [Implementation plan](docs/IMPLEMENTATION_PLAN.md)
 
-The project is not yet released, and its license remains undecided.
+PageFeedback is available under the MIT License. See `LICENSE.txt`.

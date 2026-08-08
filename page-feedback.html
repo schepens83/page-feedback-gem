@@ -256,12 +256,12 @@
         exact approved revision for a coding agent.
       </p>
       <div class="chips" aria-label="Project status">
-        <span class="chip ok"><span class="dot"></span> Host cutover implemented</span>
-        <span class="chip">Guarded cleanup approval pending</span>
+        <span class="chip ok"><span class="dot"></span> Host cutover complete</span>
+        <span class="chip ok"><span class="dot"></span> Legacy cleanup verified</span>
         <span class="chip">Rails 8 isolated engine</span>
         <span class="chip ok"><span class="dot"></span> Compatibility CI green</span>
         <span class="chip">Version 0.1.0</span>
-        <span class="chip">License undecided</span>
+        <span class="chip ok"><span class="dot"></span> MIT licensed</span>
       </div>
     </header>
 
@@ -280,10 +280,10 @@
             workflow, security, and implementation details.</p>
         </article>
         <article class="card">
-          <div class="number">8</div>
-          <h3>Roadmap phases complete</h3>
-          <p>Phases 0–7 are complete. Phase 8 is implemented through the guarded
-            cutover, with destructive cleanup and full host verification pending.</p>
+          <div class="number">10</div>
+          <h3>Implementation phases delivered</h3>
+          <p>Phases 0–9 are implemented. Automated gem, package, compatibility,
+            adoption, migration, and complete host-suite gates pass.</p>
         </article>
         <article class="card">
           <div class="number">0</div>
@@ -298,16 +298,17 @@
       <h2>Verification</h2>
       <div class="proof">
         <div>
-          <strong>Gem gates and focused host adoption pass</strong>
-          <p>131 gem examples pass, plus six green JavaScript test files across
+          <strong>Gem gates and complete host adoption pass</strong>
+          <p>132 gem examples pass, plus six green JavaScript test files across
             the Ruby 3.2/Rails 8.0, Ruby 3.4/Rails 8.0, and Ruby 3.4/Rails 8.1 CI matrix.
             Installer reruns and reversal are safe; every deliberately broken
             doctor fixture is detected. A README-only install into a pristine
             Rails 8.1 app also passed, and removing its engine route produced a
             failing doctor report that identified the missing mount. A representative
-            export was also reviewed as direct coding-agent input. Host tests cover actor attribution,
-            admin authorization, replay write-locking, immutable exports, and a
-            transaction-backed legacy import with stable provenance.</p>
+            export was also reviewed as direct coding-agent input. All 152 host
+            examples pass, covering actor attribution, admin authorization,
+            replay write-locking, immutable exports, the guarded legacy-table
+            cleanup, and stable import provenance.</p>
         </div>
         <pre aria-label="Verification commands">bundle exec rake spec
 bundle exec rubocop
@@ -382,10 +383,10 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
         <details class="done" open><summary><span class="phase-number">3</span> Capture backend and host helpers <span class="status">Complete</span></summary><p>Authorized capture endpoint, trusted actor attribution, bounded normalization, Turbo/HTML/JSON responses, and mount-aware layout helpers.</p></details>
         <details class="done" open><summary><span class="phase-number">4</span> Browser capture assets <span class="status">Implemented</span></summary><p>Configurable picker, stable selectors, bounded context, keyboard workflow, replay highlighter, and fully namespaced visual system. Manual browser QA remains.</p></details>
         <details class="done" open><summary><span class="phase-number">5</span> Review queue and decisions <span class="status">Complete</span></summary><p>Page-grouped state filters, safe iframe replay, escaped detail, reviewer refinement, RESTful decisions, bulk actions, and filter-preserving navigation.</p></details>
-        <details class="done" open><summary><span class="phase-number">6</span> Export batches and Markdown <span class="status">Implemented</span></summary><p>Preview, immutable creation, history, copy, exact download, deterministic safe formatting, custom formatter support, and freshness UI. Manual output review remains.</p></details>
-        <details class="done" open><summary><span class="phase-number">7</span> Installer, doctor, and executable <span class="status">Implemented</span></summary><p>Idempotent host integration, safe reversal, human and stable JSON diagnostics, Rake tasks, and complete command help. Manual pristine-app installation remains.</p></details>
-        <details open><summary><span class="phase-number">8</span> Diagnostic Engine adoption <span class="status">Cutover staged</span></summary><p>The host is pinned to the engine, authenticated callbacks and replay safety are wired, and legacy data imports into exact immutable membership with digested provenance. The guarded local table drop and full host suite remain.</p></details>
-        <details open><summary><span class="phase-number">9</span> Release readiness <span class="status">License pending</span></summary><p>The built 0.1.0 gem installs into a pristine Rails 8.1 Importmap app; migrations, assets, routes, human/JSON doctor output, packaged docs, and the Ruby/Rails compatibility matrix all pass. Publication still awaits a license decision.</p></details>
+        <details class="done" open><summary><span class="phase-number">6</span> Export batches and Markdown <span class="status">Implemented</span></summary><p>Preview, immutable creation, history, copy, exact download, deterministic safe formatting, custom formatter support, and freshness UI. Representative output passed direct coding-agent review; visual state clarity remains a manual QA gate.</p></details>
+        <details class="done" open><summary><span class="phase-number">7</span> Installer, doctor, and executable <span class="status">Complete</span></summary><p>Idempotent host integration, safe reversal, human and stable JSON diagnostics, Rake tasks, complete command help, README-only pristine installation, and actionable incomplete-host diagnosis.</p></details>
+        <details class="done" open><summary><span class="phase-number">8</span> Diagnostic Engine adoption <span class="status">Automated gates complete</span></summary><p>The host is pinned to the engine, authenticated callbacks and replay safety are wired, legacy data imported with exact immutable membership and digested provenance, the old runtime and table are removed, and all 152 host examples pass. Production-like manual QA remains.</p></details>
+        <details class="done" open><summary><span class="phase-number">9</span> Release readiness <span class="status">Complete</span></summary><p>The built 0.1.0 MIT-licensed gem installs into a pristine Rails 8.1 Importmap app; migrations, assets, routes, human/JSON doctor output, packaged docs, release metadata, and the Ruby/Rails compatibility matrix all pass.</p></details>
       </div>
     </section>
 

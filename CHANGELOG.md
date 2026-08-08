@@ -49,6 +49,7 @@ to use semantic versioning after its first release.
 - Explicit Markdown MIME registration for Rails 8.0 export downloads.
 - Reproducible Ruby 3.2/3.4 and Rails 8.0/8.1 appraisal matrix, including a
   clean dummy-host Active Storage fixture and cross-version schema loading.
+- MIT licensing for the initial public release.
 
 ### Security
 

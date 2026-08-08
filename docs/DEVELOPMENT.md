@@ -48,5 +48,5 @@ architecture or implementation plan into generated files.
 
 ## Releases
 
-The project is unreleased. Licensing and publication metadata remain provisional.
-Do not push a gem or tag until Phase 9 gates pass and the owner selects a license.
+The project is unreleased and uses the MIT License. Do not push a gem or tag
+until the Phase 9 gates pass and release metadata is final.
