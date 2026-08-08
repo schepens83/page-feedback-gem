@@ -1451,7 +1451,7 @@ Automated verification:
 
 Manual verification:
 
-- [ ] A new Rails 8 app can be installed using only README commands.
+- [x] A new Rails 8 app can be installed using only README commands.
 - [ ] An LLM can diagnose a deliberately incomplete install from doctor output.
 
 ### Phase 8 — Diagnostic Engine adoption
@@ -1509,21 +1509,21 @@ The gem is complete when:
 
 - [x] A fresh Rails 8 Importmap application installs it without copying feature
   implementation code.
-- [ ] No-auth capture and review work with null actor associations.
-- [ ] Authenticated hosts can attribute actors and authorize through initializer
+- [x] No-auth capture and review work with null actor associations.
+- [x] Authenticated hosts can attribute actors and authorize through initializer
   callbacks.
 - [ ] Alt+F capture retains current rich context behavior.
-- [ ] Review is page-grouped and replays the selected element.
-- [ ] Review status and export state are separate and correctly visible.
-- [ ] Exports are immutable snapshots with exact membership.
-- [ ] Changed-since-export feedback becomes ready again.
-- [ ] Default Markdown is vendor-neutral and coding-agent-friendly.
-- [ ] A custom formatter can replace Markdown rendering without changing domain
+- [x] Review is page-grouped and replays the selected element.
+- [x] Review status and export state are separate and correctly visible.
+- [x] Exports are immutable snapshots with exact membership.
+- [x] Changed-since-export feedback becomes ready again.
+- [x] Default Markdown is vendor-neutral and coding-agent-friendly.
+- [x] A custom formatter can replace Markdown rendering without changing domain
   persistence.
-- [ ] Generator help and doctor output are accurate.
-- [ ] `AGENTS.md` routes coding agents to canonical docs and commands.
-- [ ] README gets a human to first success quickly.
-- [ ] Public APIs have inline and long-form documentation.
+- [x] Generator help and doctor output are accurate.
+- [x] `AGENTS.md` routes coding agents to canonical docs and commands.
+- [x] README gets a human to first success quickly.
+- [x] Public APIs have inline and long-form documentation.
 - [ ] Diagnostic Engine can replace its local implementation with the gem.
 
 ## Architectural Invariants
