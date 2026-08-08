@@ -2,8 +2,8 @@
 
 This document is the compatibility contract for host applications. Configuration,
 authorization, helper registration, Importmap composition, the domain model,
-capture, and contextual review are implemented; export and installation
-workflows remain planned until their roadmap phases complete.
+capture, contextual review, and immutable export workflows are implemented;
+installation workflows remain planned until their roadmap phase completes.
 
 ## Configuration
 
@@ -33,8 +33,8 @@ is public for test isolation.
 
 Configuration is process-global and intended to be assigned during host boot.
 Each reset receives fresh mutable category, shortcut, and ignored-class values.
-The default formatter is callable now; Phase 6 supplies its complete grouped
-Markdown behavior.
+The default formatter produces deterministic grouped Markdown with escaped user
+text, safe code fences, source locations, reviewer notes, and captured HTML.
 
 ## Helpers
 
@@ -81,8 +81,14 @@ transaction. Persisted exports and export items are read-only.
 
 The engine provides capture at `POST /comments`; page queues, comment edits,
 approval/rejection resources, and bulk decision resources below `/review`. The
-host chooses the mount prefix, `/feedback` by default. Export resources join the
-same namespace in Phase 6.
+host chooses the mount prefix, `/feedback` by default. Export history, preview,
+creation, HTML display, and `.md` download live under `/review/exports`.
+
+Export preview renders the configured formatter without persistence. Creation
+accepts selected ready comment IDs in caller order, locks and rechecks them, and
+stores the formatter result as an immutable snapshot. History, HTML display,
+copy, and download always use that stored body. A custom formatter is any
+callable accepting the documented keyword arguments and returning a string.
 
 Capture accepts Turbo Stream, HTML, and JSON at `POST /comments`. It normalizes
 legacy camelCase context, ignores submitted actor and review-state fields,

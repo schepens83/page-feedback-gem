@@ -33,6 +33,10 @@ to use semantic versioning after its first release.
 - Sandboxed in-context queues with navigation, reviewer edits, RESTful approval,
   rejection and reset resources, bulk decisions, and full escaped detail.
 - Dummy-host Capybara coverage from anonymous widget capture through approval.
+- Deterministic, safely escaped Markdown formatting with page and category
+  grouping, source context, reviewer notes, and collision-safe code fences.
+- RESTful export preview, creation, history, copy, and exact stored-body download
+  with ordered membership, freshness rechecks, and formatter substitution.
 
 ### Security
 

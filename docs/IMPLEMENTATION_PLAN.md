@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 5 complete; Phase 6 next
+**Status:** Phase 6 implementation and automated verification complete; Phase 7 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1422,11 +1422,11 @@ download, fingerprints, and UI badges/filters.
 
 Automated verification:
 
-- [ ] Stored export body equals downloaded/copied body.
-- [ ] Export item membership and ordering are deterministic.
-- [ ] Never-exported/exported/changed states are correct.
-- [ ] Custom formatter contract works.
-- [ ] Concurrent creation cannot export an invalid comment revision silently.
+- [x] Stored export body equals downloaded/copied body.
+- [x] Export item membership and ordering are deterministic.
+- [x] Never-exported/exported/changed states are correct.
+- [x] Custom formatter contract works.
+- [x] Concurrent creation cannot export an invalid comment revision silently.
 
 Manual verification:
 

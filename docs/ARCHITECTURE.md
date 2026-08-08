@@ -64,6 +64,13 @@ replay URLs, and preserve filters through edits and decisions. Approval,
 rejection, reset, and bulk operations remain separate resources under one
 authorization-enforcing base controller.
 
+Phase 6 implements immutable export snapshots. Preview calls the configured
+formatter without persistence. Creation locks and rechecks the caller's ordered
+selection, renders once, and atomically stores the body, membership positions,
+and revision fingerprints. History, HTML display, clipboard copy, and Markdown
+download all read that stored body. The default formatter groups deterministically
+and escapes untrusted text while choosing safe fences for captured code.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

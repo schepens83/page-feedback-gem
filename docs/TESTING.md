@@ -18,6 +18,8 @@ mocks when observable behavior is practical.
 
 Browser modules use Node's built-in test runner and require no npm packages.
 `bundle exec rake javascript` is a convenience alias for `npm test`.
+Clipboard coverage exercises the modern API, the selection-based fallback, and
+the visible failure state without requiring a browser dependency.
 
 Capybara's Rack Test driver covers server-rendered system paths without browser
 screenshots. Phase 5 exercises the real dummy-host widget through anonymous

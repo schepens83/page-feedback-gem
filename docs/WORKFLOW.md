@@ -61,6 +61,14 @@ Phase 2 implements this derivation and atomic snapshot creation. Fingerprints
 cover category, effective text, reviewer notes, page identity, selector, captured
 HTML, and resolved source location; timestamps and actor labels are excluded.
 
+Phase 6 exposes the complete export workflow. Reviewers select ready comments in
+their intended order, inspect a non-persistent preview, create one immutable
+batch, and revisit its stored Markdown through history, copy, or download. The
+default formatter groups by sorted page path and category, includes effective
+feedback, notes, source locations, selectors, and captured HTML, and safely
+escapes text and code fences. Formatter substitution is a configured callable,
+so hosts can change representation without changing snapshot semantics.
+
 ## Queue filters
 
 The primary filters are Pending, Ready to export, Exported, Changed, Rejected,

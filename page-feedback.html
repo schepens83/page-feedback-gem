@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>PageFeedback — Phase 5 Review</title>
+  <title>PageFeedback — Phase 6 Review</title>
   <style>
     :root {
       --ink: #1f2328;
@@ -248,7 +248,7 @@
 
   <main>
     <header class="hero shell">
-      <p class="eyebrow">Phase 5 implementation report · 8 August 2026</p>
+      <p class="eyebrow">Phase 6 implementation report · 8 August 2026</p>
       <h1>Contextual feedback, ready to become code.</h1>
       <p class="lede">
         PageFeedback packages a proven Rails feedback loop: select an element,
@@ -256,7 +256,7 @@
         exact approved revision for a coding agent.
       </p>
       <div class="chips" aria-label="Project status">
-        <span class="chip ok"><span class="dot"></span> Phase 5 complete</span>
+        <span class="chip ok"><span class="dot"></span> Phase 6 implemented</span>
         <span class="chip">Manual browser QA pending</span>
         <span class="chip">Rails 8 isolated engine</span>
         <span class="chip">Version 0.1.0</span>
@@ -267,9 +267,9 @@
     <section id="outcome" class="shell">
       <h2>What exists now</h2>
       <p class="section-intro">
-        Capture now flows into a complete contextual review workspace: grouped
-        pages, derived-state filters, safe iframe replay, reviewer refinement,
-        decisions, bulk actions, and automatic queue navigation.
+        Capture now flows through contextual review into immutable Markdown:
+        deterministic selection, non-persistent preview, exact stored snapshots,
+        export history, clipboard copy, and byte-for-byte download.
       </p>
       <div class="grid">
         <article class="card">
@@ -279,10 +279,10 @@
             workflow, security, and implementation details.</p>
         </article>
         <article class="card">
-          <div class="number">6</div>
+          <div class="number">7</div>
           <h3>Roadmap phases complete</h3>
-          <p>The human loop now spans contextual capture through an approved,
-            refined revision. Immutable Markdown export is next.</p>
+          <p>The complete product loop now spans contextual capture through an
+            approved revision and immutable export. Host installation is next.</p>
         </article>
         <article class="card">
           <div class="number">0</div>
@@ -297,11 +297,12 @@
       <h2>Verification</h2>
       <div class="proof">
         <div>
-          <strong>Phase 5 automated gates pass</strong>
-          <p>91 examples, 0 failures, plus five green JavaScript test files.
-            Every review route is policy-covered; replay rejects external paths;
-            navigation preserves filters; and the dummy-host system test moves
-            anonymous capture through refinement and approval.</p>
+          <strong>Phase 6 automated gates pass</strong>
+          <p>101 examples, 0 failures, plus six green JavaScript test files.
+            Stored and downloaded bodies match exactly; membership and freshness
+            are deterministic; custom formatters and safe code fences are covered;
+            creation locks and rechecks selections; and clipboard success,
+            fallback, and failure paths are exercised.</p>
         </div>
         <pre aria-label="Verification commands">bundle exec rake spec
 bundle exec rubocop
@@ -357,10 +358,10 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
             active engine controller and denied requests return 403.</p>
         </article>
         <article class="card wide">
-          <h3>REST resources model decisions</h3>
-          <p>Approval, rejection, reset, and bulk operations are distinct REST
-            resources. They save reviewer edits atomically and advance through
-            the active filtered queue.</p>
+          <h3>Export history is immutable</h3>
+          <p>Preview does not persist. Creation renders once inside a checked
+            transaction, and history, copy, and download always use that exact
+            stored Markdown body.</p>
         </article>
       </div>
     </section>
@@ -376,8 +377,8 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
         <details class="done" open><summary><span class="phase-number">3</span> Capture backend and host helpers <span class="status">Complete</span></summary><p>Authorized capture endpoint, trusted actor attribution, bounded normalization, Turbo/HTML/JSON responses, and mount-aware layout helpers.</p></details>
         <details class="done" open><summary><span class="phase-number">4</span> Browser capture assets <span class="status">Implemented</span></summary><p>Configurable picker, stable selectors, bounded context, keyboard workflow, replay highlighter, and fully namespaced visual system. Manual browser QA remains.</p></details>
         <details class="done" open><summary><span class="phase-number">5</span> Review queue and decisions <span class="status">Complete</span></summary><p>Page-grouped state filters, safe iframe replay, escaped detail, reviewer refinement, RESTful decisions, bulk actions, and filter-preserving navigation.</p></details>
-        <details><summary><span class="phase-number">6</span> Export batches and Markdown <span class="status">Next</span></summary><p>Preview, create, history, copy, download, default formatter, custom formatter contract, and freshness UI.</p></details>
-        <details><summary><span class="phase-number">7</span> Installer, doctor, and executable</summary><p>Idempotent host integration, human and JSON diagnostics, Rake tasks, and complete command help.</p></details>
+        <details class="done" open><summary><span class="phase-number">6</span> Export batches and Markdown <span class="status">Implemented</span></summary><p>Preview, immutable creation, history, copy, exact download, deterministic safe formatting, custom formatter support, and freshness UI. Manual output review remains.</p></details>
+        <details><summary><span class="phase-number">7</span> Installer, doctor, and executable <span class="status">Next</span></summary><p>Idempotent host integration, human and JSON diagnostics, Rake tasks, and complete command help.</p></details>
         <details><summary><span class="phase-number">8</span> Diagnostic Engine adoption</summary><p>Migrate the source application at baseline <code>058e92c…</code>, verify parity and data, then remove its local implementation.</p></details>
         <details><summary><span class="phase-number">9</span> Release readiness</summary><p>Finalize metadata, license, changelog, packaged-install proof, compatibility matrix, and version 0.1.0 release.</p></details>
       </div>
@@ -400,7 +401,7 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
   </main>
 
   <footer class="shell">
-    Generated from the repository state after Phase 5. This page is a review
+    Generated from the repository state after Phase 6. This page is a review
     surface; the linked Markdown files remain canonical.
   </footer>
 
