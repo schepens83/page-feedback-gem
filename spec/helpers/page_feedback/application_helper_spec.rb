@@ -3,9 +3,42 @@
 require "rails_helper"
 
 RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
-  it "exposes safe host layout integration stubs" do
-    expect(helper.page_feedback_head).to be_html_safe
-    expect(helper.page_feedback_widget).to be_html_safe
+  after { PageFeedback.reset_configuration! }
+
+  it "emits namespaced head assets only once" do
+    first_render = helper.page_feedback_head
+
+    expect(first_render).to be_html_safe
+    expect(first_render).to include("page_feedback/page_feedback", "page_feedback/review_highlight")
+    expect(helper.page_feedback_head).to be_blank
+  end
+
+  it "renders the capture form with open defaults" do
+    widget = helper.page_feedback_widget
+
+    expect(widget).to be_html_safe
+    expect(widget).to include(
+      'data-controller="page-feedback-capture"',
+      'id="page_feedback_modal_comment"',
+      'action="/feedback/comments"'
+    )
+  end
+
+  it "omits the widget when host capture policy denies access" do
+    callback_controller = nil
+    PageFeedback.configuration.capture_authorizer = lambda do |controller|
+      callback_controller = controller
+      false
+    end
+
+    expect(helper.page_feedback_widget).to be_blank
+    expect(callback_controller).to be_a(PageFeedback::CommentsController)
+  end
+
+  it "omits capture chrome in replay mode" do
+    allow(helper).to receive(:params).and_return(ActionController::Parameters.new(page_feedback_replay: "1"))
+
+    expect(helper.page_feedback_widget).to be_blank
   end
 
   it "makes the integration helpers available to the host" do

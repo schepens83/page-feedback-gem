@@ -1,0 +1,7 @@
+<main class="page-feedback-response">
+  <h1>Page feedback</h1>
+  <%= render "page_feedback/comments/modal",
+             comment: @form_comment,
+             comments_path: comments_path,
+             open: true %>
+</main>

@@ -8,9 +8,13 @@ RSpec.describe "PageFeedback authorization" do
   def post_capture
     original_setting = ActionController::Base.allow_forgery_protection
     ActionController::Base.allow_forgery_protection = false
-    post "/feedback/comments"
+    post "/feedback/comments", params: open_capture_params
   ensure
     ActionController::Base.allow_forgery_protection = original_setting
+  end
+
+  def open_capture_params
+    { comment: { comment_text: "Open capture", category: "idea", page_path: "/open" } }
   end
 
   it "preserves host CSRF protection" do
@@ -21,7 +25,7 @@ RSpec.describe "PageFeedback authorization" do
 
   it "permits capture and review with open defaults" do
     post_capture
-    expect(response).to have_http_status(:not_implemented)
+    expect(response).to have_http_status(:see_other)
 
     get "/feedback/review/pages"
     expect(response).to have_http_status(:not_implemented)

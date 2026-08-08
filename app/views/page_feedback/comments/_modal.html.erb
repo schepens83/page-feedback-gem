@@ -1,0 +1,8 @@
+<div id="<%= dom_id(PageFeedback::Comment, :page_feedback_modal) %>"
+     class="page-feedback-modal"
+     data-page-feedback-capture-target="modal"
+     <%= "hidden" unless open %>>
+  <div class="page-feedback-modal__surface" role="dialog" aria-modal="true" aria-label="Page feedback">
+    <%= render "page_feedback/comments/form", comment:, comments_path: %>
+  </div>
+</div>

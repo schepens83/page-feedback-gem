@@ -3,6 +3,7 @@
 require "rails"
 require "rails/engine"
 require "importmap-rails"
+require "turbo-rails"
 
 module PageFeedback
   # Isolated Rails engine containing PageFeedback runtime components.

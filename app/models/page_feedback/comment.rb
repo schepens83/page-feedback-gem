@@ -13,6 +13,26 @@ module PageFeedback
       category effective_text reviewer_notes page_path page_title
       controller_action css_selector element_html
     ].freeze
+    # Maximum accepted feedback body length.
+    MAX_COMMENT_TEXT_LENGTH = 10_000
+    # Maximum accepted same-origin path length.
+    MAX_PAGE_PATH_LENGTH = 2_000
+    # Maximum accepted page title length.
+    MAX_PAGE_TITLE_LENGTH = 500
+    # Maximum accepted controller/action label length.
+    MAX_CONTROLLER_ACTION_LENGTH = 255
+    # Maximum accepted CSS selector length.
+    MAX_CSS_SELECTOR_LENGTH = 2_000
+    # Maximum accepted selected-element HTML length.
+    MAX_ELEMENT_HTML_LENGTH = 2_500
+    # Maximum accepted parent-element HTML length.
+    MAX_PARENT_HTML_LENGTH = 1_250
+    # Maximum number of captured console error summaries.
+    MAX_CONSOLE_ERRORS = 10
+    # Maximum number of captured navigation entries.
+    MAX_NAVIGATION_EVENTS = 5
+
+    include PageFeedback::CapturedContext
 
     belongs_to :submitter, polymorphic: true, optional: true
     belongs_to :reviewed_by, polymorphic: true, optional: true
@@ -24,7 +44,6 @@ module PageFeedback
 
     enum :status, { pending: "pending", approved: "approved", rejected: "rejected" }, validate: true
 
-    validates :comment_text, presence: true
     validates :category, presence: true, inclusion: { in: -> { PageFeedback.configuration.categories.keys } }
     validates :page_path, presence: true, format: { with: LOCAL_PAGE_PATH_PATTERN }
 

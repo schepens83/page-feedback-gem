@@ -1,0 +1,13 @@
+<%= turbo_stream.replace dom_id(PageFeedback::Comment, :page_feedback_modal),
+                         partial: "page_feedback/comments/modal",
+                         locals: {
+                           comment: @form_comment,
+                           comments_path: comments_path,
+                           open: @comment.errors.any?
+                         } %>
+<%= turbo_stream.append dom_id(PageFeedback::Comment, :page_feedback_toasts),
+                        partial: "page_feedback/comments/toast",
+                        locals: {
+                          kind: @comment.persisted? ? "success" : "error",
+                          message: @comment.persisted? ? "Feedback saved" : "Feedback could not be saved"
+                        } %>

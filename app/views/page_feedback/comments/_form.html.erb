@@ -1,0 +1,40 @@
+<%= form_with url: comments_path,
+              scope: :comment,
+              class: "page-feedback-form",
+              data: { action: "turbo:submit-end->page-feedback-capture#submitted" } do |form| %>
+  <% if comment.errors.any? %>
+    <div class="page-feedback-errors" role="alert">
+      <strong>Feedback could not be saved</strong>
+      <ul>
+        <% comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.label :category, "Category" %>
+  <%= form.select :category,
+                  PageFeedback.configuration.categories.map { |key, label| [label, key] },
+                  { selected: comment.category || PageFeedback.configuration.default_category } %>
+
+  <%= form.label :comment_text, "Feedback" %>
+  <%= form.text_area :comment_text,
+                     required: true,
+                     maxlength: PageFeedback::Comment::MAX_COMMENT_TEXT_LENGTH,
+                     data: { page_feedback_capture_target: "commentText" } %>
+
+  <% %w[page_path page_title controller_action css_selector element_html].each do |field| %>
+    <%= form.hidden_field field, data: { page_feedback_capture_target: field.camelize(:lower) } %>
+  <% end %>
+
+  <% %w[parent_html viewport scroll_y console_errors navigation_history].each do |field| %>
+    <%= hidden_field_tag "comment[context][#{field}]", nil,
+                         data: { page_feedback_capture_target: field.camelize(:lower) } %>
+  <% end %>
+
+  <div class="page-feedback-form__actions">
+    <button type="button" data-action="page-feedback-capture#close">Cancel</button>
+    <%= form.submit "Send feedback" %>
+  </div>
+<% end %>

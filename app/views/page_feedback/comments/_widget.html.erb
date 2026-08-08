@@ -1,0 +1,12 @@
+<div id="page_feedback_widget"
+     class="page-feedback-widget"
+     data-controller="page-feedback-capture"
+     data-page-feedback-capture-shortcut-value="<%= PageFeedback.configuration.activation_shortcut.to_json %>">
+  <button type="button" class="page-feedback-widget__trigger" data-action="page-feedback-capture#activate">
+    Give page feedback
+  </button>
+  <%= render "page_feedback/comments/modal", comment:, comments_path:, open: false %>
+  <div id="<%= dom_id(PageFeedback::Comment, :page_feedback_toasts) %>"
+       class="page-feedback-toasts"
+       aria-live="polite"></div>
+</div>
