@@ -6,6 +6,7 @@
 **Ruby namespace:** `PageFeedback`  
 **Source application:** `/home/sander/Projects/diagnostic-engine`  
 **Source baseline:** `058e92c75b79d4592b622f6a16ca1f62d9b9c493`
+**Verified adoption revision:** `0c7572b75bfadf120137c0ff3ae99d4e216ec1de`
 
 This document is a self-contained handoff for creating a new repository and
 giving an implementation LLM enough product, architectural, API, workflow, and

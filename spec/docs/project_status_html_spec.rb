@@ -14,7 +14,8 @@ RSpec.describe "page-feedback.html" do
       "132 gem examples pass",
       "152 host",
       "Compatibility CI green",
-      "MIT licensed"
+      "MIT licensed",
+      "0c7572b"
     )
   end
 
