@@ -1452,7 +1452,7 @@ Automated verification:
 Manual verification:
 
 - [x] A new Rails 8 app can be installed using only README commands.
-- [ ] An LLM can diagnose a deliberately incomplete install from doctor output.
+- [x] An LLM can diagnose a deliberately incomplete install from doctor output.
 
 ### Phase 8 — Diagnostic Engine adoption
 
