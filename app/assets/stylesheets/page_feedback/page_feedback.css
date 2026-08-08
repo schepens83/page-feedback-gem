@@ -1,0 +1,11 @@
+:root {
+  --page-feedback-background: #f7f7f8;
+  --page-feedback-surface: #ffffff;
+  --page-feedback-text: #1f2328;
+  --page-feedback-muted: #636c76;
+  --page-feedback-accent: #6f42c1;
+  --page-feedback-success: #1a7f37;
+  --page-feedback-warning: #9a6700;
+  --page-feedback-error: #cf222e;
+  --page-feedback-border: #d0d7de;
+}

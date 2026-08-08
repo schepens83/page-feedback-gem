@@ -41,8 +41,8 @@ bundle install
 bundle exec rake spec
 bundle exec rubocop
 gem build page_feedback.gemspec
-bin/rails runner 'puts PageFeedback::VERSION'
-bin/rails routes
+spec/dummy/bin/rails runner 'puts PageFeedback::VERSION'
+spec/dummy/bin/rails routes
 ```
 
 Use `bundle exec rspec path/to/spec.rb` for a focused red-green cycle. Run the

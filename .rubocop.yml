@@ -1,0 +1,21 @@
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  CacheRootDirectory: /tmp/page-feedback-rubocop-cache
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+  Exclude:
+    - "spec/dummy/db/schema.rb"
+    - "vendor/**/*"
+
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/MultipleExpectations:
+  Max: 3
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
