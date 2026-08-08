@@ -1433,7 +1433,7 @@ Automated verification:
 
 Manual verification:
 
-- [ ] Markdown is useful as direct input to a coding LLM.
+- [x] Markdown is useful as direct input to a coding LLM.
 - [ ] Review UI makes exported state understandable without explanation.
 
 ### Phase 7 — Installer, doctor, and executable
