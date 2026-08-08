@@ -41,6 +41,8 @@ to use semantic versioning after its first release.
   reversal, mount validation, and visible forced-overwrite differences.
 - Shared installation diagnostics with complete human output, stable JSON,
   warning-aware status, Rails tasks, and a standalone executable.
+- Optional immutable export labels for visible legacy-import provenance in
+  export history and detail views.
 
 ### Security
 

@@ -9,7 +9,8 @@
       <% @exports.each do |export| %>
         <article class="page-feedback-page-row">
           <div class="page-feedback-page-row__identity">
-            <h2>Export #<%= export.id %></h2>
+            <h2><%= export.label.presence || "Export ##{export.id}" %></h2>
+            <% if export.label.present? %><p>Export #<%= export.id %></p><% end %>
             <time datetime="<%= export.created_at.iso8601 %>"><%= export.created_at.to_fs(:long) %></time>
           </div>
           <p><%= pluralize(export.export_items.length, "revision") %></p>

@@ -23,7 +23,9 @@ RSpec.describe PageFeedback::Export, type: :model do
     end
     let(:ordered_export) do
       travel_to Time.zone.parse("2026-08-08 16:00:00") do
-        described_class.create_from!(comments: [second_comment, first_comment], actor:, formatter:)
+        described_class.create_from!(
+          comments: [second_comment, first_comment], actor:, formatter:, label: "Imported feedback"
+        )
       end
     end
 
@@ -43,6 +45,7 @@ RSpec.describe PageFeedback::Export, type: :model do
       expect(ordered_export.body).to eq("2026-08-08T16:00:00Z:/second,/first")
       expect(ordered_export.body_digest).to eq(Digest::SHA256.hexdigest(ordered_export.body))
       expect(ordered_export.created_by).to eq(actor)
+      expect(ordered_export.label).to eq("Imported feedback")
       expect(ordered_export.export_items.pluck(:comment_id, :position)).to eq(
         [[second_comment.id, 0], [first_comment.id, 1]]
       )
@@ -94,5 +97,12 @@ RSpec.describe PageFeedback::Export, type: :model do
       expect { export.destroy! }.to raise_error(ActiveRecord::ReadOnlyRecord)
       expect(export.reload.body).to eq("# Feedback Export\n")
     end
+  end
+
+  it "limits an optional provenance label" do
+    export = build(:page_feedback_export, label: "x" * 256)
+
+    expect(export).not_to be_valid
+    expect(export.errors).to include(:label)
   end
 end

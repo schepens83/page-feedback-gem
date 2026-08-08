@@ -67,7 +67,8 @@ authorization-enforcing base controller.
 Phase 6 implements immutable export snapshots. Preview calls the configured
 formatter without persistence. Creation locks and rechecks the caller's ordered
 selection, renders once, and atomically stores the body, membership positions,
-and revision fingerprints. History, HTML display, clipboard copy, and Markdown
+revision fingerprints, plus an optional provenance label. History, HTML
+display, clipboard copy, and Markdown
 download all read that stored body. The default formatter groups deterministically
 and escapes untrusted text while choosing safe fences for captured code.
 

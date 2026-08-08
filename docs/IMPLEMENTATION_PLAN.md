@@ -712,6 +712,7 @@ snake_case keys only.
 ```ruby
 create_table :page_feedback_exports do |t|
   t.string :format, null: false, default: "markdown"
+  t.string :label
   t.text :body, null: false
   t.string :body_digest, null: false
   t.string :created_by_type
@@ -825,7 +826,8 @@ Creation API:
 PageFeedback::Export.create_from!(
   comments: PageFeedback::Comment.ready_for_export,
   actor: current_actor,
-  formatter: PageFeedback.configuration.export_formatter
+  formatter: PageFeedback.configuration.export_formatter,
+  label: nil
 )
 ```
 
@@ -840,7 +842,8 @@ PageFeedback::Export.create_from!(
 7. Commit atomically.
 
 An export is immutable after creation. Do not provide update or destroy routes
-in v1.
+in v1. An optional immutable label makes provenance such as a reconstructed
+legacy-import snapshot visible in history without changing snapshot semantics.
 
 ## Review and Export State Machines
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_08_000003) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_08_000004) do
   create_table "page_feedback_comments", force: :cascade do |t|
     t.datetime "approved_at"
     t.string "category", default: "idea", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_08_000003) do
     t.bigint "created_by_id"
     t.string "created_by_type"
     t.string "format", default: "markdown", null: false
+    t.string "label"
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_page_feedback_exports_on_created_at"
     t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_4eb9949f3a"

@@ -2,7 +2,8 @@
   <header>
     <%= link_to "← Export history", review_exports_path %>
     <p class="page-feedback-review-eyebrow">Immutable Markdown</p>
-    <h1>Export #<%= @export.id %></h1>
+    <h1><%= @export.label.presence || "Export ##{@export.id}" %></h1>
+    <% if @export.label.present? %><p>Export #<%= @export.id %></p><% end %>
     <p><%= pluralize(@export.export_items.length, "revision") %> · <%= @export.created_at.to_fs(:long) %></p>
   </header>
   <div class="page-feedback-review-actions"

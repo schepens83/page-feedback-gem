@@ -14,14 +14,16 @@ module PageFeedback
     has_many :comments, through: :export_items
 
     validates :format, :body, :body_digest, presence: true
+    validates :label, length: { maximum: 255 }, allow_nil: true
 
     # Atomically render and persist the selected ready revisions.
     #
     # @param comments [Enumerable<PageFeedback::Comment>]
     # @param actor [ApplicationRecord, nil]
     # @param formatter [#call]
+    # @param label [String, nil] immutable provenance shown in export history
     # @return [PageFeedback::Export]
-    def self.create_from!(comments:, actor: nil, formatter: PageFeedback.configuration.export_formatter)
+    def self.create_from!(comments:, actor: nil, formatter: PageFeedback.configuration.export_formatter, label: nil)
       selected_comments = comments.to_a
       validate_selection!(selected_comments)
 
@@ -29,7 +31,7 @@ module PageFeedback
         locked_comments = lock_selected_comments(selected_comments)
         ensure_all_ready!(locked_comments)
         locked_comments.each(&:source_location)
-        create_snapshot!(comments: locked_comments, actor:, formatter:)
+        create_snapshot!(comments: locked_comments, actor:, formatter:, label:)
       end
     end
 
@@ -63,10 +65,10 @@ module PageFeedback
         end
       end
 
-      def create_snapshot!(comments:, actor:, formatter:)
+      def create_snapshot!(comments:, actor:, formatter:, label:)
         generated_at = Time.current
         body = render_body(formatter:, comments:, generated_at:)
-        export = persist_body!(body:, actor:)
+        export = persist_body!(body:, actor:, label:)
         create_items!(export:, comments:)
         export
       end
@@ -78,8 +80,8 @@ module PageFeedback
         body.encode(Encoding::UTF_8)
       end
 
-      def persist_body!(body:, actor:)
-        create!(body:, body_digest: Digest::SHA256.hexdigest(body), created_by: actor)
+      def persist_body!(body:, actor:, label:)
+        create!(body:, body_digest: Digest::SHA256.hexdigest(body), created_by: actor, label:)
       end
 
       def create_items!(export:, comments:)

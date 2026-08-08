@@ -45,19 +45,20 @@ RSpec.describe "PageFeedback exports" do
 
   it "shows export history and immutable membership" do
     comment = ready_comment(comment_text: "Stored once")
-    export = PageFeedback::Export.create_from!(comments: [comment])
+    export = PageFeedback::Export.create_from!(comments: [comment], label: "Legacy Diagnostic Engine import")
 
     get "/feedback/review/exports"
-    expect(response.body).to include("Export ##{export.id}", "1 revision")
+    expect(response.body).to include("Legacy Diagnostic Engine import", "Export ##{export.id}", "1 revision")
   end
 
-  it "shows the exact stored body and included feedback" do
+  it "shows the exact stored body and included feedback", :aggregate_failures do
     comment = ready_comment(comment_text: "Stored once")
-    export = PageFeedback::Export.create_from!(comments: [comment])
+    export = PageFeedback::Export.create_from!(comments: [comment], label: "Imported snapshot")
 
     get "/feedback/review/exports/#{export.id}"
     expect(response.parsed_body.at_css(".page-feedback-export-body").text).to eq(export.body)
     expect(response.body).to include(comment.comment_text)
+    expect(response.body).to include("Imported snapshot", "Export ##{export.id}")
     expect(response.body).to include("data-page-feedback-copy-text-value=")
   end
 

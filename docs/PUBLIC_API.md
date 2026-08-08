@@ -67,10 +67,11 @@ category, page, recency, and export-readiness scopes.
 without a matching historical fingerprint. `source_location` delegates to the
 configured host callback and contributes to `export_fingerprint`.
 
-`PageFeedback::Export.create_from!(comments:, actor:, formatter:)` creates one
-immutable export from currently ready comments and records exact ordered
-membership. Models may be extended with normal Rails concerns, but documented
-domain behavior must remain compatible.
+`PageFeedback::Export.create_from!(comments:, actor:, formatter:, label: nil)`
+creates one immutable export from currently ready comments and records exact
+ordered membership. The optional immutable label exposes import provenance in
+history and detail views. Models may be extended with normal Rails concerns,
+but documented domain behavior must remain compatible.
 
 `create_from!` rejects empty, duplicate, unpersisted, or no-longer-ready
 selections. It preserves the caller's comment order, locks and rechecks the
