@@ -1,8 +1,9 @@
 # Public API
 
 This document is the compatibility contract for host applications. Configuration,
-authorization, helper registration, and Importmap composition are implemented;
-domain and workflow APIs remain planned until their roadmap phases complete.
+authorization, helper registration, Importmap composition, and the Phase 2 domain
+model are implemented; request workflows remain planned until their roadmap
+phases complete.
 
 ## Configuration
 
@@ -56,10 +57,20 @@ buffers. Phase 3 adds capture markup and Phase 4 adds final asset tags.
 `export_fingerprint`, `export_state`, and `ready_for_export?`, plus status,
 category, page, recency, and export-readiness scopes.
 
+`export_state` returns `never_exported`, `exported`, or
+`changed_since_export`. `ready_for_export?` is true only for an approved revision
+without a matching historical fingerprint. `source_location` delegates to the
+configured host callback and contributes to `export_fingerprint`.
+
 `PageFeedback::Export.create_from!(comments:, actor:, formatter:)` creates one
 immutable export from currently ready comments and records exact ordered
 membership. Models may be extended with normal Rails concerns, but documented
 domain behavior must remain compatible.
+
+`create_from!` rejects empty, duplicate, unpersisted, or no-longer-ready
+selections. It preserves the caller's comment order, locks and rechecks the
+records, renders once, and stores the body digest plus item fingerprints in one
+transaction. Persisted exports and export items are read-only.
 
 ## Routes and commands
 

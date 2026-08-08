@@ -23,6 +23,10 @@ Approval sets `approved_at`, clears `rejected_at`, and records the supplied
 reviewer. Rejection does the inverse. Returning to pending clears both decision
 timestamps. Reviewer refinement and notes are saved before a decision.
 
+These transitions are implemented as atomic model updates. Anonymous reviewers
+remain valid, and host actors are stored through optional polymorphic
+associations.
+
 The queue groups comments by original page and replays that local page in a
 sandboxed, visually noninteractive iframe. A highlighter restores the approximate
 scroll position and catches invalid or stale selectors without breaking the host
@@ -42,6 +46,10 @@ Review state and export state are independent:
 An export stores one formatter result and ordered membership records. Copy and
 download always use the stored body. Editing meaningful approved content changes
 its fingerprint and makes it ready again without altering earlier exports.
+
+Phase 2 implements this derivation and atomic snapshot creation. Fingerprints
+cover category, effective text, reviewer notes, page identity, selector, captured
+HTML, and resolved source location; timestamps and actor labels are excluded.
 
 ## Queue filters
 

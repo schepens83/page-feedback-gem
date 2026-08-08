@@ -15,6 +15,10 @@ The dummy Rails application supplies real routing, database, controller, asset,
 and host-integration boundaries. Tests should not replace those boundaries with
 mocks when observable behavior is practical.
 
+FactoryBot definitions live in `spec/factories` and are registered explicitly
+because `Rails.root` points at `spec/dummy`. The committed dummy schema is
+generated from both dummy-host and engine migration paths.
+
 ## Layers
 
 - Model specs cover validation, actors, transitions, fingerprints, export state,

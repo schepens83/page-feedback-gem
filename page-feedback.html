@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>PageFeedback — Phase 1 Review</title>
+  <title>PageFeedback — Phase 2 Review</title>
   <style>
     :root {
       --ink: #1f2328;
@@ -248,7 +248,7 @@
 
   <main>
     <header class="hero shell">
-      <p class="eyebrow">Phase 1 implementation report · 8 August 2026</p>
+      <p class="eyebrow">Phase 2 implementation report · 8 August 2026</p>
       <h1>Contextual feedback, ready to become code.</h1>
       <p class="lede">
         PageFeedback packages a proven Rails feedback loop: select an element,
@@ -256,7 +256,7 @@
         exact approved revision for a coding agent.
       </p>
       <div class="chips" aria-label="Project status">
-        <span class="chip ok"><span class="dot"></span> Phase 1 complete</span>
+        <span class="chip ok"><span class="dot"></span> Phase 2 complete</span>
         <span class="chip">Rails 8 isolated engine</span>
         <span class="chip">Version 0.1.0</span>
         <span class="chip">License undecided</span>
@@ -266,9 +266,9 @@
     <section id="outcome" class="shell">
       <h2>What exists now</h2>
       <p class="section-intro">
-        The engine now has a typed, documented host configuration boundary,
-        callback-driven authorization, host layout seams, and composed browser
-        module pins on top of the Phase 0 scaffold.
+        The engine now persists contextual feedback, keeps review decisions
+        independent from export history, detects meaningful revision changes,
+        and creates atomic immutable export snapshots.
       </p>
       <div class="grid">
         <article class="card">
@@ -278,10 +278,10 @@
             workflow, security, and implementation details.</p>
         </article>
         <article class="card">
-          <div class="number">2</div>
+          <div class="number">3</div>
           <h3>Roadmap phases complete</h3>
-          <p>Scaffolding and the engine boundary are complete. Persistence and
-            domain state are the next test-driven implementation slice.</p>
+          <p>Scaffolding, the engine boundary, and domain state are complete.
+            The capture backend and host helpers are the next implementation slice.</p>
         </article>
         <article class="card">
           <div class="number">0</div>
@@ -296,11 +296,11 @@
       <h2>Verification</h2>
       <div class="proof">
         <div>
-          <strong>Phase 1 automated gates pass</strong>
-          <p>23 examples, 0 failures. Configuration callbacks, 403 responses,
-            CSRF preservation, helper registration, and Importmap composition
-            are covered. RuboCop and the REST controller audit are clean; RBS
-            and YARD validate the public API.</p>
+          <strong>Phase 2 automated gates pass</strong>
+          <p>58 examples, 0 failures. SQLite migrations, anonymous and host
+            actors, review transitions, content fingerprints, freshness states,
+            ordered memberships, rollback behavior, and immutability are covered.
+            RuboCop, RBS, YARD, and gem packaging remain green.</p>
         </div>
         <pre aria-label="Verification commands">bundle exec rake spec
 bundle exec rubocop
@@ -339,6 +339,16 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
             and replay accepts only same-origin local paths.</p>
         </article>
         <article class="card wide">
+          <h3>Review and export stay independent</h3>
+          <p>Pending, approved, and rejected are review decisions. Export items
+            record exact historical revisions without adding another comment status.</p>
+        </article>
+        <article class="card wide">
+          <h3>Meaningful changes become ready again</h3>
+          <p>Canonical SHA-256 fingerprints include only exported content and the
+            host source location. Timestamp and actor-only changes remain stable.</p>
+        </article>
+        <article class="card wide">
           <h3>Open by default, explicit in code</h3>
           <p>Anonymous actor resolution and open capture/review policies make the
             engine usable without authentication. Host callbacks receive the
@@ -359,8 +369,8 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
       <div class="roadmap">
         <details class="done" open><summary><span class="phase-number">0</span> Scaffold and documentation spine <span class="status">Complete</span></summary><p>Bootable isolated engine, dummy host, gem packaging, CI skeleton, canonical docs, lint, specs, and this review artifact.</p></details>
         <details class="done" open><summary><span class="phase-number">1</span> Configuration and engine boundary <span class="status">Complete</span></summary><p>Typed public defaults, host callbacks, REST-scoped authorization predicates, Importmap composition, and safe layout helper stubs.</p></details>
-        <details><summary><span class="phase-number">2</span> Persistence and domain state <span class="status">Next</span></summary><p>Comments, immutable exports, ordered export items, transitions, content fingerprints, and export freshness.</p></details>
-        <details><summary><span class="phase-number">3</span> Capture backend and host helpers</summary><p>Authorized capture endpoint, input normalization and limits, response formats, and host layout helpers.</p></details>
+        <details class="done" open><summary><span class="phase-number">2</span> Persistence and domain state <span class="status">Complete</span></summary><p>Portable migrations, actor associations, review transitions, canonical fingerprints, freshness derivation, and atomic immutable export membership.</p></details>
+        <details><summary><span class="phase-number">3</span> Capture backend and host helpers <span class="status">Next</span></summary><p>Authorized capture endpoint, input normalization and limits, response formats, and host layout helpers.</p></details>
         <details><summary><span class="phase-number">4</span> Browser capture assets</summary><p>Element picker, context recorder, capture controller, replay highlighter, and namespaced visual system.</p></details>
         <details><summary><span class="phase-number">5</span> Review queue and decisions</summary><p>Page-grouped queues, iframe replay, reviewer edits, decisions, bulk resources, filters, and navigation.</p></details>
         <details><summary><span class="phase-number">6</span> Export batches and Markdown</summary><p>Preview, create, history, copy, download, default formatter, custom formatter contract, and freshness UI.</p></details>
@@ -387,7 +397,7 @@ Ruby 4.0.3 · Rails 8.1.3.1</pre>
   </main>
 
   <footer class="shell">
-    Generated from the repository state after Phase 1. This page is a review
+    Generated from the repository state after Phase 2. This page is a review
     surface; the linked Markdown files remain canonical.
   </footer>
 

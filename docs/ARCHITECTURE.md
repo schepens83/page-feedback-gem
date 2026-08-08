@@ -38,6 +38,12 @@ configuration is typed and documented, engine controllers inherit the host
 controller, capture and review policy failures return 403, host helpers are
 registered, and the engine Importmap is composed before the host map is drawn.
 
+Phase 2 implements the persistence boundary with portable Rails migrations.
+Comments own review transitions and meaningful-content fingerprints; exports own
+atomic snapshot creation; export items own immutable ordered membership. A
+comment's export state is derived from its current fingerprint and history, never
+stored as a review status.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

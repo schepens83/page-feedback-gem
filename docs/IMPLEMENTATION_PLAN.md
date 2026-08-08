@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 1 complete; Phase 2 next
+**Status:** Phase 2 complete; Phase 3 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1366,11 +1366,11 @@ transitions, fingerprints, export-state derivation, and factories.
 
 Automated verification:
 
-- [ ] Migrations run on the SQLite dummy app.
-- [ ] Anonymous and polymorphic actor records persist.
-- [ ] State transition suite passes.
-- [ ] Fingerprint/export-state suite passes.
-- [ ] Export creation is transactional and immutable.
+- [x] Migrations run on the SQLite dummy app.
+- [x] Anonymous and polymorphic actor records persist.
+- [x] State transition suite passes.
+- [x] Fingerprint/export-state suite passes.
+- [x] Export creation is transactional and immutable.
 
 ### Phase 3 — Capture backend and host helpers
 

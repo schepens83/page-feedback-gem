@@ -16,6 +16,10 @@ to use semantic versioning after its first release.
 - Typed configuration defaults and host callback contracts.
 - Server-side capture/review authorization with preserved host CSRF behavior.
 - Host helper registration and composed engine Importmap module pins.
+- Portable comment, export, and export-item migrations with dummy-host schema.
+- Review transitions, polymorphic actors, and page/category/state scopes.
+- Canonical export fingerprints and never-exported/current/changed derivation.
+- Atomic immutable export snapshots with exact ordered membership.
 
 ### Security
 

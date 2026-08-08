@@ -18,6 +18,13 @@ The root `Rakefile` makes specs the default task. The isolated Rails application
 in `spec/dummy` is the integration host; use its `bin/rails` entry point for
 routes, migrations, runner commands, and manual browser development.
 
+Run dummy database tasks from the dummy root so Rails finds its host Rakefile:
+
+```bash
+cd spec/dummy
+bin/rails db:prepare
+```
+
 ## Working method
 
 Work through `IMPLEMENTATION_PLAN.md` in order. Start each behavior with a focused
