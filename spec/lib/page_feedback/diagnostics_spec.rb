@@ -42,7 +42,7 @@ RSpec.describe PageFeedback::Diagnostics do
     "engine_mount" => -> { allow(Rails.application.routes).to receive(:routes).and_return([]) },
     "initializer" => -> { FileUtils.rm_f(host_root.join("config/initializers/page_feedback.rb")) },
     "configuration_callbacks" => -> { configuration.current_actor = nil },
-    "migrations_installed" => -> { FileUtils.rm_f(host_root.glob("db/migrate/*comments.rb").first) },
+    "migrations_installed" => -> { FileUtils.rm_f(host_root.glob("db/migrate/*comments*.rb").first) },
     "layout_helpers" => -> { host_root.join("app/views/layouts/application.html.erb").write("<html></html>\n") },
     "stimulus_proxy" => lambda do
       FileUtils.rm_f(host_root.join("app/javascript/controllers/page_feedback_capture_controller.js"))
@@ -107,8 +107,9 @@ RSpec.describe PageFeedback::Diagnostics do
     write("app/views/layouts/application.html.erb", "<%= page_feedback_head %>\n<%= page_feedback_widget %>\n")
     write("app/javascript/controllers/page_feedback_capture_controller.js", "// installed\n")
     write("app/javascript/controllers/page_feedback_copy_controller.js", "// installed\n")
-    PageFeedback::Engine.root.glob("db/migrate/*.rb").each do |migration|
-      write("db/migrate/#{migration.basename}", migration.read)
+    PageFeedback::Engine.root.glob("db/migrate/*.rb").each_with_index do |migration, index|
+      name = migration.basename(".rb").to_s.sub(/\A\d+_/, "")
+      write("db/migrate/2026080815000#{index}_#{name}.page_feedback.rb", migration.read)
     end
   end
 

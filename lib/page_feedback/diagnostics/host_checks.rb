@@ -75,7 +75,9 @@ module PageFeedback
       end
 
       def migration_names(directory)
-        directory.glob("*.rb").map { |path| path.basename.to_s.sub(/\A\d+_/, "") }
+        directory.glob("*.rb").map do |path|
+          path.basename.to_s.sub(/\A\d+_/, "").sub(".page_feedback.rb", ".rb")
+        end
       end
 
       def layout_contents

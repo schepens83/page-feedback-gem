@@ -45,6 +45,7 @@ to use semantic versioning after its first release.
   export history and detail views.
 - Export detail metadata for the stored format and host-resolved creator label.
 - Rails 8.1-compatible authorization callbacks across every review controller.
+- Packaged-install diagnostics recognize Rails' timestamped engine migration filenames.
 
 ### Security
 
