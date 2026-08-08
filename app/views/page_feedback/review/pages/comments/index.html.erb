@@ -1,0 +1,107 @@
+<section class="page-feedback-queue">
+  <% if @current %>
+    <div class="page-feedback-queue__preview">
+      <iframe src="<%= @iframe_src %>"
+              title="Page preview: <%= @current.page_title.presence || @current.page_path %>"
+              sandbox="allow-scripts allow-same-origin allow-forms"
+              style="pointer-events: none"></iframe>
+    </div>
+
+    <aside class="page-feedback-queue__sidebar">
+      <header class="page-feedback-queue__header">
+        <%= link_to "← All pages", review_pages_path(filter: @filter, category: @category) %>
+        <p><%= @position %> / <%= @total %> · <%= @filter.humanize %></p>
+        <nav class="page-feedback-filter-tabs" aria-label="Page feedback state">
+          <% PageFeedback::Comment::REVIEW_FILTERS.each do |filter| %>
+            <%= link_to filter.humanize,
+                        review_page_comments_path(@page_key, filter:, category: @category),
+                        class: "page-feedback-filter-tab #{"page-feedback-filter-tab--active" if filter == @filter}" %>
+          <% end %>
+        </nav>
+      </header>
+
+      <article class="page-feedback-review-card">
+        <div class="page-feedback-review-card__meta">
+          <span class="page-feedback-category"><%= @current.category %></span>
+          <span><%= @current.created_at.to_fs(:long) %></span>
+        </div>
+        <p class="page-feedback-review-card__comment"><%= @current.comment_text %></p>
+        <% if @current.submitter.present? %>
+          <p>Submitted by <%= PageFeedback.configuration.actor_label.call(@current.submitter) %></p>
+        <% end %>
+        <dl class="page-feedback-review-context">
+          <dt>Page</dt><dd><%= @current.page_title.presence || @current.page_path %></dd>
+          <dt>Element</dt><dd><code><%= @current.css_selector.presence || "Page level" %></code></dd>
+          <dt>Export</dt><dd><%= @current.export_state.humanize %></dd>
+        </dl>
+      </article>
+
+      <%= form_with url: review_comment_approval_path(@current),
+                    method: :post,
+                    scope: :comment,
+                    class: "page-feedback-review-form" do |form| %>
+        <%= hidden_field_tag :return_to_queue, "1" %>
+        <%= hidden_field_tag :page_key, @page_key %>
+        <%= hidden_field_tag :next_id, @next&.id %>
+        <%= hidden_field_tag :filter, @filter %>
+        <%= hidden_field_tag :category, @category if @category %>
+        <%= form.label :refined_text, "Refined feedback" %>
+        <%= form.text_area :refined_text, value: @current.refined_text, rows: 4 %>
+        <%= form.label :reviewer_notes, "Reviewer notes" %>
+        <%= form.text_area :reviewer_notes, value: @current.reviewer_notes, rows: 4 %>
+        <div class="page-feedback-review-actions">
+          <% if @current.pending? || @current.rejected? %>
+            <%= form.submit "Approve", class: "page-feedback-review-action page-feedback-review-action--approve" %>
+          <% end %>
+          <% if @current.pending? || @current.approved? %>
+            <%= form.submit "Reject",
+                            formaction: review_comment_rejection_path(@current),
+                            class: "page-feedback-review-action page-feedback-review-action--reject" %>
+          <% end %>
+          <%= button_tag "Save edits",
+                         type: :submit,
+                         formaction: review_comment_path(@current),
+                         name: :_method,
+                         value: :patch,
+                         class: "page-feedback-review-action" %>
+        </div>
+      <% end %>
+
+      <% if @current.approved? %>
+        <%= button_to "Return approval to pending",
+                      review_comment_approval_path(@current, page_key: @page_key, filter: @filter, category: @category),
+                      method: :delete,
+                      class: "page-feedback-review-secondary" %>
+      <% elsif @current.rejected? %>
+        <%= button_to "Return rejection to pending",
+                      review_comment_rejection_path(@current, page_key: @page_key, filter: @filter, category: @category),
+                      method: :delete,
+                      class: "page-feedback-review-secondary" %>
+      <% end %>
+
+      <nav class="page-feedback-queue__navigation" aria-label="Queue position">
+        <% if @previous %>
+          <%= link_to "← Previous", review_page_comments_path(@page_key, id: @previous.id, filter: @filter, category: @category) %>
+        <% else %>
+          <span>← Previous</span>
+        <% end %>
+        <% if @next %>
+          <%= link_to "Next →", review_page_comments_path(@page_key, id: @next.id, filter: @filter, category: @category) %>
+        <% else %>
+          <span>Next →</span>
+        <% end %>
+      </nav>
+
+      <details class="page-feedback-captured-context">
+        <summary>Captured context</summary>
+        <pre><%= JSON.pretty_generate(@current.context) %></pre>
+      </details>
+      <%= link_to "Full detail →", review_comment_path(@current), class: "page-feedback-review-link" %>
+    </aside>
+  <% else %>
+    <div class="page-feedback-review-empty">
+      <h1>No <%= @filter.humanize.downcase %> feedback for <%= @page_path %></h1>
+      <%= link_to "← All pages", review_pages_path(filter: @filter, category: @category) %>
+    </div>
+  <% end %>
+</section>

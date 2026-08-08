@@ -13,6 +13,8 @@ module PageFeedback
       category effective_text reviewer_notes page_path page_title
       controller_action css_selector element_html
     ].freeze
+    # Review queue filters accepted at the request boundary.
+    REVIEW_FILTERS = %w[pending ready exported changed rejected all].freeze
     # Maximum accepted feedback body length.
     MAX_COMMENT_TEXT_LENGTH = 10_000
     # Maximum accepted same-origin path length.
@@ -33,6 +35,7 @@ module PageFeedback
     MAX_NAVIGATION_EVENTS = 5
 
     include PageFeedback::CapturedContext
+    include PageFeedback::ReviewQueue
 
     belongs_to :submitter, polymorphic: true, optional: true
     belongs_to :reviewed_by, polymorphic: true, optional: true

@@ -1,0 +1,60 @@
+<section class="page-feedback-pages">
+  <header class="page-feedback-pages__header">
+    <div>
+      <p class="page-feedback-review-eyebrow">Review queue</p>
+      <h1>Commented pages</h1>
+    </div>
+    <p><%= @page_rows.length %> matching <%= "page".pluralize(@page_rows.length) %></p>
+  </header>
+
+  <nav class="page-feedback-filter-tabs" aria-label="Feedback state">
+    <% PageFeedback::Comment::REVIEW_FILTERS.each do |filter| %>
+      <%= link_to review_pages_path(filter:, category: @category),
+                  class: "page-feedback-filter-tab #{"page-feedback-filter-tab--active" if filter == @filter}" do %>
+        <%= filter.humanize %> <span><%= @filter_counts.fetch(filter) %></span>
+      <% end %>
+    <% end %>
+  </nav>
+
+  <%= form_with url: review_pages_path, method: :get, class: "page-feedback-category-filter" do |form| %>
+    <%= form.hidden_field :filter, value: @filter %>
+    <%= form.label :category, "Category" %>
+    <%= form.select :category,
+                    [["All categories", ""]] + PageFeedback.configuration.categories.map { |key, label| [label, key] },
+                    { selected: @category },
+                    { onchange: "this.form.requestSubmit()" } %>
+    <noscript><%= form.submit "Filter" %></noscript>
+  <% end %>
+
+  <% if @page_rows.any? %>
+    <div class="page-feedback-page-list">
+      <% @page_rows.each do |row| %>
+        <article class="page-feedback-page-row">
+          <div class="page-feedback-page-row__identity">
+            <h2><%= row.title %></h2>
+            <code><%= row.path %></code>
+            <time datetime="<%= row.newest_at.iso8601 %>"><%= time_ago_in_words(row.newest_at) %> ago</time>
+          </div>
+          <div class="page-feedback-page-row__counts">
+            <% row.counts.each do |name, count| %>
+              <span><strong><%= count %></strong> <%= name %></span>
+            <% end %>
+          </div>
+          <div class="page-feedback-page-row__categories">
+            <% row.categories.sort.each do |category, count| %>
+              <span><%= category %> <%= count %></span>
+            <% end %>
+          </div>
+          <%= link_to "Review page",
+                      review_page_comments_path(row.key, filter: @filter, category: @category),
+                      class: "page-feedback-review-link" %>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="page-feedback-review-empty">
+      <h2>No <%= @filter.humanize.downcase %> feedback pages</h2>
+      <p>Try another state or category filter.</p>
+    </div>
+  <% end %>
+</section>

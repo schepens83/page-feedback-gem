@@ -28,7 +28,7 @@ RSpec.describe "PageFeedback authorization" do
     expect(response).to have_http_status(:see_other)
 
     get "/feedback/review/pages"
-    expect(response).to have_http_status(:not_implemented)
+    expect(response).to have_http_status(:ok)
   end
 
   it "returns forbidden and passes the capture controller to host policy" do

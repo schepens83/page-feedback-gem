@@ -2,11 +2,18 @@
 
 module PageFeedback
   module Review
-    # Lists review pages. Queue behavior is implemented in Phase 5.
+    # Lists page-grouped feedback with review and export-state counts.
     class PagesController < BaseController
-      # Authorize review before the Phase 5 queue endpoint runs.
+      # Render the filtered page overview.
+      #
+      # @return [void]
       def index
-        head :not_implemented
+        @filter = review_filter
+        @category = review_category
+        @page_rows = ReviewPage.from_comments(filtered_comments.includes(:export_items).recent)
+        @filter_counts = Comment::REVIEW_FILTERS.index_with do |filter|
+          Comment.for_review_filter(filter).count
+        end
       end
     end
   end

@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "page_feedback/page_feedback", "data-turbo-track": "reload" %>
   </head>
-  <body>
-    <%= yield %>
+  <body class="page-feedback-review-body">
+    <header class="page-feedback-review-header">
+      <%= link_to "PageFeedback", review_pages_path %>
+      <span>Review</span>
+    </header>
+    <main class="page-feedback-review-main">
+      <%= yield %>
+    </main>
   </body>
 </html>

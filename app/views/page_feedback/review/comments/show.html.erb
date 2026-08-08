@@ -1,0 +1,38 @@
+<article class="page-feedback-detail">
+  <header>
+    <%= link_to "← Review pages", review_pages_path %>
+    <p class="page-feedback-review-eyebrow"><%= @comment.status.humanize %> · <%= @comment.category %></p>
+    <h1><%= @comment.page_title.presence || @comment.page_path %></h1>
+  </header>
+
+  <section class="page-feedback-detail__section">
+    <h2>Submitted feedback</h2>
+    <p><%= @comment.comment_text %></p>
+    <dl class="page-feedback-review-context">
+      <dt>Path</dt><dd><code><%= @comment.page_path %></code></dd>
+      <dt>Element</dt><dd><code><%= @comment.css_selector.presence || "Page level" %></code></dd>
+      <dt>Controller</dt><dd><code><%= @comment.controller_action.presence || "Unknown" %></code></dd>
+      <dt>Export state</dt><dd><%= @comment.export_state.humanize %></dd>
+    </dl>
+  </section>
+
+  <%= form_with model: @comment,
+                scope: :comment,
+                url: review_comment_path(@comment),
+                class: "page-feedback-review-form" do |form| %>
+    <%= form.label :refined_text, "Refined feedback" %>
+    <%= form.text_area :refined_text, rows: 6 %>
+    <%= form.label :reviewer_notes, "Reviewer notes" %>
+    <%= form.text_area :reviewer_notes, rows: 6 %>
+    <%= form.submit "Save edits", class: "page-feedback-review-action" %>
+  <% end %>
+
+  <details class="page-feedback-captured-context">
+    <summary>Selected element HTML</summary>
+    <pre><%= @comment.element_html %></pre>
+  </details>
+  <details class="page-feedback-captured-context">
+    <summary>Browser context</summary>
+    <pre><%= JSON.pretty_generate(@comment.context) %></pre>
+  </details>
+</article>
