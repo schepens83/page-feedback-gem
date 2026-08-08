@@ -6,8 +6,8 @@ PageFeedback.configure do |config|
   config.current_actor = lambda do |controller|
     controller.respond_to?(:current_user, true) ? controller.send(:current_user) : nil
   end
-  config.capture_authorizer = ->(_controller) { true }
-  config.review_authorizer = ->(_controller) { true }
+  config.capture_authorizer = PageFeedback::Configuration::DEFAULT_AUTHORIZER
+  config.review_authorizer = PageFeedback::Configuration::DEFAULT_AUTHORIZER
 
   # Authenticated examples:
   # config.capture_authorizer = ->(controller) { controller.send(:user_signed_in?) }

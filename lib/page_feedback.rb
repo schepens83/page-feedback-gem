@@ -3,6 +3,7 @@
 require "page_feedback/version"
 require "page_feedback/exporters/markdown"
 require "page_feedback/configuration"
+require "page_feedback/diagnostics"
 require "page_feedback/engine"
 
 # Capture, review, and export contextual feedback inside a host Rails app.
