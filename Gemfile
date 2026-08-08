@@ -7,6 +7,7 @@ gemspec
 gem "rails", "~> #{ENV.fetch('RAILS_VERSION')}.0" if ENV["RAILS_VERSION"]
 
 group :development, :test do
+  gem "factory_bot_rails", ">= 6.5"
   gem "rbs", ">= 3.8", require: false
   gem "rspec-rails", ">= 7.1"
   gem "rubocop", ">= 1.75", require: false
