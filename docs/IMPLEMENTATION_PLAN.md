@@ -1,6 +1,6 @@
 # PageFeedback Rails Engine Gem — Architecture and Implementation Blueprint
 
-**Status:** Phase 4 implementation and automated verification complete; Phase 5 next
+**Status:** Phase 5 complete; Phase 6 next
 **Date:** 2026-08-08  
 **Working gem name:** `page_feedback`  
 **Ruby namespace:** `PageFeedback`  
@@ -1409,11 +1409,11 @@ approval/rejection/reset resources, bulk resources, filters, and navigation.
 
 Automated verification:
 
-- [ ] Review request suite passes.
-- [ ] Review authorization covers every route.
-- [ ] Iframe paths cannot be external.
-- [ ] Queue redirects preserve filters and next item.
-- [ ] System test completes anonymous capture through approval.
+- [x] Review request suite passes.
+- [x] Review authorization covers every route.
+- [x] Iframe paths cannot be external.
+- [x] Queue redirects preserve filters and next item.
+- [x] System test completes anonymous capture through approval.
 
 ### Phase 6 — Export batches and generic Markdown
 

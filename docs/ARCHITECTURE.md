@@ -57,6 +57,13 @@ The engine loads the Propshaft and Stimulus railties explicitly, pins every
 module import, and ships CSS whose selectors and custom properties are scoped to
 `page-feedback`.
 
+Phase 5 implements contextual review as REST resources. A small `ReviewPage`
+read model calculates page-level counts while `Comment` retains filter and state
+semantics. Nested page queues decode validated local path keys, build sandboxed
+replay URLs, and preserve filters through edits and decisions. Approval,
+rejection, reset, and bulk operations remain separate resources under one
+authorization-enforcing base controller.
+
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and

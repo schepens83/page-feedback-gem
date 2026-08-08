@@ -28,6 +28,11 @@ to use semantic versioning after its first release.
   capture shortcuts, Stimulus adapter, and resilient replay highlighter.
 - Propshaft and Importmap asset-resolution checks plus a dependency-free Node
   test suite wired into CI.
+- Page-grouped review overview with physical and derived-state filters, category
+  composition, complete counts, and safe encoded page routes.
+- Sandboxed in-context queues with navigation, reviewer edits, RESTful approval,
+  rejection and reset resources, bulk decisions, and full escaped detail.
+- Dummy-host Capybara coverage from anonymous widget capture through approval.
 
 ### Security
 

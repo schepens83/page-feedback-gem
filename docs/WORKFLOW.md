@@ -35,10 +35,12 @@ These transitions are implemented as atomic model updates. Anonymous reviewers
 remain valid, and host actors are stored through optional polymorphic
 associations.
 
-The queue groups comments by original page and replays that local page in a
-sandboxed, visually noninteractive iframe. A highlighter restores the approximate
-scroll position and catches invalid or stale selectors without breaking the host
-page.
+The implemented queue groups comments by original page and replays that local
+page in a sandboxed, visually noninteractive iframe. A highlighter restores the
+approximate scroll position and catches invalid or stale selectors without
+breaking the host page. Reviewers can filter by physical or derived state, refine
+the feedback, add notes, approve or reject, return a decision to pending, and
+advance without losing the active page, state, or category filter.
 
 ## Export state
 

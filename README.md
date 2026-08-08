@@ -9,10 +9,10 @@ collected into immutable Markdown exports.
 host page → capture → pending review → approved revision → immutable export
 ```
 
-> **Status:** capture backend and browser assets are implemented. Review,
-> export, and installation workflows remain roadmap work.
+> **Status:** capture and contextual review are implemented. Export and
+> installation workflows remain roadmap work.
 
-Open [the standalone Phase 4 report](page-feedback.html) for an easy-to-scan,
+Open [the standalone Phase 5 report](page-feedback.html) for an easy-to-scan,
 printable view of the current outcome, verification evidence, and roadmap.
 
 ## Compatibility

@@ -1,9 +1,9 @@
 # Public API
 
 This document is the compatibility contract for host applications. Configuration,
-authorization, helper registration, Importmap composition, the domain model, and
-the capture request boundary are implemented; review workflows remain planned
-until their roadmap phases complete.
+authorization, helper registration, Importmap composition, the domain model,
+capture, and contextual review are implemented; export and installation
+workflows remain planned until their roadmap phases complete.
 
 ## Configuration
 
@@ -79,15 +79,18 @@ transaction. Persisted exports and export items are read-only.
 
 ## Routes and commands
 
-The engine provides capture at `POST /comments`; review pages, comments,
-approval/rejection resources, bulk resources, and immutable exports below
-`/review`. The host chooses the mount prefix, `/feedback` by default.
+The engine provides capture at `POST /comments`; page queues, comment edits,
+approval/rejection resources, and bulk decision resources below `/review`. The
+host chooses the mount prefix, `/feedback` by default. Export resources join the
+same namespace in Phase 6.
 
 Capture accepts Turbo Stream, HTML, and JSON at `POST /comments`. It normalizes
 legacy camelCase context, ignores submitted actor and review-state fields,
 persists a pending comment, and returns validation errors in the requested
-format. The page-index resource still returns 501 after successful review
-authorization until Phase 5; denied access returns 403 for every format.
+format. Review pages expose `pending`, `ready`, `exported`, `changed`, `rejected`,
+and `all` filters plus category composition. Page keys are URL-safe encodings
+that decode only to validated local paths. Denied access returns 403 for every
+review route and format.
 
 ```bash
 bin/rails generate page_feedback:install --help

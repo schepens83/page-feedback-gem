@@ -35,6 +35,11 @@ absolute, and malformed external URLs are rejected. Query strings and fragments
 are not stored. The iframe is sandboxed and visually noninteractive, and stale or
 invalid selectors must fail closed without breaking the page.
 
+Nested review URLs encode the stored path as URL-safe Base64, then decode and
+revalidate it before any iframe is rendered. Invalid and external decoded paths
+return 404. Review iframes allow host scripts, same-origin assets, and forms for
+faithful rendering but remain pointer-inert in the review surface.
+
 ## Data and exports
 
 Rich browser context can contain sensitive application information; hosts should

@@ -19,6 +19,10 @@ mocks when observable behavior is practical.
 Browser modules use Node's built-in test runner and require no npm packages.
 `bundle exec rake javascript` is a convenience alias for `npm test`.
 
+Capybara's Rack Test driver covers server-rendered system paths without browser
+screenshots. Phase 5 exercises the real dummy-host widget through anonymous
+capture, page-queue navigation, refinement, and approval.
+
 FactoryBot definitions live in `spec/factories` and are registered explicitly
 because `Rails.root` points at `spec/dummy`. The committed dummy schema is
 generated from both dummy-host and engine migration paths.
