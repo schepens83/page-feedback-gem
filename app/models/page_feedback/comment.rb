@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
+require "digest"
+require "json"
+
 module PageFeedback
   # Captured feedback and its independent human review state.
   class Comment < ApplicationRecord
     # Same-origin path shape accepted by persisted comments and replay.
     LOCAL_PAGE_PATH_PATTERN = %r{\A/(?!/)[^?#]*\z}
+    # Comment attributes whose values contribute to exported output.
+    FINGERPRINT_FIELDS = %i[
+      category effective_text reviewer_notes page_path page_title
+      controller_action css_selector element_html
+    ].freeze
 
     belongs_to :submitter, polymorphic: true, optional: true
     belongs_to :reviewed_by, polymorphic: true, optional: true
@@ -23,6 +31,10 @@ module PageFeedback
     scope :by_category, ->(category) { where(category:) }
     scope :for_page, ->(path) { where(page_path: path) }
     scope :recent, -> { order(created_at: :desc) }
+    scope :ready_for_export, lambda {
+      candidates = approved.includes(:export_items).to_a
+      where(id: candidates.select(&:ready_for_export?).map(&:id))
+    }
 
     # Reviewer-authored text when present, otherwise the submitted feedback.
     #
@@ -70,7 +82,43 @@ module PageFeedback
       )
     end
 
+    # Host-resolved source file associated with this captured page.
+    #
+    # @return [String, nil]
+    def source_location
+      PageFeedback.configuration.source_locator.call(self)
+    end
+
+    # Digest of only the fields that affect exported output.
+    #
+    # @return [String] SHA-256 hexadecimal digest
+    def export_fingerprint
+      Digest::SHA256.hexdigest(JSON.generate(export_fingerprint_payload))
+    end
+
+    # Current relationship between this revision and immutable exports.
+    #
+    # @return [String] never_exported, exported, or changed_since_export
+    def export_state
+      items = export_items.to_a
+      return "never_exported" if items.empty?
+      return "exported" if items.any? { |item| item.comment_fingerprint == export_fingerprint }
+
+      "changed_since_export"
+    end
+
+    # Whether this approved revision needs a new export snapshot.
+    #
+    # @return [Boolean]
+    def ready_for_export?
+      approved? && export_state != "exported"
+    end
+
     private
+
+    def export_fingerprint_payload
+      FINGERPRINT_FIELDS.index_with { |field| public_send(field) }.merge(source_location:)
+    end
 
     def transition_to!(status:, approved_at:, rejected_at:, reviewer:)
       update!(status:, approved_at:, rejected_at:, reviewed_by: reviewer)
