@@ -47,3 +47,37 @@ test("feedback picker highlights and intercepts an ordinary element click", () =
   assert.equal(stopped, true)
   assert.equal(selected, target)
 })
+
+test("feedback picker selects on a primary pointer press before host click handlers", () => {
+  const listeners = new Map()
+  const indicator = { className: "", textContent: "", remove() {} }
+  const body = { classList: classList(), appendChild() {} }
+  const documentObject = {
+    body,
+    createElement: () => indicator,
+    addEventListener: (name, callback) => listeners.set(name, callback),
+    removeEventListener: (name) => listeners.delete(name)
+  }
+  const target = { classList: classList() }
+  let selected
+
+  startFeedbackPicker({
+    documentObject,
+    shouldSkip: () => false,
+    onPick: (element) => { selected = element }
+  })
+
+  let prevented = false
+  let stopped = false
+  listeners.get("pointerdown")({
+    button: 0,
+    target,
+    preventDefault: () => { prevented = true },
+    stopPropagation: () => { stopped = true }
+  })
+
+  assert.equal(selected, target)
+  assert.equal(prevented, true)
+  assert.equal(stopped, true)
+  assert.equal(body.classList.contains("page-feedback-capture-mode"), false)
+})

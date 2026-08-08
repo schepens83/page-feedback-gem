@@ -27,17 +27,23 @@ export function startFeedbackPicker({ documentObject = document, shouldSkip, onP
     stop()
     onPick(target)
   }
+  const pickPointer = (event) => {
+    if (event.button !== 0) return
+    pick(event)
+  }
   const stop = () => {
     documentObject.body.classList.remove("page-feedback-capture-mode")
     clearHighlight()
     indicator.remove()
     root.removeEventListener("mouseover", hover)
     root.removeEventListener("mouseout", clearHighlight)
+    root.removeEventListener("pointerdown", pickPointer, true)
     root.removeEventListener("click", pick, true)
   }
 
   root.addEventListener("mouseover", hover)
   root.addEventListener("mouseout", clearHighlight)
+  root.addEventListener("pointerdown", pickPointer, true)
   root.addEventListener("click", pick, true)
   return stop
 }
