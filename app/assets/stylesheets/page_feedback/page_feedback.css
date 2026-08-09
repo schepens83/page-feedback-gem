@@ -1,15 +1,16 @@
 :root {
-  --page-feedback-background: #f7f7f8;
-  --page-feedback-surface: #ffffff;
-  --page-feedback-text: #1f2328;
-  --page-feedback-muted: #636c76;
-  --page-feedback-accent: #6f42c1;
-  --page-feedback-success: #1a7f37;
-  --page-feedback-warning: #9a6700;
-  --page-feedback-error: #cf222e;
-  --page-feedback-border: #d0d7de;
-  --page-feedback-shadow: 0 24px 64px rgba(31, 35, 40, 0.24);
-  --page-feedback-overlay: rgba(15, 18, 22, 0.62);
+  --page-feedback-background: #f5f5f5;
+  --page-feedback-surface: #fff;
+  --page-feedback-text: #171717;
+  --page-feedback-muted: #666;
+  --page-feedback-accent: #111;
+  --page-feedback-success: #262626;
+  --page-feedback-warning: #525252;
+  --page-feedback-error: #171717;
+  --page-feedback-border: #d4d4d4;
+  --page-feedback-border-strong: #8a8a8a;
+  --page-feedback-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
+  --page-feedback-overlay: rgba(0, 0, 0, 0.64);
 }
 
 .page-feedback-widget,
@@ -31,9 +32,9 @@
   z-index: 2147483000;
   padding: 0.7rem 1rem;
   border: 1px solid var(--page-feedback-accent);
-  border-radius: 999px;
+  border-radius: 0.35rem;
   background: var(--page-feedback-accent);
-  box-shadow: 0 8px 24px rgba(31, 35, 40, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -43,9 +44,25 @@
 
 .page-feedback-widget__trigger:focus-visible,
 .page-feedback-button:focus-visible,
-.page-feedback-form :is(select, textarea):focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--page-feedback-accent) 35%, transparent);
-  outline-offset: 2px;
+.page-feedback-form input[type="submit"]:focus-visible,
+.page-feedback-form :is(select, textarea):focus-visible,
+.page-feedback-review-body :is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--page-feedback-accent);
+  outline-offset: 3px;
+}
+
+.page-feedback-widget__trigger:hover,
+.page-feedback-form__actions input[type="submit"]:hover,
+.page-feedback-review-action--approve:hover,
+.page-feedback-filter-tab--active:hover {
+  background: #333;
+}
+
+.page-feedback-button--quiet:hover,
+.page-feedback-review-action:not(.page-feedback-review-action--approve):hover,
+.page-feedback-review-secondary:hover {
+  border-color: var(--page-feedback-border-strong);
+  background: #e8e8e8;
 }
 
 .page-feedback-modal {
@@ -67,7 +84,7 @@
   max-height: min(42rem, calc(100vh - 2rem));
   overflow: auto;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.85rem;
+  border-radius: 0.4rem;
   background: var(--page-feedback-surface);
   box-shadow: var(--page-feedback-shadow);
 }
@@ -102,7 +119,7 @@
 .page-feedback-form textarea {
   width: 100%;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-background);
   color: var(--page-feedback-text);
   font: inherit;
@@ -124,7 +141,7 @@
   overflow: auto;
   padding: 0.7rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-background);
   color: var(--page-feedback-muted);
   font-size: 0.75rem;
@@ -143,7 +160,7 @@
 .page-feedback-button {
   padding: 0.6rem 0.9rem;
   border: 1px solid var(--page-feedback-accent);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-accent);
   color: #fff;
   cursor: pointer;
@@ -160,9 +177,9 @@
 
 .page-feedback-errors {
   padding: 0.7rem;
-  border: 1px solid var(--page-feedback-error);
-  border-radius: 0.5rem;
-  background: color-mix(in srgb, var(--page-feedback-error) 10%, var(--page-feedback-surface));
+  border: 2px solid var(--page-feedback-error);
+  border-radius: 0.25rem;
+  background: var(--page-feedback-background);
   color: var(--page-feedback-error);
   font-size: 0.8rem;
 }
@@ -178,9 +195,9 @@
   bottom: 1.25rem;
   z-index: 2147482999;
   padding: 0.55rem 0.8rem;
-  border-radius: 0.45rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-accent);
-  box-shadow: 0 8px 24px rgba(31, 35, 40, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   color: #fff;
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.8rem;
@@ -197,13 +214,14 @@ body.page-feedback-capture-mode * {
   border-radius: 2px;
   outline: 2px solid var(--page-feedback-accent) !important;
   outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.9) !important;
 }
 
 .page-feedback-review-highlight {
   border-radius: 2px;
-  outline: 3px solid var(--page-feedback-warning) !important;
+  outline: 3px dashed var(--page-feedback-warning) !important;
   outline-offset: 3px !important;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--page-feedback-warning) 18%, transparent) !important;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.9) !important;
 }
 
 .page-feedback-toasts {
@@ -219,19 +237,21 @@ body.page-feedback-capture-mode * {
 .page-feedback-toast {
   padding: 0.7rem 1rem;
   border: 1px solid currentColor;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-surface);
-  box-shadow: 0 8px 24px rgba(31, 35, 40, 0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
   animation: page-feedback-toast-life 4s ease both;
   font-size: 0.85rem;
   font-weight: 700;
 }
 
 .page-feedback-toast--success {
+  border-left-width: 4px;
   color: var(--page-feedback-success);
 }
 
 .page-feedback-toast--error {
+  border-width: 2px;
   color: var(--page-feedback-error);
 }
 
@@ -271,6 +291,10 @@ body.page-feedback-capture-mode * {
 .page-feedback-review-body a {
   color: var(--page-feedback-accent);
   text-underline-offset: 0.15em;
+}
+
+.page-feedback-review-body a:hover {
+  color: var(--page-feedback-muted);
 }
 
 .page-feedback-review-header {
@@ -342,7 +366,7 @@ body.page-feedback-capture-mode * {
   gap: 0.35rem;
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.45rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-surface);
   color: var(--page-feedback-muted) !important;
   font-size: 0.78rem;
@@ -371,7 +395,7 @@ body.page-feedback-capture-mode * {
 .page-feedback-category-filter select {
   padding: 0.4rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.4rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-surface);
   color: var(--page-feedback-text);
 }
@@ -388,7 +412,7 @@ body.page-feedback-capture-mode * {
   gap: 1rem;
   padding: 1rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.7rem;
+  border-radius: 0.3rem;
   background: var(--page-feedback-surface);
 }
 
@@ -417,9 +441,10 @@ body.page-feedback-capture-mode * {
 .page-feedback-page-row__categories span,
 .page-feedback-category {
   padding: 0.2rem 0.4rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--page-feedback-accent) 12%, transparent);
-  color: var(--page-feedback-accent);
+  border: 1px solid var(--page-feedback-border);
+  border-radius: 0.2rem;
+  background: var(--page-feedback-background);
+  color: var(--page-feedback-text);
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -487,7 +512,7 @@ body.page-feedback-capture-mode * {
 .page-feedback-detail__section {
   padding: 0.9rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.6rem;
+  border-radius: 0.3rem;
   background: var(--page-feedback-background);
 }
 
@@ -538,7 +563,7 @@ body.page-feedback-capture-mode * {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.45rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-background);
   color: var(--page-feedback-text);
   font: inherit;
@@ -555,7 +580,7 @@ body.page-feedback-capture-mode * {
 .page-feedback-review-secondary {
   padding: 0.5rem 0.7rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.45rem;
+  border-radius: 0.25rem;
   background: var(--page-feedback-background);
   color: var(--page-feedback-text);
   cursor: pointer;
@@ -571,7 +596,9 @@ body.page-feedback-capture-mode * {
 }
 
 .page-feedback-review-action--reject {
+  border-width: 2px;
   border-color: var(--page-feedback-error);
+  background: var(--page-feedback-surface);
   color: var(--page-feedback-error);
 }
 
@@ -594,7 +621,8 @@ body.page-feedback-capture-mode * {
   max-height: 16rem;
   overflow: auto;
   padding: 0.7rem;
-  border-radius: 0.45rem;
+  border: 1px solid var(--page-feedback-border);
+  border-radius: 0.25rem;
   background: var(--page-feedback-background);
   color: var(--page-feedback-muted);
   overflow-wrap: anywhere;
@@ -621,7 +649,7 @@ body.page-feedback-capture-mode * {
   overflow: auto;
   padding: 1rem;
   border: 1px solid var(--page-feedback-border);
-  border-radius: 0.6rem;
+  border-radius: 0.3rem;
   background: var(--page-feedback-surface);
   color: var(--page-feedback-text);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -645,5 +673,11 @@ body.page-feedback-capture-mode * {
     height: 45vh;
     border-right: 0;
     border-bottom: 1px solid var(--page-feedback-border);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-feedback-toast {
+    animation: none;
   }
 }

@@ -28,4 +28,16 @@ RSpec.describe PageFeedback::Engine do
       end
     )
   end
+
+  it "uses an achromatic visual palette" do
+    hex_colors = stylesheet.scan(/#[0-9a-f]{3,8}\b/i)
+    rgb_colors = stylesheet.scan(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
+
+    expect(hex_colors).to all(satisfy("be grayscale") do |color|
+      channels = color.delete_prefix("#").chars
+      channels = channels.first(3).flat_map { |channel| [channel, channel] } if channels.length == 3
+      channels.first(6).each_slice(2).map(&:join).uniq.one?
+    end)
+    expect(rgb_colors).to all(satisfy("be grayscale") { |channels| channels.uniq.one? })
+  end
 end

@@ -51,6 +51,12 @@ to use semantic versioning after its first release.
   clean dummy-host Active Storage fixture and cross-version schema loading.
 - MIT licensing for the initial public release.
 
+### Changed
+
+- Restyled capture and review interfaces with a neutral grayscale palette,
+  flatter controls, high-contrast focus states, light/dark-safe element
+  highlights, and reduced-motion support.
+
 ### Fixed
 
 - Feedback capture selects the clicked element again. The picker marks the
