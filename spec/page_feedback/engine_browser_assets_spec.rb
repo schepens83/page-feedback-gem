@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe PageFeedback::Engine do
   let(:stylesheet) { File.read("app/assets/stylesheets/page_feedback/page_feedback.css") }
   let(:selectors) do
-    stylesheet.scan(/([^{}]+)\{/).flatten.filter_map do |block_header|
+    stylesheet.gsub(%r{/\*.*?\*/}m, "").scan(/([^{}]+)\{/).flatten.filter_map do |block_header|
       header = block_header.strip
       next if header.start_with?("@") || header.match?(/\A(?:from|to|\d+%)/)
 
@@ -37,6 +37,13 @@ RSpec.describe PageFeedback::Engine do
 
       expect(block).to include("var(--page-feedback-offset-bottom)", "var(--page-feedback-offset-inline)")
     end
+  end
+
+  it "stretches the armed trigger into a mode bar on small screens" do
+    small_screen_rules = stylesheet[/^@media \(max-width: 36rem\) \{(.+?)^\}/m, 1]
+
+    expect(stylesheet).to include(".page-feedback-widget__trigger--active")
+    expect(small_screen_rules).to include(".page-feedback-widget__trigger--active")
   end
 
   it "keeps the capture modal inside the visual viewport" do

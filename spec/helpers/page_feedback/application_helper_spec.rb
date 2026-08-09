@@ -32,6 +32,16 @@ RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
     expect(widget).to include(*capture_integration_attributes)
   end
 
+  it "renders the trigger as a capture-mode toggle" do
+    widget = helper.page_feedback_widget
+
+    expect(widget).to include(
+      'data-page-feedback-capture-target="trigger"',
+      'aria-pressed="false"',
+      "Give page feedback"
+    )
+  end
+
   it "can keep keyboard capture while hiding the floating trigger" do
     PageFeedback.configuration.trigger_visible = false
 

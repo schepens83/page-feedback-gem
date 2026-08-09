@@ -23,7 +23,7 @@ function fakeElement(tagName, { parent = null, rect = { top: 0, left: 0, width: 
   }
 }
 
-// Chrome nodes (mode indicator, overlay, confirm bar, and its buttons) are
+// Chrome nodes (overlay, confirm bar, and its buttons) are
 // created via documentObject.createElement and need their own listener maps,
 // classList, style object, and appendChild/remove so the picker can wire and
 // tear them down like real DOM nodes.
@@ -90,11 +90,12 @@ function pickerHarness({ coarse = false } = {}) {
   return { documentObject, windowObject, documentListeners, windowListeners, createdChrome, timeouts, body }
 }
 
-// Chrome creation order in the picker: indicator, overlay, confirm-bar label,
-// add/parent/cancel buttons, then the confirm-bar container itself.
+// Chrome creation order in the picker: overlay, confirm-bar label,
+// add/parent/cancel buttons, then the confirm-bar container itself. The mode
+// banner belongs to the capture controller, not the picker.
 function chromeParts(createdChrome) {
-  const [indicator, overlay, confirmLabel, addButton, parentButton, cancelButton, confirmBar] = createdChrome
-  return { indicator, overlay, confirmLabel, addButton, parentButton, cancelButton, confirmBar }
+  const [overlay, confirmLabel, addButton, parentButton, cancelButton, confirmBar] = createdChrome
+  return { overlay, confirmLabel, addButton, parentButton, cancelButton, confirmBar }
 }
 
 test("mouse hover moves the highlight overlay onto the hovered element", () => {
@@ -379,15 +380,6 @@ test("shouldSkip on pointerdown lets engine chrome and confirm-bar buttons work 
   documentListeners.get("pointerup")(pointerEvent({ target: chrome }))
 
   assert.equal(picked, false)
-})
-
-test("uses the coarse-pointer mode indicator copy when the media query matches", () => {
-  const { documentObject, windowObject, createdChrome } = pickerHarness({ coarse: true })
-
-  startFeedbackPicker({ documentObject, windowObject, shouldSkip: () => false, onPick: () => {} })
-
-  const { indicator } = chromeParts(createdChrome)
-  assert.match(indicator.textContent, /tap an element/)
 })
 
 test("stop is idempotent and safe to call after a pick has already torn down chrome", () => {

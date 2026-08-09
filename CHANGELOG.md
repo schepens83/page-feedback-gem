@@ -74,6 +74,11 @@ to use semantic versioning after its first release.
 - Converted the capture modal to a native `<dialog>` that renders as a bottom
   sheet on small screens, with a sticky submit row and safe-area-aware
   padding.
+- Turned the floating trigger into the capture-mode banner. Arming feedback
+  mode now relabels the button, marks it `aria-pressed`, and stretches it into a
+  bar across small screens instead of adding a second floating indicator beside
+  it; pressing it again returns it to "Give page feedback". Installations that
+  hide the trigger keep the standalone indicator.
 - Improved the mobile review layout: the queue stacks with the feedback card
   first and a shorter preview pane, review actions stay pinned to the bottom
   of the viewport, and touch targets across the widget meet a 44px minimum

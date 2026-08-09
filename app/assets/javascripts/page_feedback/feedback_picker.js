@@ -10,10 +10,6 @@ function createButton(documentObject, label, modifierClass) {
   return button
 }
 
-function isCoarsePointer(windowObject) {
-  return Boolean(windowObject.matchMedia?.("(pointer: coarse)")?.matches)
-}
-
 // Mouse hover/click picks immediately. Touch and pen taps only stage a
 // candidate: the confirm bar lets the user add feedback, walk up to a
 // semantic ancestor, or cancel, without losing native scroll/zoom gestures.
@@ -23,12 +19,6 @@ export function startFeedbackPicker({
   shouldSkip,
   onPick
 } = {}) {
-  const indicator = documentObject.createElement("div")
-  indicator.className = "page-feedback-mode-indicator"
-  indicator.textContent = isCoarsePointer(windowObject)
-    ? "Feedback mode — tap an element · tap the feedback button to exit"
-    : "Feedback mode — click an element · Alt+F or Escape to exit"
-
   const overlay = documentObject.createElement("div")
   overlay.className = "page-feedback-capture-overlay"
   overlay.hidden = true
@@ -49,7 +39,6 @@ export function startFeedbackPicker({
   confirmBar.appendChild(cancelButton)
 
   documentObject.body.classList.add("page-feedback-capture-mode")
-  documentObject.body.appendChild(indicator)
   documentObject.body.appendChild(overlay)
   documentObject.body.appendChild(confirmBar)
 
@@ -201,7 +190,6 @@ export function startFeedbackPicker({
     tornDown = true
 
     documentObject.body.classList.remove("page-feedback-capture-mode")
-    indicator.remove()
     overlay.remove()
     confirmBar.remove()
     removeChromeListeners()

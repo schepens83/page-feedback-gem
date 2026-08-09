@@ -8,9 +8,11 @@
               page_feedback_capture_controller_action_value: controller_action
             } do %>
   <% if PageFeedback.configuration.trigger_visible %>
-    <button type="button" class="page-feedback-widget__trigger" data-action="page-feedback-capture#activate">
-      Give page feedback
-    </button>
+    <button type="button"
+            class="page-feedback-widget__trigger"
+            aria-pressed="false"
+            data-page-feedback-capture-target="trigger"
+            data-action="page-feedback-capture#activate">Give page feedback</button>
   <% end %>
   <%= render "page_feedback/comments/modal", comment:, comments_path:, open: false %>
   <div id="<%= dom_id(PageFeedback::Comment, :page_feedback_toasts) %>"

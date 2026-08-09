@@ -48,6 +48,12 @@ request. The widget renders the server-owned capture form at the engine's actual
 mount path. It returns an empty safe string when capture is denied and suppresses
 capture chrome in replay mode. Server authorization remains authoritative.
 
+The floating trigger is a toggle: while capture is armed it carries
+`aria-pressed="true"`, states the mode in place of its own label, and exits back
+to it when pressed again, so the widget never shows a button beside a separate
+banner. Hosts that set `trigger_visible = false` get the floating
+`.page-feedback-mode-indicator` instead.
+
 The widget's Stimulus controller uses `activation_shortcut` (Alt+F by default),
 removes every class listed in `ignored_css_classes` from generated selectors,
 and populates only the documented capture fields. The picker is input-adaptive:

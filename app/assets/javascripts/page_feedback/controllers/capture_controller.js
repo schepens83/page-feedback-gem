@@ -3,11 +3,12 @@ import { capturePageContext, installContextRecorder } from "page_feedback/contex
 import { captureElement, shouldSkipElement } from "page_feedback/element_capture"
 import { startFeedbackPicker } from "page_feedback/feedback_picker"
 import { keyboardIntent, populateCaptureTargets } from "page_feedback/capture_controller_support"
+import { startCaptureModeStatus } from "page_feedback/capture_mode_status"
 import { trackVisualViewport } from "page_feedback/visual_viewport"
 
 export default class extends Controller {
   static targets = [
-    "modal", "form", "tagName", "selectorLabel", "preview", "commentText", "categoryInput",
+    "trigger", "modal", "form", "tagName", "selectorLabel", "preview", "commentText", "categoryInput",
     "pagePath", "pageTitle", "controllerAction", "cssSelector", "elementHtml", "parentHtml",
     "viewport", "scrollY", "consoleErrors", "navigationHistory", "pointerType", "devicePixelRatio",
     "orientation"
@@ -100,22 +101,36 @@ export default class extends Controller {
   }
 
   startFeedbackMode() {
-    this.feedbackStop ||= startFeedbackPicker({
+    if (this.feedbackStop) return
+
+    this.feedbackStop = startFeedbackPicker({
       shouldSkip: (element) => shouldSkipElement(element),
       onPick: (element, meta) => {
         // The picker tears itself down before invoking onPick, so drop our
         // handle too — otherwise the next Alt+F is spent clearing stale state.
         this.feedbackStop = undefined
+        this.releaseModeStatus()
         this.openModal(captureElement(element, { ignoredClasses: this.ignoredClassesValue }), meta)
       }
+    })
+    this.modeStatusRelease = startCaptureModeStatus({
+      element: this.hasTriggerTarget ? this.triggerTarget : undefined
     })
   }
 
   stopFeedbackMode() {
+    this.releaseModeStatus()
     if (!this.feedbackStop) return
 
     this.feedbackStop()
     this.feedbackStop = undefined
+  }
+
+  releaseModeStatus() {
+    if (!this.modeStatusRelease) return
+
+    this.modeStatusRelease()
+    this.modeStatusRelease = undefined
   }
 
   openModal(capture, { pointerType = "" } = {}) {

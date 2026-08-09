@@ -47,6 +47,17 @@
   font-weight: 700;
 }
 
+/* Armed capture turns the trigger itself into the mode banner, so the widget
+   never shows a button beside a separate indicator. */
+.page-feedback-widget__trigger--active {
+  max-width: min(30rem, calc(100vw - 2 * var(--page-feedback-offset-inline)));
+  font-size: 0.8rem;
+}
+
+body.page-feedback-capture-mode .page-feedback-widget__trigger--active {
+  cursor: pointer !important;
+}
+
 .page-feedback-widget__trigger:focus-visible,
 .page-feedback-button:focus-visible,
 .page-feedback-form input[type="submit"]:focus-visible,
@@ -302,6 +313,12 @@ body.page-feedback-capture-mode * {
   :root {
     --page-feedback-offset-bottom: 0.75rem;
     --page-feedback-offset-inline: 0.75rem;
+  }
+
+  .page-feedback-widget__trigger--active {
+    left: calc(var(--page-feedback-offset-inline) + env(safe-area-inset-left, 0px));
+    max-width: none;
+    text-align: center;
   }
 
   .page-feedback-modal {
