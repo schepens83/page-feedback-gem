@@ -15,9 +15,7 @@ module PageFeedback
     # Default policy used by open capture and review installations.
     DEFAULT_AUTHORIZER = ->(_controller) { true }.freeze
     # Default human-readable actor label resolver.
-    DEFAULT_ACTOR_LABEL = lambda do |actor|
-      actor.respond_to?(:email) ? actor.email : actor.to_s
-    end.freeze
+    DEFAULT_ACTOR_LABEL = PageFeedback::ActorLabel
     # Default source resolver when a host has no code-location mapping.
     DEFAULT_SOURCE_LOCATOR = ->(_comment) {}.freeze
 

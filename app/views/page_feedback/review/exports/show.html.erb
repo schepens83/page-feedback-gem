@@ -9,7 +9,7 @@
       <%= @export.format.titleize %> ·
       <%= @export.created_at.to_fs(:long) %>
       <% if @export.created_by.present? %>
-        · Created by <%= PageFeedback.configuration.actor_label.call(@export.created_by) %>
+        · Created by <%= page_feedback_actor_label(@export.created_by) %>
       <% end %>
     </p>
   </header>

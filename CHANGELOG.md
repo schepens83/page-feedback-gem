@@ -44,6 +44,8 @@ to use semantic versioning after its first release.
 - Optional immutable export labels for visible legacy-import provenance in
   export history and detail views.
 - Export detail metadata for the stored format and host-resolved creator label.
+- Convention-based actor labels with a `to_page_feedback_label` model hook and
+  model-identity fallback, so actors never render as inspected Ruby objects.
 - Rails 8.1-compatible authorization callbacks across every review controller.
 - Packaged-install diagnostics recognize Rails' timestamped engine migration filenames.
 - Explicit Markdown MIME registration for Rails 8.0 export downloads.

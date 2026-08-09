@@ -12,7 +12,7 @@ PageFeedback.configure do |config|
   config.current_actor = ->(_controller) { nil }
   config.capture_authorizer = ->(_controller) { true }
   config.review_authorizer = ->(_controller) { true }
-  config.actor_label = ->(actor) { actor.respond_to?(:email) ? actor.email : actor.to_s }
+  config.actor_label = PageFeedback::ActorLabel
   config.categories = {
     "bug" => "Bug", "idea" => "Idea",
     "question" => "Question", "compliment" => "Compliment"
@@ -27,6 +27,15 @@ end
 
 Callbacks receive the current engine controller, except `actor_label`, which
 receives the resolved actor, and `source_locator`, which receives a comment.
+
+`PageFeedback::ActorLabel` labels an actor without host configuration. It
+returns the first non-blank String among `to_page_feedback_label`,
+`display_name`, `full_name`, `name`, `username`, and `email`, then a `to_s` the
+actor's own class defines, then model identity such as `User #3`. Ruby's
+inherited `to_s` is never used, so a host model without a display attribute
+reads as `User #3` rather than `#<User:0x000078127b9ed0d0>`. Defining
+`to_page_feedback_label` on the actor is the per-model override; assigning
+`actor_label` replaces the resolver for every actor.
 The formatter responds to `.call(comments:, generated_at:)` and returns a UTF-8
 String without persisting or mutating comments. `PageFeedback.reset_configuration!`
 is public for test isolation.

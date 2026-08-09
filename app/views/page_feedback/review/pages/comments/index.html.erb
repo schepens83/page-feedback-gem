@@ -27,7 +27,7 @@
         </div>
         <p class="page-feedback-review-card__comment"><%= @current.comment_text %></p>
         <% if @current.submitter.present? %>
-          <p>Submitted by <%= PageFeedback.configuration.actor_label.call(@current.submitter) %></p>
+          <p>Submitted by <%= page_feedback_actor_label(@current.submitter) %></p>
         <% end %>
         <dl class="page-feedback-review-context">
           <dt>Page</dt><dd><%= @current.page_title.presence || @current.page_path %></dd>

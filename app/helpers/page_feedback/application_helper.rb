@@ -34,6 +34,16 @@ module PageFeedback
       )
     end
 
+    # Display label for a host actor, or nil when there is no actor.
+    #
+    # @param actor [Object, nil]
+    # @return [String, nil]
+    def page_feedback_actor_label(actor)
+      return if actor.nil?
+
+      PageFeedback.configuration.actor_label.call(actor)
+    end
+
     # Path back to the host application when it defines a root route.
     #
     # @return [String, nil]

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "page_feedback/version"
+require "page_feedback/actor_label"
 require "page_feedback/exporters/markdown"
 require "page_feedback/configuration"
 require "page_feedback/diagnostics"
