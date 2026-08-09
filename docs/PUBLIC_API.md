@@ -88,7 +88,10 @@ transaction. Persisted exports and export items are read-only.
 The engine provides capture at `POST /comments`; page queues, comment edits,
 approval/rejection resources, and bulk decision resources below `/review`. The
 host chooses the mount prefix, `/feedback` by default. Export history, preview,
-creation, HTML display, and `.md` download live under `/review/exports`.
+creation, HTML display, and `.md` download live under `/review/exports`. Every
+review screen links back to the host application root from its header when the
+host defines a root route; `page_feedback_host_root_path` returns that path, or
+`nil` when it does not exist.
 
 Export preview renders the configured formatter without persistence. Creation
 accepts selected ready comment IDs in caller order, locks and rechecks them, and

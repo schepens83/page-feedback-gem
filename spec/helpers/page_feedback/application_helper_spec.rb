@@ -58,6 +58,18 @@ RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
     expect(helper.page_feedback_widget).to be_blank
   end
 
+  it "resolves the host application root for review navigation" do
+    expect(helper.page_feedback_host_root_path).to eq("/")
+  end
+
+  it "omits the host root when the host defines no root route" do
+    rootless_host = instance_double(ActionDispatch::Routing::RoutesProxy)
+    allow(rootless_host).to receive(:respond_to?).with(:root_path).and_return(false)
+    allow(helper).to receive(:main_app).and_return(rootless_host)
+
+    expect(helper.page_feedback_host_root_path).to be_nil
+  end
+
   it "makes the integration helpers available to the host" do
     expect(ApplicationController.helpers).to respond_to(
       :page_feedback_head,

@@ -53,6 +53,14 @@ RSpec.describe "PageFeedback review workflow" do
     expect(page_list.css(".page-feedback-page-row").length).to eq(1)
   end
 
+  it "links from every review screen back to the host application root" do
+    get "/feedback/review/pages"
+
+    home_link = response.parsed_body.at_css(".page-feedback-review-header .page-feedback-review-home")
+    expect(home_link[:href]).to eq("/")
+    expect(home_link.text.squish).to include("Back to site")
+  end
+
   it "filters ready feedback by category" do
     create(:page_feedback_comment, page_path: "/bug", page_title: "Bug", category: "bug").approve!
     create(:page_feedback_comment, page_path: "/idea", page_title: "Idea", category: "idea").approve!

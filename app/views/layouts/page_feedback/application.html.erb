@@ -9,6 +9,9 @@
   </head>
   <body class="page-feedback-review-body">
     <header class="page-feedback-review-header">
+      <% if (host_root_path = page_feedback_host_root_path) %>
+        <%= link_to "← Back to site", host_root_path, class: "page-feedback-review-home" %>
+      <% end %>
       <%= link_to "PageFeedback", review_pages_path %>
       <span>Review</span>
       <%= link_to "Exports", review_exports_path %>

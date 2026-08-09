@@ -53,6 +53,8 @@ to use semantic versioning after its first release.
 - Captured context now also records `pointer_type`, `device_pixel_ratio`, and
   `orientation`, each normalized server-side to a small whitelist or bounded
   numeric.
+- Review screens link back to the host application root from the header when the
+  host defines a root route, via the new `page_feedback_host_root_path` helper.
 
 ### Changed
 

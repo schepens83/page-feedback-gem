@@ -33,6 +33,13 @@ module PageFeedback
       )
     end
 
+    # Path back to the host application when it defines a root route.
+    #
+    # @return [String, nil]
+    def page_feedback_host_root_path
+      main_app.root_path if main_app.respond_to?(:root_path)
+    end
+
     private
 
     def page_feedback_replay?
