@@ -76,9 +76,12 @@ export default class extends Controller {
   startFeedbackMode() {
     this.feedbackStop ||= startFeedbackPicker({
       shouldSkip: (element) => shouldSkipElement(element),
-      onPick: (element) => this.openModal(captureElement(element, {
-        ignoredClasses: this.ignoredClassesValue
-      }))
+      onPick: (element) => {
+        // The picker tears itself down before invoking onPick, so drop our
+        // handle too — otherwise the next Alt+F is spent clearing stale state.
+        this.feedbackStop = undefined
+        this.openModal(captureElement(element, { ignoredClasses: this.ignoredClassesValue }))
+      }
     })
   }
 
