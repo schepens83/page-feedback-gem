@@ -51,6 +51,17 @@ to use semantic versioning after its first release.
   clean dummy-host Active Storage fixture and cross-version schema loading.
 - MIT licensing for the initial public release.
 
+### Fixed
+
+- Feedback capture selects the clicked element again. The picker marks the
+  hovered element with `page-feedback-capture-highlight`, and the skip
+  predicate treated every `page-feedback-` class as engine chrome, so the
+  element under the cursor was always rejected and no click ever opened the
+  modal. Transient picker state classes are now excluded from that check.
+- Alt+F re-arms feedback mode on the press after a capture. The picker stops
+  itself before invoking `onPick`, so the Stimulus adapter now clears its own
+  handle and no longer spends the next shortcut discarding stale state.
+
 ### Security
 
 - Documented host-controlled authorization, CSRF, local replay, escaping, and

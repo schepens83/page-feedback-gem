@@ -64,3 +64,12 @@ test("shouldSkipElement rejects controls and PageFeedback chrome", () => {
   assert.equal(shouldSkipElement(chromeChild, { root: body }), true)
   assert.equal(shouldSkipElement(ordinary, { root: body }), false)
 })
+
+test("shouldSkipElement still accepts an element the picker is highlighting", () => {
+  const body = element("BODY")
+  const hovered = element("ARTICLE", { classes: ["page-feedback-capture-highlight"], parent: body })
+  const hoveredChild = element("SPAN", { classes: ["page-feedback-capture-highlight"], parent: hovered })
+
+  assert.equal(shouldSkipElement(hovered, { root: body }), false)
+  assert.equal(shouldSkipElement(hoveredChild, { root: body }), false)
+})
