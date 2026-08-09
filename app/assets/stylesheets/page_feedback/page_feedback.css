@@ -11,6 +11,11 @@
   --page-feedback-border-strong: #8a8a8a;
   --page-feedback-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
   --page-feedback-overlay: rgba(0, 0, 0, 0.64);
+  /* Distance from the viewport edges for floating capture chrome. Hosts with a
+     fixed footer or bottom navigation raise --page-feedback-offset-bottom.
+     Safe-area insets are added on top of both values. */
+  --page-feedback-offset-bottom: 1.25rem;
+  --page-feedback-offset-inline: 1.25rem;
 }
 
 .page-feedback-widget,
@@ -27,8 +32,8 @@
 
 .page-feedback-widget__trigger {
   position: fixed;
-  right: 1.25rem;
-  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  right: calc(var(--page-feedback-offset-inline) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--page-feedback-offset-bottom) + env(safe-area-inset-bottom, 0px));
   z-index: 2147483000;
   padding: 0.7rem 1rem;
   border: 1px solid var(--page-feedback-accent);
@@ -187,8 +192,8 @@
 
 .page-feedback-mode-indicator {
   position: fixed;
-  left: 1.25rem;
-  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  left: calc(var(--page-feedback-offset-inline) + env(safe-area-inset-left, 0px));
+  bottom: calc(var(--page-feedback-offset-bottom) + env(safe-area-inset-bottom, 0px));
   z-index: 2147482999;
   padding: 0.55rem 0.8rem;
   border-radius: 0.25rem;
@@ -258,8 +263,8 @@ body.page-feedback-capture-mode * {
 
 .page-feedback-toasts {
   position: fixed;
-  right: 1.25rem;
-  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  right: calc(var(--page-feedback-offset-inline) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--page-feedback-offset-bottom) + env(safe-area-inset-bottom, 0px));
   z-index: 2147483002;
   display: grid;
   gap: 0.5rem;
@@ -294,9 +299,9 @@ body.page-feedback-capture-mode * {
 }
 
 @media (max-width: 36rem) {
-  .page-feedback-widget__trigger {
-    right: 0.75rem;
-    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  :root {
+    --page-feedback-offset-bottom: 0.75rem;
+    --page-feedback-offset-inline: 0.75rem;
   }
 
   .page-feedback-modal {

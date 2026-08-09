@@ -55,6 +55,10 @@ to use semantic versioning after its first release.
   numeric.
 - Review screens link back to the host application root from the header when the
   host defines a root route, via the new `page_feedback_host_root_path` helper.
+- Host-overridable `--page-feedback-offset-bottom` and
+  `--page-feedback-offset-inline` custom properties position the floating
+  trigger, capture-mode indicator, and toasts, so hosts with a fixed footer or
+  mobile tab bar can lift them clear of it.
 
 ### Changed
 

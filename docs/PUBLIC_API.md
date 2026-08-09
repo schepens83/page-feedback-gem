@@ -60,6 +60,24 @@ well as on the server. Captured context also includes `pointer_type` (`mouse`,
 `landscape`), each normalized server-side to a small whitelist or bounded
 numeric.
 
+## Floating chrome placement
+
+The trigger, capture-mode indicator, and toasts are viewport-fixed and read two
+namespaced CSS custom properties, both defaulting to `1.25rem` (`0.75rem` below
+36rem) with safe-area insets added on top:
+
+```css
+:root {
+  --page-feedback-offset-bottom: 5.5rem; /* clear a fixed footer or tab bar */
+  --page-feedback-offset-inline: 1.25rem;
+}
+```
+
+PageFeedback does not detect host footers. Hosts own the collision, usually by
+raising the bottom offset inside their own media query, or by setting
+`config.trigger_visible = false` and activating capture from their own control
+or the keyboard shortcut.
+
 ## Domain methods
 
 `PageFeedback::Comment` exposes status predicates, `effective_text`,

@@ -29,6 +29,16 @@ RSpec.describe PageFeedback::Engine do
     )
   end
 
+  it "anchors floating capture chrome to host-overridable offsets" do
+    expect(stylesheet).to include("--page-feedback-offset-bottom:", "--page-feedback-offset-inline:")
+
+    %w[.page-feedback-widget__trigger .page-feedback-mode-indicator .page-feedback-toasts].each do |selector|
+      block = stylesheet[/^#{Regexp.escape(selector)} \{(.+?)\}/m, 1]
+
+      expect(block).to include("var(--page-feedback-offset-bottom)", "var(--page-feedback-offset-inline)")
+    end
+  end
+
   it "uses an achromatic visual palette" do
     hex_colors = stylesheet.scan(/#[0-9a-f]{3,8}\b/i)
     rgb_colors = stylesheet.scan(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
