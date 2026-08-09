@@ -28,6 +28,12 @@ at 2,000, page titles at 500, controller/action labels at 255, selectors at
 most 10 console summaries and 5 navigation entries, each reduced to its approved
 content and timestamp keys.
 
+The input-adaptive picker's three additional context fields are normalized
+server-side rather than trusted verbatim: `pointer_type` is kept only if it is
+`mouse`, `touch`, or `pen`; `device_pixel_ratio` is parsed as a float, kept only
+if positive and at most 100, and rounded to two decimals; `orientation` is kept
+only if it is `portrait` or `landscape`. Anything else normalizes to `nil`.
+
 ## Replay
 
 Only paths beginning with exactly one `/` are replayable. Protocol-relative,

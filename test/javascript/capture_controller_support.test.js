@@ -19,7 +19,8 @@ test("keyboardIntent maps Alt+F, Escape, and Ctrl+Enter without hijacking inputs
 test("populateCaptureTargets writes the complete normalized submission payload", () => {
   const targets = Object.fromEntries(
     ["pagePath", "pageTitle", "cssSelector", "elementHtml", "controllerAction", "parentHtml",
-      "viewport", "scrollY", "consoleErrors", "navigationHistory"].map((name) => [name, { value: "" }])
+      "viewport", "scrollY", "consoleErrors", "navigationHistory", "pointerType", "devicePixelRatio",
+      "orientation"].map((name) => [name, { value: "" }])
   )
 
   populateCaptureTargets(targets, {
@@ -29,13 +30,19 @@ test("populateCaptureTargets writes the complete normalized submission payload",
       viewport: "1280x720",
       scrollY: 42,
       consoleErrors: "[]",
-      navigationHistory: "[]"
+      navigationHistory: "[]",
+      devicePixelRatio: "2",
+      orientation: "portrait"
     },
     page: { path: "/cases/1", title: "Case 1" },
-    controllerAction: "cases#show"
+    controllerAction: "cases#show",
+    pointerType: "touch"
   })
 
   assert.equal(targets.pagePath.value, "/cases/1")
   assert.equal(targets.controllerAction.value, "cases#show")
   assert.equal(targets.scrollY.value, 42)
+  assert.equal(targets.pointerType.value, "touch")
+  assert.equal(targets.devicePixelRatio.value, "2")
+  assert.equal(targets.orientation.value, "portrait")
 })

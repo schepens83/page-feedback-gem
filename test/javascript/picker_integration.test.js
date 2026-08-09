@@ -5,73 +5,136 @@ import { startFeedbackPicker } from "../../app/assets/javascripts/page_feedback/
 import { shouldSkipElement } from "../../app/assets/javascripts/page_feedback/element_capture.js"
 
 // The picker and the skip predicate are unit-tested in isolation, which hides
-// the interaction between them: hovering mutates the element that is about to
-// be clicked. These tests wire the real modules together.
+// the interaction between them: hovering repositions the overlay onto the
+// element that is about to be tapped, and engine chrome (including the
+// picker's own confirm-bar buttons) must stay off-limits. These tests wire
+// the real modules together.
 function classList(...initial) {
   const names = new Set(initial)
-  const list = {
+  return {
     add: (name) => names.add(name),
     remove: (name) => names.delete(name),
     contains: (name) => names.has(name),
     [Symbol.iterator]: () => names[Symbol.iterator]()
   }
-  return list
 }
 
 function element(tagName, { parent = null, classes = [] } = {}) {
-  return { tagName, classList: classList(...classes), parentElement: parent }
+  return {
+    tagName,
+    classList: classList(...classes),
+    parentElement: parent,
+    closest: () => null,
+    getBoundingClientRect: () => ({ top: 0, left: 0, width: 0, height: 0 })
+  }
+}
+
+function fakeChromeElement() {
+  const listeners = new Map()
+  return {
+    className: "",
+    textContent: "",
+    hidden: false,
+    style: {},
+    classList: classList(),
+    appendChild() {},
+    addEventListener(name, callback) { listeners.set(name, callback) },
+    removeEventListener(name) { listeners.delete(name) },
+    remove() {},
+    dispatch(name, event) { listeners.get(name)?.(event) }
+  }
 }
 
 function pickerHarness() {
-  const listeners = new Map()
-  const body = element("BODY")
+  const documentListeners = new Map()
+  const windowListeners = new Map()
+  const body = { classList: classList(), appendChild() {} }
   const documentObject = {
-    body: { ...body, appendChild() {} },
-    createElement: () => ({ className: "", textContent: "", remove() {} }),
-    addEventListener: (name, callback) => listeners.set(name, callback),
-    removeEventListener: (name) => listeners.delete(name)
+    body,
+    createElement: () => fakeChromeElement(),
+    addEventListener: (name, callback) => documentListeners.set(name, callback),
+    removeEventListener: (name) => documentListeners.delete(name)
   }
-  documentObject.body.classList = classList()
-  return { listeners, documentObject }
+  const windowObject = {
+    matchMedia: () => ({ matches: false }),
+    addEventListener: (name, callback) => windowListeners.set(name, callback),
+    removeEventListener: (name) => windowListeners.delete(name),
+    setTimeout: () => 1
+  }
+
+  return { documentListeners, windowListeners, documentObject, windowObject, body }
 }
 
-test("an element picked after hovering it is still selectable", () => {
-  const { listeners, documentObject } = pickerHarness()
-  const target = element("ARTICLE", { parent: documentObject.body })
+function pointerEvent(overrides = {}) {
+  return {
+    isPrimary: true,
+    button: 0,
+    pointerId: 1,
+    pointerType: "mouse",
+    clientX: 0,
+    clientY: 0,
+    preventDefault() {},
+    stopPropagation() {},
+    ...overrides
+  }
+}
+
+test("an element hovered and then tapped with the mouse is still selectable", () => {
+  const { documentListeners, documentObject, windowObject, body } = pickerHarness()
+  const target = element("ARTICLE", { parent: body })
   let selected
 
   startFeedbackPicker({
     documentObject,
-    shouldSkip: (node) => shouldSkipElement(node, { root: documentObject.body }),
+    windowObject,
+    shouldSkip: (node) => shouldSkipElement(node, { root: body }),
     onPick: (node) => { selected = node }
   })
 
-  // Hover first, exactly as a real pointer does before a click.
-  listeners.get("mouseover")({ target })
-  assert.equal(target.classList.contains("page-feedback-capture-highlight"), true)
-
-  listeners.get("pointerdown")({ button: 0, target, preventDefault() {}, stopPropagation() {} })
+  // Hover first, exactly as a real mouse does before a click.
+  documentListeners.get("pointerover")(pointerEvent({ target }))
+  documentListeners.get("pointerdown")(pointerEvent({ target }))
+  documentListeners.get("pointerup")(pointerEvent({ target }))
 
   assert.equal(selected, target, "hovered element must remain pickable")
-  assert.equal(documentObject.body.classList.contains("page-feedback-capture-mode"), false)
+  assert.equal(body.classList.contains("page-feedback-capture-mode"), false)
 })
 
 test("engine chrome stays unpickable after hover", () => {
-  const { listeners, documentObject } = pickerHarness()
-  const chrome = element("DIV", { parent: documentObject.body, classes: ["page-feedback-modal"] })
+  const { documentListeners, documentObject, windowObject, body } = pickerHarness()
+  const chrome = element("DIV", { parent: body, classes: ["page-feedback-modal"] })
   let selected
 
   startFeedbackPicker({
     documentObject,
-    shouldSkip: (node) => shouldSkipElement(node, { root: documentObject.body }),
+    windowObject,
+    shouldSkip: (node) => shouldSkipElement(node, { root: body }),
     onPick: (node) => { selected = node }
   })
 
-  listeners.get("mouseover")({ target: chrome })
-  assert.equal(chrome.classList.contains("page-feedback-capture-highlight"), false)
-
-  listeners.get("pointerdown")({ button: 0, target: chrome, preventDefault() {}, stopPropagation() {} })
+  documentListeners.get("pointerover")(pointerEvent({ target: chrome }))
+  documentListeners.get("pointerdown")(pointerEvent({ target: chrome }))
+  documentListeners.get("pointerup")(pointerEvent({ target: chrome }))
 
   assert.equal(selected, undefined)
-  assert.equal(documentObject.body.classList.contains("page-feedback-capture-mode"), true)
+  assert.equal(body.classList.contains("page-feedback-capture-mode"), true)
+})
+
+test("interactive host elements are pickable now that only engine chrome is excluded", () => {
+  const { documentListeners, documentObject, windowObject, body } = pickerHarness()
+  const nav = element("NAV", { parent: body })
+  const link = element("A", { parent: nav })
+  let selected
+
+  startFeedbackPicker({
+    documentObject,
+    windowObject,
+    shouldSkip: (node) => shouldSkipElement(node, { root: body }),
+    onPick: (node) => { selected = node }
+  })
+
+  documentListeners.get("pointerdown")(pointerEvent({ target: link }))
+  documentListeners.get("pointerup")(pointerEvent({ target: link }))
+
+  assert.equal(selected, link)
 })

@@ -2,20 +2,32 @@
 
 ## Capture
 
-Alt+F enters element-selection mode. Hover previews the target, click suppresses
-its ordinary action and opens the feedback modal, Escape cancels, and Ctrl+Enter
-submits. The client captures bounded element and browser context. The server
-authorizes independently, strips query strings and fragments from local paths,
-normalizes context keys, resolves any actor from host code, and creates a pending
-comment.
+Alt+F enters element-selection mode, and picking is input-adaptive. With a mouse,
+hover previews the target and a click suppresses its ordinary action and opens
+the feedback modal, native `<dialog>` styled as a centered panel on wide screens
+and a bottom sheet on narrow ones. With touch or pen, a tap stages a candidate
+element and shows a confirmation bar (Add feedback / Choose parent / Cancel)
+instead of picking immediately; "Choose parent" walks up to a wider ancestor,
+one step per tap, and stops at the document body. A tap that lands on a
+non-interactive descendant (an icon inside a button, say) promotes the candidate
+to its nearest semantic ancestor (link, button, form control, label, summary, or
+`role="button"`). Escape and Ctrl+Enter still cancel and submit. The client
+captures bounded element and browser context, including pointer type, device
+pixel ratio, and orientation. The server authorizes independently, strips query
+strings and fragments from local paths, normalizes context keys, resolves any
+actor from host code, and creates a pending comment.
 
-The capture workflow is implemented. The picker excludes interactive controls
-and engine chrome, removes configured runtime classes from stable selectors, and
-records capped HTML, console, navigation, viewport, and scroll context. HTML
-submissions redirect back to the host page, Turbo submissions replace the modal
-and append a toast, and JSON submissions return either the new identifier and
-pending state or a field error object. Invalid context collections normalize to
-empty arrays; client actor and status fields are never permitted.
+The capture workflow is implemented. All host elements, including interactive
+controls such as links, buttons, and form fields, are selectable; only
+PageFeedback's own engine chrome is excluded. Page interaction (clicks) is
+suppressed while capture mode is active, so the ordinary action of the tapped or
+clicked element never fires; scrolling and pinch zoom stay native throughout.
+The picker removes configured runtime classes from stable selectors and records
+capped HTML, console, navigation, viewport, and scroll context. HTML submissions
+redirect back to the host page, Turbo submissions replace the modal and append a
+toast, and JSON submissions return either the new identifier and pending state or
+a field error object. Invalid context collections normalize to empty arrays;
+client actor and status fields are never permitted.
 
 ## Review state
 

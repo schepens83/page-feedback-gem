@@ -22,6 +22,19 @@ RSpec.describe "PageFeedback comments" do
     }
   end
 
+  def legacy_context_expectations
+    {
+      "parent_html" => "<main>Parent</main>",
+      "viewport" => nil,
+      "scroll_y" => 812,
+      "console_errors" => [{ "message" => "Failed", "timestamp_ms" => 123 }],
+      "navigation_history" => [],
+      "pointer_type" => nil,
+      "device_pixel_ratio" => nil,
+      "orientation" => nil
+    }
+  end
+
   def legacy_context
     {
       parentHTML: "<main>Parent</main>",
@@ -68,13 +81,50 @@ RSpec.describe "PageFeedback comments" do
 
     post_comment(params:, as: :json)
 
-    expect(PageFeedback::Comment.last.context).to eq(
-      "parent_html" => "<main>Parent</main>",
-      "viewport" => nil,
-      "scroll_y" => 812,
-      "console_errors" => [{ "message" => "Failed", "timestamp_ms" => 123 }],
-      "navigation_history" => []
+    expect(PageFeedback::Comment.last.context).to eq(legacy_context_expectations)
+  end
+
+  it "normalizes valid input-adaptive context fields" do
+    params = valid_comment_params
+    params[:comment][:context].merge!(pointer_type: "touch", device_pixel_ratio: "2.5555", orientation: "landscape")
+
+    post_comment(params:, as: :json)
+
+    expect(PageFeedback::Comment.last.context).to include(
+      "pointer_type" => "touch",
+      "device_pixel_ratio" => 2.56,
+      "orientation" => "landscape"
     )
+  end
+
+  it "normalizes junk input-adaptive context fields to nil" do
+    params = valid_comment_params
+    params[:comment][:context].merge!(
+      pointer_type: "carrier-pigeon", device_pixel_ratio: "not-a-number", orientation: "sideways"
+    )
+
+    post_comment(params:, as: :json)
+
+    expect(PageFeedback::Comment.last.context).to include(
+      "pointer_type" => nil,
+      "device_pixel_ratio" => nil,
+      "orientation" => nil
+    )
+  end
+
+  it "rejects a device pixel ratio outside the accepted bounds" do
+    params = valid_comment_params
+    params[:comment][:context].merge!(device_pixel_ratio: "0")
+
+    post_comment(params:, as: :json)
+
+    expect(PageFeedback::Comment.last.context).to include("device_pixel_ratio" => nil)
+
+    params[:comment][:context].merge!(device_pixel_ratio: "101")
+
+    post_comment(params:, as: :json)
+
+    expect(PageFeedback::Comment.last.context).to include("device_pixel_ratio" => nil)
   end
 
   it "returns JSON validation errors for external paths and oversized fields" do

@@ -1,9 +1,11 @@
-<div id="<%= dom_id(PageFeedback::Comment, :page_feedback_modal) %>"
-     class="page-feedback-modal"
-     data-page-feedback-capture-target="modal"
-     data-action="click->page-feedback-capture#closeFromBackdrop"
-     <%= "hidden" unless open %>>
-  <div class="page-feedback-modal__surface" role="dialog" aria-modal="true" aria-label="Page feedback">
+<dialog id="<%= dom_id(PageFeedback::Comment, :page_feedback_modal) %>"
+        class="page-feedback-modal"
+        data-page-feedback-capture-target="modal"
+        data-action="click->page-feedback-capture#closeFromBackdrop"
+        data-page-feedback-open="<%= open %>"
+        aria-label="Page feedback"
+        <%= "open" if open %>>
+  <div class="page-feedback-modal__surface">
     <%= render "page_feedback/comments/form", comment:, comments_path: %>
   </div>
-</div>
+</dialog>

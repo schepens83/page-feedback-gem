@@ -52,24 +52,25 @@ test("captureElement caps selected and parent HTML", () => {
   assert.equal(capture.parentHtml.length, 1_000)
 })
 
-test("shouldSkipElement rejects controls and PageFeedback chrome", () => {
+test("shouldSkipElement rejects only PageFeedback engine chrome", () => {
   const body = element("BODY")
-  const form = element("FORM", { parent: body })
-  const formChild = element("SPAN", { parent: form })
   const chrome = element("DIV", { classes: ["page-feedback-modal"], parent: body })
   const chromeChild = element("SPAN", { parent: chrome })
   const ordinary = element("ARTICLE", { parent: body })
 
-  assert.equal(shouldSkipElement(formChild, { root: body }), true)
   assert.equal(shouldSkipElement(chromeChild, { root: body }), true)
   assert.equal(shouldSkipElement(ordinary, { root: body }), false)
 })
 
-test("shouldSkipElement still accepts an element the picker is highlighting", () => {
+test("shouldSkipElement now accepts interactive host elements", () => {
   const body = element("BODY")
-  const hovered = element("ARTICLE", { classes: ["page-feedback-capture-highlight"], parent: body })
-  const hoveredChild = element("SPAN", { classes: ["page-feedback-capture-highlight"], parent: hovered })
+  const nav = element("NAV", { parent: body })
+  const link = element("A", { parent: nav })
+  const form = element("FORM", { parent: body })
+  const input = element("INPUT", { parent: form })
+  const button = element("BUTTON", { parent: body })
 
-  assert.equal(shouldSkipElement(hovered, { root: body }), false)
-  assert.equal(shouldSkipElement(hoveredChild, { root: body }), false)
+  assert.equal(shouldSkipElement(link, { root: body }), false)
+  assert.equal(shouldSkipElement(input, { root: body }), false)
+  assert.equal(shouldSkipElement(button, { root: body }), false)
 })

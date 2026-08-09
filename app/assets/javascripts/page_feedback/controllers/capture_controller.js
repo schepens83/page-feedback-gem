@@ -8,7 +8,8 @@ export default class extends Controller {
   static targets = [
     "modal", "form", "tagName", "selectorLabel", "preview", "commentText", "categoryInput",
     "pagePath", "pageTitle", "controllerAction", "cssSelector", "elementHtml", "parentHtml",
-    "viewport", "scrollY", "consoleErrors", "navigationHistory"
+    "viewport", "scrollY", "consoleErrors", "navigationHistory", "pointerType", "devicePixelRatio",
+    "orientation"
   ]
 
   static values = {
@@ -39,7 +40,7 @@ export default class extends Controller {
   }
 
   close() {
-    if (this.hasModalTarget) this.modalTarget.hidden = true
+    if (this.hasModalTarget && this.modalTarget.open) this.modalTarget.close()
   }
 
   submitWithShortcut(event) {
@@ -57,14 +58,21 @@ export default class extends Controller {
   }
 
   modalTargetConnected(modal) {
-    if (!modal.hidden && this.hasCommentTextTarget) this.commentTextTarget.focus()
+    if (modal.dataset.pageFeedbackOpen !== "true") return
+
+    // Turbo replaces the dialog while it is open (validation errors) with a
+    // server-rendered `open` attribute already set; close before reopening
+    // so the browser dialog machinery re-initializes cleanly.
+    if (modal.open) modal.close()
+    modal.showModal()
+    if (this.hasCommentTextTarget) this.commentTextTarget.focus()
   }
 
   handleGlobalKeydown(event) {
     const intent = keyboardIntent(event, {
       shortcut: this.shortcutValue,
       activeTag: document.activeElement?.tagName,
-      modalOpen: this.hasModalTarget && !this.modalTarget.hidden
+      modalOpen: this.hasModalTarget && this.modalTarget.open
     })
     if (!intent) return
 
@@ -76,11 +84,11 @@ export default class extends Controller {
   startFeedbackMode() {
     this.feedbackStop ||= startFeedbackPicker({
       shouldSkip: (element) => shouldSkipElement(element),
-      onPick: (element) => {
+      onPick: (element, meta) => {
         // The picker tears itself down before invoking onPick, so drop our
         // handle too — otherwise the next Alt+F is spent clearing stale state.
         this.feedbackStop = undefined
-        this.openModal(captureElement(element, { ignoredClasses: this.ignoredClassesValue }))
+        this.openModal(captureElement(element, { ignoredClasses: this.ignoredClassesValue }), meta)
       }
     })
   }
@@ -92,7 +100,7 @@ export default class extends Controller {
     this.feedbackStop = undefined
   }
 
-  openModal(capture) {
+  openModal(capture, { pointerType = "" } = {}) {
     const context = capturePageContext(capture.parentHtml)
     this.formTarget.reset()
     this.categoryInputTarget.value = this.defaultCategoryValue
@@ -104,16 +112,18 @@ export default class extends Controller {
       capture,
       context,
       page: { path: window.location.pathname, title: document.title },
-      controllerAction: this.controllerActionValue
+      controllerAction: this.controllerActionValue,
+      pointerType
     })
-    this.modalTarget.hidden = false
+    if (!this.modalTarget.open) this.modalTarget.showModal()
     this.commentTextTarget.focus()
   }
 
   get captureTargets() {
     return Object.fromEntries([
       "pagePath", "pageTitle", "controllerAction", "cssSelector", "elementHtml", "parentHtml",
-      "viewport", "scrollY", "consoleErrors", "navigationHistory"
+      "viewport", "scrollY", "consoleErrors", "navigationHistory", "pointerType", "devicePixelRatio",
+      "orientation"
     ].map((name) => [name, this[`${name}Target`]]))
   }
 

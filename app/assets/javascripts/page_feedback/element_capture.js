@@ -1,7 +1,3 @@
-const SKIP_TAGS = new Set(["NAV", "FORM", "INPUT", "TEXTAREA", "SELECT", "BUTTON"])
-// Transient state classes the picker itself applies to host elements. They are
-// not engine chrome, so they must not make an element unpickable.
-const TRANSIENT_CLASSES = new Set(["page-feedback-capture-highlight"])
 const MAX_ELEMENT_HTML = 2000
 const MAX_PARENT_HTML = 1000
 
@@ -18,14 +14,13 @@ function escapeIdentifier(value) {
 }
 
 function isChromeClass(name) {
-  return name.startsWith("page-feedback-") && !TRANSIENT_CLASSES.has(name)
+  return name.startsWith("page-feedback-")
 }
 
 export function shouldSkipElement(element, { root = document.body } = {}) {
   let node = element
 
   while (node && node !== root) {
-    if (SKIP_TAGS.has(node.tagName)) return true
     if (classNames(node).some(isChromeClass)) return true
     node = node.parentElement
   }

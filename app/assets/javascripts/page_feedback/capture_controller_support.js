@@ -21,7 +21,7 @@ export function keyboardIntent(event, {
   return null
 }
 
-export function populateCaptureTargets(targets, { capture, context, page, controllerAction }) {
+export function populateCaptureTargets(targets, { capture, context, page, controllerAction, pointerType }) {
   const values = {
     pagePath: page.path,
     pageTitle: page.title,
@@ -32,7 +32,10 @@ export function populateCaptureTargets(targets, { capture, context, page, contro
     viewport: context.viewport,
     scrollY: context.scrollY,
     consoleErrors: context.consoleErrors,
-    navigationHistory: context.navigationHistory
+    navigationHistory: context.navigationHistory,
+    pointerType,
+    devicePixelRatio: context.devicePixelRatio,
+    orientation: context.orientation
   }
 
   Object.entries(values).forEach(([name, value]) => {

@@ -15,6 +15,7 @@ test("context recorder retains only the latest console and navigation entries", 
     innerWidth: 1440,
     innerHeight: 900,
     scrollY: 812.4,
+    devicePixelRatio: 2,
     location: { href: "https://example.test/current" },
     addEventListener: (name, callback) => listeners.set(name, callback),
     removeEventListener: (name) => listeners.delete(name)
@@ -41,6 +42,30 @@ test("context recorder retains only the latest console and navigation entries", 
   assert.equal(navigation[0].url, "/pages/2")
   assert.equal(context.viewport, "1440x900")
   assert.equal(context.scrollY, 812)
+  assert.equal(context.devicePixelRatio, "2")
+  assert.equal(context.orientation, "landscape")
+
+  recorder.disconnect()
+})
+
+test("context recorder falls back to a 1x device pixel ratio and derives portrait orientation", () => {
+  const consoleObject = { error: () => {} }
+  const historyObject = { pushState() {}, replaceState() {} }
+  const windowObject = {
+    innerWidth: 480,
+    innerHeight: 900,
+    scrollY: 0,
+    devicePixelRatio: 0,
+    location: { href: "https://example.test/current" },
+    addEventListener: () => {},
+    removeEventListener: () => {}
+  }
+  const recorder = createContextRecorder({ consoleObject, historyObject, windowObject })
+
+  const context = recorder.capturePageContext("")
+
+  assert.equal(context.devicePixelRatio, "1")
+  assert.equal(context.orientation, "portrait")
 
   recorder.disconnect()
 })

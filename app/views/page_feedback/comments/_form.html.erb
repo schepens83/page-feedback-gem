@@ -45,7 +45,10 @@
     <%= form.hidden_field field, data: { page_feedback_capture_target: field.camelize(:lower) } %>
   <% end %>
 
-  <% %w[parent_html viewport scroll_y console_errors navigation_history].each do |field| %>
+  <% %w[
+    parent_html viewport scroll_y console_errors navigation_history
+    pointer_type device_pixel_ratio orientation
+  ].each do |field| %>
     <%= hidden_field_tag "comment[context][#{field}]", nil,
                          data: { page_feedback_capture_target: field.camelize(:lower) } %>
   <% end %>

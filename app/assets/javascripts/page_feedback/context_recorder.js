@@ -45,7 +45,9 @@ export function createContextRecorder({
         viewport: `${windowObject.innerWidth}x${windowObject.innerHeight}`,
         scrollY: Math.round(windowObject.scrollY),
         consoleErrors: JSON.stringify(consoleErrors),
-        navigationHistory: JSON.stringify(navigationHistory)
+        navigationHistory: JSON.stringify(navigationHistory),
+        devicePixelRatio: String(windowObject.devicePixelRatio || 1),
+        orientation: windowObject.innerWidth > windowObject.innerHeight ? "landscape" : "portrait"
       }
     },
     disconnect() {

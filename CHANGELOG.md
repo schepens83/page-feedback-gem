@@ -50,12 +50,28 @@ to use semantic versioning after its first release.
 - Reproducible Ruby 3.2/3.4 and Rails 8.0/8.1 appraisal matrix, including a
   clean dummy-host Active Storage fixture and cross-version schema loading.
 - MIT licensing for the initial public release.
+- Captured context now also records `pointer_type`, `device_pixel_ratio`, and
+  `orientation`, each normalized server-side to a small whitelist or bounded
+  numeric.
 
 ### Changed
 
 - Restyled capture and review interfaces with a neutral grayscale palette,
   flatter controls, high-contrast focus states, light/dark-safe element
   highlights, and reduced-motion support.
+- Made the capture picker input-adaptive: mouse hover and click still pick
+  directly, while touch and pen taps stage a candidate behind a confirmation
+  bar (Add feedback / Choose parent / Cancel) with semantic-ancestor promotion,
+  so scrolling and pinch zoom stay native. Every host element, including
+  interactive controls, is now selectable; only PageFeedback's own chrome is
+  excluded, and page clicks are suppressed for the duration of capture mode.
+- Converted the capture modal to a native `<dialog>` that renders as a bottom
+  sheet on small screens, with a sticky submit row and safe-area-aware
+  padding.
+- Improved the mobile review layout: the queue stacks with the feedback card
+  first and a shorter preview pane, review actions stay pinned to the bottom
+  of the viewport, and touch targets across the widget meet a 44px minimum
+  under `(pointer: coarse)`.
 
 ### Fixed
 

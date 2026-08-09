@@ -50,10 +50,15 @@ capture chrome in replay mode. Server authorization remains authoritative.
 
 The widget's Stimulus controller uses `activation_shortcut` (Alt+F by default),
 removes every class listed in `ignored_css_classes` from generated selectors,
-and populates only the documented capture fields. The picker excludes
-PageFeedback chrome and interactive controls. Element and parent markup, console
-errors, and navigation entries are capped before submission as well as on the
-server.
+and populates only the documented capture fields. The picker is input-adaptive:
+a mouse click picks directly, while touch and pen taps stage a candidate behind
+a confirmation bar. It excludes only PageFeedback's own chrome; every host
+element, including interactive controls, is selectable. Element and parent
+markup, console errors, and navigation entries are capped before submission as
+well as on the server. Captured context also includes `pointer_type` (`mouse`,
+`touch`, or `pen`), `device_pixel_ratio`, and `orientation` (`portrait` or
+`landscape`), each normalized server-side to a small whitelist or bounded
+numeric.
 
 ## Domain methods
 
