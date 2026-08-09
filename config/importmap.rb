@@ -11,3 +11,4 @@ pin "page_feedback/context_recorder", to: "page_feedback/context_recorder.js", p
 pin "page_feedback/element_capture", to: "page_feedback/element_capture.js", preload: false
 pin "page_feedback/feedback_picker", to: "page_feedback/feedback_picker.js", preload: false
 pin "page_feedback/review_highlight", to: "page_feedback/review_highlight.js", preload: false
+pin "page_feedback/visual_viewport", to: "page_feedback/visual_viewport.js", preload: false

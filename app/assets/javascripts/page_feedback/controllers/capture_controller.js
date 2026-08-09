@@ -3,6 +3,7 @@ import { capturePageContext, installContextRecorder } from "page_feedback/contex
 import { captureElement, shouldSkipElement } from "page_feedback/element_capture"
 import { startFeedbackPicker } from "page_feedback/feedback_picker"
 import { keyboardIntent, populateCaptureTargets } from "page_feedback/capture_controller_support"
+import { trackVisualViewport } from "page_feedback/visual_viewport"
 
 export default class extends Controller {
   static targets = [
@@ -65,7 +66,24 @@ export default class extends Controller {
     // so the browser dialog machinery re-initializes cleanly.
     if (modal.open) modal.close()
     modal.showModal()
+    this.trackViewport()
     if (this.hasCommentTextTarget) this.commentTextTarget.focus()
+  }
+
+  modalTargetDisconnected() {
+    this.releaseViewport()
+  }
+
+  trackViewport() {
+    this.releaseViewport()
+    this.viewportRelease = trackVisualViewport(this.modalTarget)
+  }
+
+  releaseViewport() {
+    if (!this.viewportRelease) return
+
+    this.viewportRelease()
+    this.viewportRelease = undefined
   }
 
   handleGlobalKeydown(event) {
@@ -116,6 +134,7 @@ export default class extends Controller {
       pointerType
     })
     if (!this.modalTarget.open) this.modalTarget.showModal()
+    this.trackViewport()
     this.commentTextTarget.focus()
   }
 

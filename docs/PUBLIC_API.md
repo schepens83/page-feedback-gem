@@ -73,6 +73,12 @@ namespaced CSS custom properties, both defaulting to `1.25rem` (`0.75rem` below
 }
 ```
 
+While the capture modal is open it also publishes
+`--page-feedback-visual-viewport-height` and
+`--page-feedback-visual-viewport-offset-bottom` on the dialog, so the small-screen
+bottom sheet sits above the on-screen keyboard instead of below the layout
+viewport. Both fall back to `100dvh` and `0px` without JavaScript.
+
 PageFeedback does not detect host footers. Hosts own the collision, usually by
 raising the bottom offset inside their own media query, or by setting
 `config.trigger_visible = false` and activating capture from their own control

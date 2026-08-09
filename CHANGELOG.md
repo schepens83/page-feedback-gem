@@ -86,6 +86,12 @@ to use semantic versioning after its first release.
   predicate treated every `page-feedback-` class as engine chrome, so the
   element under the cursor was always rejected and no click ever opened the
   modal. Transient picker state classes are now excluded from that check.
+- The capture modal stays visible on phones. As a bottom sheet it was anchored
+  to the layout viewport, which the on-screen keyboard opened by the autofocused
+  comment field does not shrink, so the sheet sat entirely below the visible
+  area. It now follows the visual viewport through
+  `--page-feedback-visual-viewport-height` and
+  `--page-feedback-visual-viewport-offset-bottom`.
 - Alt+F re-arms feedback mode on the press after a capture. The picker stops
   itself before invoking `onPick`, so the Stimulus adapter now clears its own
   handle and no longer spends the next shortcut discarding stale state.

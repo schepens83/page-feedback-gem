@@ -1,7 +1,7 @@
 <dialog id="<%= dom_id(PageFeedback::Comment, :page_feedback_modal) %>"
         class="page-feedback-modal"
         data-page-feedback-capture-target="modal"
-        data-action="click->page-feedback-capture#closeFromBackdrop"
+        data-action="click->page-feedback-capture#closeFromBackdrop close->page-feedback-capture#releaseViewport"
         data-page-feedback-open="<%= open %>"
         aria-label="Page feedback"
         <%= "open" if open %>>

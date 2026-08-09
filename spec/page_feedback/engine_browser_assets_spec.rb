@@ -39,6 +39,14 @@ RSpec.describe PageFeedback::Engine do
     end
   end
 
+  it "keeps the capture modal inside the visual viewport" do
+    modal_blocks = stylesheet.scan(/^\s*\.page-feedback-modal \{(.+?)\}/m).flatten
+
+    expect(modal_blocks.length).to be >= 2
+    expect(modal_blocks).to all(include("var(--page-feedback-visual-viewport-height, 100dvh)"))
+    expect(modal_blocks.last).to include("var(--page-feedback-visual-viewport-offset-bottom, 0px)")
+  end
+
   it "uses an achromatic visual palette" do
     hex_colors = stylesheet.scan(/#[0-9a-f]{3,8}\b/i)
     rgb_colors = stylesheet.scan(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)

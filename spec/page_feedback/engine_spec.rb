@@ -8,7 +8,7 @@ RSpec.describe PageFeedback::Engine do
       page_feedback/capture_controller_support page_feedback/clipboard page_feedback/context_recorder
       page_feedback/controllers/capture_controller page_feedback/controllers/copy_controller
       page_feedback/element_capture
-      page_feedback/feedback_picker page_feedback/review_highlight
+      page_feedback/feedback_picker page_feedback/review_highlight page_feedback/visual_viewport
     ]
   end
 
