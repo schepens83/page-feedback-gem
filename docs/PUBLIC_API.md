@@ -43,8 +43,13 @@ text, safe code fences, source locations, reviewer notes, and captured HTML.
 <body><%= page_feedback_widget %><%= yield %></body>
 ```
 
-The head helper emits namespaced CSS and the replay module at most once per
-request. The widget renders the server-owned capture form at the engine's actual
+The head helper emits namespaced CSS, the configured `ignored_css_classes` as a
+`page-feedback-ignored-classes` meta tag, and the replay module at most once per
+request. Replay reuses those classes when matching a captured selector, falls
+back to the same path without any class constraints, and keeps watching the
+document for up to eight seconds so client-rendered and lazily loaded elements
+still get highlighted. A matched element is centered in the review frame; the
+captured scroll offset is only a fallback for elements that never appear. The widget renders the server-owned capture form at the engine's actual
 mount path. It returns an empty safe string when capture is denied and suppresses
 capture chrome in replay mode. Server authorization remains authoritative.
 

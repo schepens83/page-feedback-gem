@@ -13,8 +13,9 @@ module PageFeedback
       safe_join(
         [
           stylesheet_link_tag("page_feedback/page_feedback", "data-turbo-track": "reload"),
+          page_feedback_ignored_classes_meta,
           javascript_import_module_tag("page_feedback/review_highlight")
-        ]
+        ].compact
       )
     end
 
@@ -41,6 +42,15 @@ module PageFeedback
     end
 
     private
+
+    # Replay matching needs the same runtime classes capture strips, and the
+    # replayed page is the host's, so the configuration travels in its head.
+    def page_feedback_ignored_classes_meta
+      ignored_classes = PageFeedback.configuration.ignored_css_classes
+      return if ignored_classes.blank?
+
+      tag.meta(name: "page-feedback-ignored-classes", content: ignored_classes.join(" "))
+    end
 
     def page_feedback_replay?
       params[:page_feedback_replay].present?

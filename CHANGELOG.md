@@ -91,6 +91,15 @@ to use semantic versioning after its first release.
   predicate treated every `page-feedback-` class as engine chrome, so the
   element under the cursor was always rejected and no click ever opened the
   modal. Transient picker state classes are now excluded from that check.
+- In-context review highlights the element far more often. The replay used to
+  make a single attempt at the exact captured selector before DOMContentLoaded,
+  then restore the captured scroll offset — so client-rendered or lazily loaded
+  elements were never found, drifted classes broke the match, and a matched
+  element was left off-screen because the offset came from a wider viewport.
+  Replay now retries as the document changes for up to eight seconds, falls back
+  to the class-free structural path, centers whatever it matches, and reads the
+  host's configured `ignored_css_classes` from a head meta tag instead of a
+  hardcoded class list.
 - The capture modal stays visible on phones. As a bottom sheet it was anchored
   to the layout viewport, which the on-screen keyboard opened by the autofocused
   comment field does not shrink, so the sheet sat entirely below the visible

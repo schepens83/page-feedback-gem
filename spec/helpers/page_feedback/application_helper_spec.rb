@@ -25,6 +25,18 @@ RSpec.describe PageFeedback::ApplicationHelper, type: :helper do
     expect(helper.page_feedback_head).to be_blank
   end
 
+  it "publishes configured runtime classes for replay selector matching" do
+    PageFeedback.configuration.ignored_css_classes = %w[revealed scene-visible]
+
+    expect(helper.page_feedback_head).to include(
+      '<meta name="page-feedback-ignored-classes" content="revealed scene-visible">'
+    )
+  end
+
+  it "omits the runtime class metadata when the host configures none" do
+    expect(helper.page_feedback_head).not_to include("page-feedback-ignored-classes")
+  end
+
   it "renders the capture form with open defaults" do
     widget = helper.page_feedback_widget
 
