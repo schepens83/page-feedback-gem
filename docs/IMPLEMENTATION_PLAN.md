@@ -392,6 +392,7 @@ page_feedback/
 │   │       ├── comments/rejections_controller.rb
 │   │       ├── bulk_approvals_controller.rb
 │   │       ├── bulk_rejections_controller.rb
+│   │       ├── queue_approvals_controller.rb
 │   │       └── exports_controller.rb
 │   ├── helpers/page_feedback/application_helper.rb
 │   ├── models/page_feedback/
@@ -908,6 +909,7 @@ PageFeedback::Engine.routes.draw do
 
     resources :bulk_approvals, only: :create
     resources :bulk_rejections, only: :create
+    resources :queue_approvals, only: :create
     resources :exports, only: %i[index new create show]
   end
 end
@@ -925,6 +927,7 @@ Controller responsibilities:
 | `Review::Comments::RejectionsController` | `create`, `destroy` | Reject or return a rejection to pending |
 | `Review::BulkApprovalsController` | `create` | Approve selected pending/rejected comments |
 | `Review::BulkRejectionsController` | `create` | Reject selected pending/approved comments |
+| `Review::QueueApprovalsController` | `create` | Approve all pending comments, optionally limited by category |
 | `Review::ExportsController` | `index`, `new`, `create`, `show` | History, preview, immutable snapshot creation, HTML/Markdown representation |
 
 Authorization:
@@ -1088,7 +1091,10 @@ Category filtering remains available.
   selector, and captured context.
 - Permit reviewer notes and refined text.
 - Approve/reject submissions save reviewer edits in the same request.
-- Automatically advance to the next item when appropriate.
+- Automatically advance to the next item, then the next matching page when the
+  current page is finished.
+- Offer a confirmed action on the overview to approve all pending feedback
+  across pages, limited by the active category filter when present.
 - Show full detail link and export readiness.
 
 ### Export UI

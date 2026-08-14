@@ -69,12 +69,12 @@
 
       <% if @current.approved? %>
         <%= button_to "Return approval to pending",
-                      review_comment_approval_path(@current, page_key: @page_key, filter: @filter, category: @category),
+                      review_comment_approval_path(@current, page_key: @page_key, next_id: @next&.id, filter: @filter, category: @category),
                       method: :delete,
                       class: "page-feedback-review-secondary" %>
       <% elsif @current.rejected? %>
         <%= button_to "Return rejection to pending",
-                      review_comment_rejection_path(@current, page_key: @page_key, filter: @filter, category: @category),
+                      review_comment_rejection_path(@current, page_key: @page_key, next_id: @next&.id, filter: @filter, category: @category),
                       method: :delete,
                       class: "page-feedback-review-secondary" %>
       <% end %>
@@ -87,6 +87,8 @@
         <% end %>
         <% if @next %>
           <%= link_to "Next →", review_page_comments_path(@page_key, id: @next.id, filter: @filter, category: @category) %>
+        <% elsif @next_page_key %>
+          <%= link_to "Next page →", review_page_comments_path(@next_page_key, filter: @filter, category: @category) %>
         <% else %>
           <span>Next →</span>
         <% end %>

@@ -449,6 +449,11 @@ body.page-feedback-capture-mode * {
   text-transform: uppercase;
 }
 
+.page-feedback-queue-approval {
+  display: inline-block;
+  margin-left: 0.75rem;
+}
+
 .page-feedback-filter-tabs {
   display: flex;
   flex-wrap: wrap;

@@ -61,6 +61,9 @@ to use semantic versioning after its first release.
   `--page-feedback-offset-inline` custom properties position the floating
   trigger, capture-mode indicator, and toasts, so hosts with a fixed footer or
   mobile tab bar can lift them clear of it.
+- Continuous review navigation advances from the end of one filtered page queue
+  to the next matching page, plus a category-aware action approves every pending
+  feedback item across pages in one request.
 
 ### Changed
 

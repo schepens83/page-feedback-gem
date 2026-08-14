@@ -39,10 +39,26 @@ module PageFeedback
 
       def queue_redirect_path
         query = { filter: review_filter, category: review_category }.compact
-        query[:id] = params[:next_id] if params[:next_id].present?
-        return review_page_comments_path(params[:page_key], query) if params[:page_key].present?
+        return review_pages_path(query) if params[:page_key].blank?
+
+        page_queue_redirect_path(query)
+      end
+
+      def page_queue_redirect_path(query)
+        if params[:next_id].present?
+          return review_page_comments_path(params[:page_key], query.merge(id: params[:next_id]))
+        end
+
+        page_path = Comment.page_path_from_key!(params[:page_key])
+        next_page_key = next_matching_page_key(excluding: page_path)
+        return review_page_comments_path(next_page_key, query) if next_page_key
 
         review_pages_path(query)
+      end
+
+      def next_matching_page_key(excluding:)
+        comment = filtered_comments.where.not(page_path: excluding).recent.first
+        Comment.page_key(comment.page_path) if comment
       end
     end
   end

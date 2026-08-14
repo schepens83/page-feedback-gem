@@ -130,12 +130,13 @@ transaction. Persisted exports and export items are read-only.
 ## Routes and commands
 
 The engine provides capture at `POST /comments`; page queues, comment edits,
-approval/rejection resources, and bulk decision resources below `/review`. The
-host chooses the mount prefix, `/feedback` by default. Export history, preview,
-creation, HTML display, and `.md` download live under `/review/exports`. Every
-review screen links back to the host application root from its header when the
-host defines a root route; `page_feedback_host_root_path` returns that path, or
-`nil` when it does not exist.
+approval/rejection resources, selected bulk decision resources, and whole-queue
+pending approvals below `/review`. The host chooses the mount prefix,
+`/feedback` by default. Export history, preview, creation, HTML display, and
+`.md` download live under `/review/exports`. Every review screen links back to
+the host application root from its header when the host defines a root route;
+`page_feedback_host_root_path` returns that path, or `nil` when it does not
+exist.
 
 Export preview renders the configured formatter without persistence. Creation
 accepts selected ready comment IDs in caller order, locks and rechecks them, and
@@ -148,8 +149,11 @@ legacy camelCase context, ignores submitted actor and review-state fields,
 persists a pending comment, and returns validation errors in the requested
 format. Review pages expose `pending`, `ready`, `exported`, `changed`, `rejected`,
 and `all` filters plus category composition. Page keys are URL-safe encodings
-that decode only to validated local paths. Denied access returns 403 for every
-review route and format.
+that decode only to validated local paths. Per-page queues continue to the next
+matching page after their last item. `POST /review/queue_approvals` approves all
+pending comments across pages, limited to a valid supplied category when
+present; it never changes rejected comments. Denied access returns 403 for
+every review route and format.
 
 ```bash
 bin/rails generate page_feedback:install --help

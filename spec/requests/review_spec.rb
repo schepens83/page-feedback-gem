@@ -163,6 +163,28 @@ RSpec.describe "PageFeedback review workflow" do
     expect(response).to redirect_to(queue_path(current, filter: "pending", category: "bug", id: following.id))
   end
 
+  it "advances to the next matching page when the current page is finished" do
+    current = create(:page_feedback_comment, page_path: "/alpha")
+    following_page = create(:page_feedback_comment, page_path: "/beta")
+
+    post "/feedback/review/comments/#{current.id}/approval", params: {
+      page_key: page_key(current.page_path), filter: "pending"
+    }
+
+    expect(response).to redirect_to(queue_path(following_page, filter: "pending"))
+  end
+
+  it "links the end of one page queue to the next matching page" do
+    current = create(:page_feedback_comment, page_path: "/alpha")
+    following_page = create(:page_feedback_comment, page_path: "/beta")
+
+    get queue_path(current, filter: "pending")
+
+    next_link = response.parsed_body.at_css(".page-feedback-queue__navigation a")
+    expect(next_link.text.squish).to eq("Next page →")
+    expect(next_link[:href]).to eq(queue_path(following_page, filter: "pending"))
+  end
+
   it "rejects while saving reviewer edits" do
     comment = create(:page_feedback_comment)
 
@@ -193,6 +215,38 @@ RSpec.describe "PageFeedback review workflow" do
     expect(response).to redirect_to("/feedback/review/pages?filter=pending")
   end
 
+  it "approves all pending feedback across pages as the current reviewer" do
+    reviewer = create(:user)
+    comments = %w[/alpha /beta].map { |path| create(:page_feedback_comment, page_path: path) }
+    PageFeedback.configuration.current_actor = ->(_controller) { reviewer }
+
+    post "/feedback/review/queue_approvals", params: { filter: "pending" }
+
+    expect(comments.map { |comment| comment.reload.status }).to all(eq("approved"))
+    expect(comments.map(&:reviewed_by)).to all(eq(reviewer))
+  end
+
+  it "limits queue approval by category and leaves rejected feedback unchanged" do
+    bug = create(:page_feedback_comment, page_path: "/alpha", category: "bug")
+    idea = create(:page_feedback_comment, page_path: "/gamma", category: "idea")
+    rejected = create(:page_feedback_comment, page_path: "/delta", category: "bug").tap(&:reject!)
+
+    post "/feedback/review/queue_approvals", params: { filter: "pending", category: "bug" }
+
+    expect([bug.reload.status, idea.reload.status, rejected.reload.status]).to eq(%w[approved pending rejected])
+    expect(response).to redirect_to("/feedback/review/pages?category=bug&filter=pending")
+  end
+
+  it "offers to approve every pending item from the page overview" do
+    create(:page_feedback_comment, page_path: "/alpha")
+    create(:page_feedback_comment, page_path: "/beta")
+
+    get "/feedback/review/pages", params: { filter: "pending" }
+
+    form = response.parsed_body.at_css("form[action='/feedback/review/queue_approvals']")
+    expect(form.text.squish).to include("Approve all 2 pending")
+  end
+
   it "enforces review authorization on every Phase 5 route" do
     comment = create(:page_feedback_comment)
     PageFeedback.configuration.review_authorizer = ->(_controller) { false }
@@ -220,11 +274,18 @@ RSpec.describe "PageFeedback review workflow" do
     [
       [:get, "/feedback/review/pages", {}], [:get, "/feedback/review/pages/#{key}/comments", {}],
       [:get, "/feedback/review/comments/#{id}", {}], [:patch, "/feedback/review/comments/#{id}", { comment: {} }],
+      *decision_requests(id),
+      [:post, "/feedback/review/bulk_approvals", {}], [:post, "/feedback/review/bulk_rejections", {}],
+      [:post, "/feedback/review/queue_approvals", {}]
+    ]
+  end
+
+  def decision_requests(id)
+    [
       [:post, "/feedback/review/comments/#{id}/approval", {}],
       [:delete, "/feedback/review/comments/#{id}/approval", {}],
       [:post, "/feedback/review/comments/#{id}/rejection", {}],
-      [:delete, "/feedback/review/comments/#{id}/rejection", {}],
-      [:post, "/feedback/review/bulk_approvals", {}], [:post, "/feedback/review/bulk_rejections", {}]
+      [:delete, "/feedback/review/comments/#{id}/rejection", {}]
     ]
   end
 end

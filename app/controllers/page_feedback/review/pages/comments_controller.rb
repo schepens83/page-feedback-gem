@@ -15,6 +15,7 @@ module PageFeedback
           @filter = review_filter
           @category = review_category
           @status_counts = Comment.where(page_path: @page_path).group(:status).count
+          @next_page_key = next_matching_page_key(excluding: @page_path)
           assign_queue
         end
 

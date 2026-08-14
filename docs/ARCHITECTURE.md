@@ -60,9 +60,10 @@ module import, and ships CSS whose selectors and custom properties are scoped to
 Phase 5 implements contextual review as REST resources. A small `ReviewPage`
 read model calculates page-level counts while `Comment` retains filter and state
 semantics. Nested page queues decode validated local path keys, build sandboxed
-replay URLs, and preserve filters through edits and decisions. Approval,
-rejection, reset, and bulk operations remain separate resources under one
-authorization-enforcing base controller.
+replay URLs, preserve filters through edits and decisions, and continue onto the
+next matching page when one page queue is exhausted. Approval, rejection, reset,
+selected bulk operations, and whole-pending-queue approval remain separate REST
+resources under one authorization-enforcing base controller.
 
 Phase 6 implements immutable export snapshots. Preview calls the configured
 formatter without persistence. Creation locks and rechecks the caller's ordered

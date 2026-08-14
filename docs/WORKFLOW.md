@@ -52,7 +52,11 @@ page in a sandboxed, visually noninteractive iframe. A highlighter restores the
 approximate scroll position and catches invalid or stale selectors without
 breaking the host page. Reviewers can filter by physical or derived state, refine
 the feedback, add notes, approve or reject, return a decision to pending, and
-advance without losing the active page, state, or category filter.
+advance without losing the active state or category filter. Finishing the last
+matching item on one page continues directly to the next matching page instead
+of returning to the page overview. The overview can also approve the entire
+pending queue at once; when a category filter is active, that decision applies
+only to pending feedback in that category and never changes rejected feedback.
 
 ## Export state
 

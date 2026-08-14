@@ -7,6 +7,14 @@
     <div>
       <p><%= @page_rows.length %> matching <%= "page".pluralize(@page_rows.length) %></p>
       <%= link_to "Export ready feedback", new_review_export_path, class: "page-feedback-review-link" %>
+      <% if @pending_count.positive? %>
+        <%= button_to "Approve all #{@pending_count} pending",
+                      review_queue_approvals_path,
+                      class: "page-feedback-review-action page-feedback-review-action--approve",
+                      form_class: "page-feedback-queue-approval",
+                      params: { filter: "pending", category: @category }.compact,
+                      data: { turbo_confirm: "Approve all pending feedback#{" in this category" if @category}?" } %>
+      <% end %>
     </div>
   </header>
 

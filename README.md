@@ -64,7 +64,10 @@ end
 
 Open `/feedback/review/pages` to review captured feedback. The export screen
 previews ready comments, stores an exact Markdown snapshot, and lets reviewers
-copy or download that stored body.
+copy or download that stored body. Reviewing the last matching item on a page
+continues on the next matching page automatically. Reviewers who trust the
+whole pending queue can approve it across all pages in one action; an active
+category filter limits that action to the selected category.
 
 The doctor checks the mount, host files, callbacks, migrations, tables, assets,
 formatter, and packaged docs. Use `PAGE_FEEDBACK_FORMAT=json` for stable machine
