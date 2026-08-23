@@ -9,7 +9,8 @@ RSpec.describe PageFeedback::Engine do
       page_feedback/clipboard page_feedback/context_recorder
       page_feedback/controllers/capture_controller page_feedback/controllers/copy_controller
       page_feedback/element_capture
-      page_feedback/feedback_picker page_feedback/review_highlight page_feedback/visual_viewport
+      page_feedback/feedback_picker page_feedback/review page_feedback/review_highlight
+      page_feedback/visual_viewport
     ]
   end
 
@@ -55,6 +56,14 @@ RSpec.describe PageFeedback::Engine do
     ).read
     imported_modules = controller_source.scan(%r{from "(page_feedback/[^"]+)"}).flatten
 
+    expect(Rails.application.importmap.packages.keys).to include(*imported_modules)
+  end
+
+  it "pins every internal module imported by the review entrypoint" do
+    entrypoint_source = described_class.root.join("app/assets/javascripts/page_feedback/review.js").read
+    imported_modules = entrypoint_source.scan(%r{from "(page_feedback/[^"]+)"}).flatten
+
+    expect(imported_modules).not_to be_empty
     expect(Rails.application.importmap.packages.keys).to include(*imported_modules)
   end
 end

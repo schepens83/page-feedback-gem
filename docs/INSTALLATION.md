@@ -18,9 +18,13 @@ The default mount path is `/feedback`. The generator supports
 `--force`. It is idempotent and does not overwrite customized files without an
 explicit force option and visible diff.
 
-The generator creates both capture and clipboard Stimulus proxies. Run
+The generator creates one Stimulus proxy, for the capture controller. The review
+UI loads its own controllers, so it needs no host proxy. Run
 `bin/rails destroy page_feedback:install` to remove exact generated files and
 insertions; copied migrations, tables, and data are intentionally preserved.
+Hosts installed before this change may still have an unused
+`app/javascript/controllers/page_feedback_copy_controller.js`, which is safe to
+delete.
 
 ## Authorization
 
@@ -36,7 +40,8 @@ The engine mount, `page_feedback_head`, `page_feedback_widget`, and generated
 Stimulus proxy are the only layout/runtime seams. If the host lacks the standard
 Stimulus controller loader, register the engine controller manually using the
 instructions printed by the generator rather than starting a second Stimulus
-application.
+application. These seams cover host-rendered pages only; the mounted review UI
+loads its own JavaScript and needs nothing from the host layout.
 
 ## Diagnostics
 

@@ -59,12 +59,10 @@ module PageFeedback
       end
 
       def stimulus_proxy_check
-        missing = %w[capture copy].reject do |name|
-          root.join("app/javascript/controllers/page_feedback_#{name}_controller.js").file?
-        end
-        return pass("stimulus_proxy", "Stimulus proxy controllers installed") if missing.empty?
+        proxy = root.join("app/javascript/controllers/page_feedback_capture_controller.js")
+        return pass("stimulus_proxy", "Stimulus proxy controller installed") if proxy.file?
 
-        fail_check("stimulus_proxy", "Stimulus proxy controllers missing", missing.join(", "))
+        fail_check("stimulus_proxy", "Stimulus proxy controller missing", "capture")
       end
 
       def documentation_check

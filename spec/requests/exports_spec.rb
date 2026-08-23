@@ -64,6 +64,18 @@ RSpec.describe "PageFeedback exports" do
     expect(response.body).to include("data-page-feedback-copy-text-value=")
   end
 
+  it "loads the review Stimulus entrypoint that registers the copy controller", :aggregate_failures do
+    comment = ready_comment
+    export = PageFeedback::Export.create_from!(comments: [comment])
+
+    get "/feedback/review/exports/#{export.id}"
+
+    document = response.parsed_body
+    expect(document.at_css("script[type='importmap']")).to be_present
+    expect(response.body).to include("page_feedback/review")
+    expect(document.css("script[type='module']").map(&:text).join).to include(%(import "page_feedback/review"))
+  end
+
   it "downloads byte-for-byte the same stored Markdown shown and copied" do
     comment = ready_comment
     export = PageFeedback::Export.create_from!(comments: [comment])

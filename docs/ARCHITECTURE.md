@@ -83,10 +83,13 @@ and return failure only for required integration errors, not warnings.
 ## Dependencies
 
 The engine depends on Rails 8, Turbo Rails, Stimulus Rails, Importmap Rails, and
-Propshaft. Browser code is shipped as importmap modules; the host's existing
-Stimulus application loads small generated proxies. Node is used only for the
-dependency-free development test suite, never as a host runtime dependency, and
-the engine does not start a second Stimulus application.
+Propshaft. Browser code is shipped as importmap modules; on host-rendered pages
+the host's existing Stimulus application loads small generated proxies, so the
+engine never competes with it there. Review pages render in the engine's own
+layout, where no host JavaScript is present, so that layout loads the
+`page_feedback/review` entrypoint and starts a Stimulus application of its own.
+Node is used only for the dependency-free development test suite, never as a
+host runtime dependency.
 
 ## Data flow
 

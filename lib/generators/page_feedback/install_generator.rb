@@ -30,7 +30,7 @@ module PageFeedback
       class_option :skip_layout, type: :boolean, default: false,
                                  desc: "Do not add layout helpers"
       class_option :skip_stimulus, type: :boolean, default: false,
-                                   desc: "Do not create Stimulus proxy controllers"
+                                   desc: "Do not create the Stimulus proxy controller"
 
       def validate_mount_path
         return if mount_path.match?(%r{\A/(?:[^/?#]+(?:/[^/?#]+)*)?\z})
@@ -64,12 +64,12 @@ module PageFeedback
         change_layout(layout, "page_feedback_widget", "</body>")
       end
 
-      # Create host-loader proxies for each engine Stimulus controller.
-      def create_stimulus_proxies
+      # Create the host-loader proxy for the capture controller. Review-only
+      # controllers load through the engine's own layout, not the host's.
+      def create_stimulus_proxy
         return if options[:skip_stimulus]
 
         install_template "capture_controller.js", "app/javascript/controllers/page_feedback_capture_controller.js"
-        install_template "copy_controller.js", "app/javascript/controllers/page_feedback_copy_controller.js"
       end
 
       # Print commands and URLs required to finish installation.

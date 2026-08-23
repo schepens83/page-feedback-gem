@@ -100,7 +100,7 @@ RSpec.describe PageFeedback::Generators::InstallGenerator do
 
   def expect_proxies_installed
     expect(read("app/javascript/controllers/page_feedback_capture_controller.js")).to include("capture_controller")
-    expect(read("app/javascript/controllers/page_feedback_copy_controller.js")).to include("copy_controller")
+    expect(File).not_to exist(path("app/javascript/controllers/page_feedback_copy_controller.js"))
   end
 
   def expect_idempotent(paths, first_contents)
@@ -131,7 +131,6 @@ RSpec.describe PageFeedback::Generators::InstallGenerator do
       config/routes.rb
       app/views/layouts/application.html.erb
       app/javascript/controllers/page_feedback_capture_controller.js
-      app/javascript/controllers/page_feedback_copy_controller.js
     ]
   end
 

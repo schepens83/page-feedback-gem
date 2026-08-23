@@ -106,7 +106,6 @@ RSpec.describe PageFeedback::Diagnostics do
     write("config/initializers/page_feedback.rb", "# installed\n")
     write("app/views/layouts/application.html.erb", "<%= page_feedback_head %>\n<%= page_feedback_widget %>\n")
     write("app/javascript/controllers/page_feedback_capture_controller.js", "// installed\n")
-    write("app/javascript/controllers/page_feedback_copy_controller.js", "// installed\n")
     PageFeedback::Engine.root.glob("db/migrate/*.rb").each_with_index do |migration, index|
       name = migration.basename(".rb").to_s.sub(/\A\d+_/, "")
       write("db/migrate/2026080815000#{index}_#{name}.page_feedback.rb", migration.read)
