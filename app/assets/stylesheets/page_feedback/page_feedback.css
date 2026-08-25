@@ -83,6 +83,8 @@ body.page-feedback-capture-mode .page-feedback-widget__trigger--active {
 
 .page-feedback-modal {
   padding: 0;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--page-feedback-border);
   border-radius: 0.4rem;
   width: min(32rem, calc(100% - 2rem));
@@ -95,9 +97,13 @@ body.page-feedback-capture-mode .page-feedback-widget__trigger--active {
   background: var(--page-feedback-overlay);
 }
 
+/* `max-height: 100%` here would be a percentage against a fit-content dialog,
+   which is circular. Growing inside the dialog's own max-height and scrolling
+   past it needs no percentage at all. */
 .page-feedback-modal__surface {
   overflow: auto;
-  max-height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   background: var(--page-feedback-surface);
 }
 
@@ -324,10 +330,17 @@ body.page-feedback-capture-mode * {
   .page-feedback-modal {
     width: 100%;
     max-width: 100%;
-    /* The bottom margin lifts the sheet above whatever covers the layout
-       viewport — usually the on-screen keyboard opened by the autofocused
-       comment field. */
-    margin: auto 0 var(--page-feedback-visual-viewport-offset-bottom, 0px);
+    /* The bottom edge is lifted above whatever covers the layout viewport —
+       usually the on-screen keyboard opened by the autofocused comment field.
+       Anchoring `bottom` while leaving `top` auto keeps this a plainly sized
+       box. Pinning both edges and lifting with `margin: auto 0 <offset>`
+       over-constrains it: Blink solves that for the content height, WebKit
+       solves it for zero, and the sheet collapses to its top border on
+       iPhone. */
+    top: auto;
+    bottom: var(--page-feedback-visual-viewport-offset-bottom, 0px);
+    margin: 0;
+    height: auto;
     border-bottom: 0;
     border-radius: 0.6rem 0.6rem 0 0;
     max-height: calc(100vh - 2rem);

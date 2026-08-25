@@ -91,6 +91,14 @@ to use semantic versioning after its first release.
 
 ### Fixed
 
+- The capture sheet has height on iPhone. It was pinned with `inset: 0` and
+  lifted by `margin: auto 0 <offset>`, an over-constrained absolutely
+  positioned box: Blink solves that for the content height, WebKit solves it
+  for zero, so the sheet rendered as a one-pixel sliver of its own top border
+  along the bottom edge — positioned correctly, with nothing to type into.
+  The sheet now anchors `bottom` and leaves `top` auto, and the scrolling
+  surface grows in a flex column instead of through a percentage max-height
+  that was circular against a fit-content dialog.
 - Feedback capture selects the clicked element again. The picker marks the
   hovered element with `page-feedback-capture-highlight`, and the skip
   predicate treated every `page-feedback-` class as engine chrome, so the

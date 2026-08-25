@@ -54,6 +54,25 @@ RSpec.describe PageFeedback::Engine do
     expect(modal_blocks.last).to include("var(--page-feedback-visual-viewport-offset-bottom, 0px)")
   end
 
+  it "sizes the capture sheet without engine-dependent layout" do
+    # Declarations only — the prose below explains the construct being avoided
+    # by naming it, and must not read as the construct itself.
+    declarations = stylesheet.gsub(%r{/\*.*?\*/}m, "")
+    small_screen_rules = declarations[/^@media \(max-width: 36rem\) \{(.+?)^\}/m, 1]
+    sheet = small_screen_rules[/\.page-feedback-modal \{(.+?)\}/m, 1]
+    surface = declarations[/^\.page-feedback-modal__surface \{(.+?)\}/m, 1]
+
+    # An `inset: 0` dialog lifted by `margin: auto 0 <offset>` is an
+    # over-constrained absolutely positioned box. Blink resolves it to the
+    # content height; WebKit resolves it to zero, which collapses the sheet to
+    # its top border on iPhone. Anchor the bottom edge and leave the top auto.
+    expect(sheet).to include("bottom: var(--page-feedback-visual-viewport-offset-bottom, 0px)")
+    expect(sheet).not_to match(/margin:\s*auto/)
+
+    # A percentage max-height against a fit-content dialog is circular.
+    expect(surface).not_to match(/max-height:\s*\d+%/)
+  end
+
   it "uses an achromatic visual palette" do
     hex_colors = stylesheet.scan(/#[0-9a-f]{3,8}\b/i)
     rgb_colors = stylesheet.scan(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
