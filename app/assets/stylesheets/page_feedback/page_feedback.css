@@ -83,14 +83,22 @@ body.page-feedback-capture-mode .page-feedback-widget__trigger--active {
 
 .page-feedback-modal {
   padding: 0;
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--page-feedback-border);
   border-radius: 0.4rem;
   width: min(32rem, calc(100% - 2rem));
   max-height: min(42rem, calc(100vh - 2rem));
   max-height: min(42rem, calc(var(--page-feedback-visual-viewport-height, 100dvh) - 2rem));
   box-shadow: var(--page-feedback-shadow);
+}
+
+/* Only the open sheet states a display. The user-agent stylesheet hides a
+   closed dialog with `dialog:not([open]) { display: none }`, and any author
+   `display` on the dialog outranks that on origin alone, whatever their
+   specificities — declaring it unconditionally leaves the sheet on every
+   page. */
+.page-feedback-modal[open] {
+  display: flex;
+  flex-direction: column;
 }
 
 .page-feedback-modal::backdrop {

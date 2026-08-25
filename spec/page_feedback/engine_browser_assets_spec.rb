@@ -4,6 +4,10 @@ require "rails_helper"
 
 RSpec.describe PageFeedback::Engine do
   let(:stylesheet) { File.read("app/assets/stylesheets/page_feedback/page_feedback.css") }
+  # Declarations only. The prose in these examples explains the constructs
+  # being avoided by naming them, and must not read as the constructs
+  # themselves.
+  let(:declarations) { stylesheet.gsub(%r{/\*.*?\*/}m, "") }
   let(:selectors) do
     stylesheet.gsub(%r{/\*.*?\*/}m, "").scan(/([^{}]+)\{/).flatten.filter_map do |block_header|
       header = block_header.strip
@@ -55,9 +59,6 @@ RSpec.describe PageFeedback::Engine do
   end
 
   it "sizes the capture sheet without engine-dependent layout" do
-    # Declarations only — the prose below explains the construct being avoided
-    # by naming it, and must not read as the construct itself.
-    declarations = stylesheet.gsub(%r{/\*.*?\*/}m, "")
     small_screen_rules = declarations[/^@media \(max-width: 36rem\) \{(.+?)^\}/m, 1]
     sheet = small_screen_rules[/\.page-feedback-modal \{(.+?)\}/m, 1]
     surface = declarations[/^\.page-feedback-modal__surface \{(.+?)\}/m, 1]
@@ -71,6 +72,19 @@ RSpec.describe PageFeedback::Engine do
 
     # A percentage max-height against a fit-content dialog is circular.
     expect(surface).not_to match(/max-height:\s*\d+%/)
+  end
+
+  it "leaves a closed capture sheet hidden" do
+    # `dialog:not([open]) { display: none }` is a user-agent rule, and an
+    # author `display` on the dialog outranks it on origin alone, whatever
+    # their specificities. Stating the sheet's display only for the open state
+    # keeps the closed sheet out of the page.
+    dialog_rules = declarations.scan(/^\s*(\.page-feedback-modal(?:\[[^\]]+\])?) \{(.+?)^\s*\}/m)
+    displaying = dialog_rules.select { |_selector, body| body.match?(/^\s*display:/) }
+
+    expect(dialog_rules).not_to be_empty
+    expect(displaying).not_to be_empty
+    expect(displaying.map(&:first)).to all(include("[open]"))
   end
 
   it "uses an achromatic visual palette" do

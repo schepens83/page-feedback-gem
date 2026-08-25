@@ -91,6 +91,12 @@ to use semantic versioning after its first release.
 
 ### Fixed
 
+- The closed capture sheet no longer sits on the page. Giving the dialog
+  `display: flex` for its flex column stated a display unconditionally, and an
+  author `display` on a dialog outranks the user agent's
+  `dialog:not([open]) { display: none }` on origin alone, whatever their
+  specificities — so the sheet rendered on every page, full width at the
+  bottom on mobile. Only `.page-feedback-modal[open]` states a display now.
 - The capture sheet has height on iPhone. It was pinned with `inset: 0` and
   lifted by `margin: auto 0 <offset>`, an over-constrained absolutely
   positioned box: Blink solves that for the content height, WebKit solves it
