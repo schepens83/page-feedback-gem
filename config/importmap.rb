@@ -13,4 +13,5 @@ pin "page_feedback/element_capture", to: "page_feedback/element_capture.js", pre
 pin "page_feedback/feedback_picker", to: "page_feedback/feedback_picker.js", preload: false
 pin "page_feedback/review", to: "page_feedback/review.js", preload: false
 pin "page_feedback/review_highlight", to: "page_feedback/review_highlight.js", preload: false
+pin "page_feedback/trigger_handle", to: "page_feedback/trigger_handle.js", preload: false
 pin "page_feedback/visual_viewport", to: "page_feedback/visual_viewport.js", preload: false

@@ -68,6 +68,16 @@ to it when pressed again, so the widget never shows a button beside a separate
 banner. Hosts that set `trigger_visible = false` get the floating
 `.page-feedback-mode-indicator` instead.
 
+On coarse pointers the idle trigger parks itself against the inline edge, with
+only a sliver showing, and carries `aria-expanded="false"`. The first tap peeks
+it out; the tap after that arms capture. A peeked trigger parks itself again
+after five idle seconds or on the next tap elsewhere, and stays out for as long
+as capture is armed, since it is the mode banner. Fine pointers keep the whole
+button, because they have both the room for it and the keyboard shortcut. The
+parked trigger keeps its 44px touch target through an inert pseudo-element that
+widens the hit area over the edge, so hosts styling `.page-feedback-widget__trigger`
+should leave its `position` and `::before` alone.
+
 The widget's Stimulus controller uses `activation_shortcut` (Alt+F by default),
 removes every class listed in `ignored_css_classes` from generated selectors,
 and populates only the documented capture fields. The picker is input-adaptive:

@@ -79,6 +79,10 @@ to use semantic versioning after its first release.
 - Converted the capture modal to a native `<dialog>` that renders as a bottom
   sheet on small screens, with a sticky submit row and safe-area-aware
   padding.
+- Parked the idle capture trigger against the viewport edge on touch devices,
+  where it showed a permanent floating button because there is no keyboard
+  shortcut to fall back on. A sliver stays visible: the first tap peeks the
+  button out, the next arms capture, and an untouched peek parks itself again.
 - Turned the floating trigger into the capture-mode banner. Arming feedback
   mode now relabels the button, marks it `aria-pressed`, and stretches it into a
   bar across small screens instead of adding a second floating indicator beside

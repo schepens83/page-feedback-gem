@@ -378,6 +378,35 @@ body.page-feedback-capture-mode * {
   .page-feedback-category-filter select {
     min-height: 44px;
   }
+
+  .page-feedback-widget__trigger {
+    transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+  }
+
+  /* Parked, the trigger slides off the right edge until only a sliver of its
+     leading padding shows — a drawer pull rather than a button sitting on the
+     page. The sliver stays narrower than the button's own inline padding, so
+     no clipped half-word of the label is left on screen, and the label keeps
+     its place in the accessibility tree instead of being hidden away. */
+  .page-feedback-widget__trigger--handle {
+    transform: translateX(
+      calc(100% - 0.75rem + var(--page-feedback-offset-inline) + env(safe-area-inset-right, 0px))
+    );
+    border-radius: 0.35rem 0 0 0.35rem;
+    opacity: 0.55;
+  }
+
+  /* The visible sliver is far under the 44px target every other control gets
+     here. This widens the hit area back across the parked edge without
+     painting anything: taps on it land on the button that owns it. */
+  .page-feedback-widget__trigger--handle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -2rem;
+    width: 2rem;
+  }
 }
 
 .page-feedback-review-body {
@@ -815,5 +844,9 @@ body.page-feedback-capture-mode * {
 @media (prefers-reduced-motion: reduce) {
   .page-feedback-toast {
     animation: none;
+  }
+
+  .page-feedback-widget__trigger {
+    transition: none;
   }
 }

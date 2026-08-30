@@ -4,6 +4,7 @@ import { captureElement, shouldSkipElement } from "page_feedback/element_capture
 import { startFeedbackPicker } from "page_feedback/feedback_picker"
 import { keyboardIntent, populateCaptureTargets } from "page_feedback/capture_controller_support"
 import { startCaptureModeStatus } from "page_feedback/capture_mode_status"
+import { startTriggerHandle } from "page_feedback/trigger_handle"
 import { trackVisualViewport } from "page_feedback/visual_viewport"
 
 export default class extends Controller {
@@ -23,6 +24,9 @@ export default class extends Controller {
 
   connect() {
     installContextRecorder()
+    this.triggerHandle = startTriggerHandle({
+      element: this.hasTriggerTarget ? this.triggerTarget : undefined
+    })
     this.handleGlobalKeydown = this.handleGlobalKeydown.bind(this)
     document.addEventListener("keydown", this.handleGlobalKeydown)
   }
@@ -30,10 +34,19 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener("keydown", this.handleGlobalKeydown)
     this.stopFeedbackMode()
+    this.triggerHandle.release()
   }
 
   activate(event) {
     event.preventDefault()
+    // A parked trigger spends its first tap pulling itself out of the edge;
+    // only the tap on the whole button arms capture.
+    if (this.triggerHandle.collapsed) return this.triggerHandle.expand()
+
+    this.toggleFeedbackMode()
+  }
+
+  toggleFeedbackMode() {
     this.feedbackStop ? this.stopFeedbackMode() : this.startFeedbackMode()
   }
 
@@ -97,7 +110,10 @@ export default class extends Controller {
 
     if (intent === "close-modal") this.close()
     if (intent === "stop-picker") this.stopFeedbackMode()
-    if (intent === "toggle-picker") this.activate(event)
+    if (intent === "toggle-picker") {
+      event.preventDefault()
+      this.toggleFeedbackMode()
+    }
   }
 
   startFeedbackMode() {
@@ -113,6 +129,9 @@ export default class extends Controller {
         this.openModal(captureElement(element, { ignoredClasses: this.ignoredClassesValue }), meta)
       }
     })
+    // Armed capture turns the trigger into its mode bar, so it has to be out
+    // in full and stay out for as long as the picker runs.
+    this.triggerHandle.expand({ sticky: true })
     this.modeStatusRelease = startCaptureModeStatus({
       element: this.hasTriggerTarget ? this.triggerTarget : undefined
     })
@@ -127,6 +146,9 @@ export default class extends Controller {
   }
 
   releaseModeStatus() {
+    // The trigger is the mode bar, so parking it again is part of taking the
+    // bar down — whether capture was cancelled or an element was picked.
+    this.triggerHandle.collapse()
     if (!this.modeStatusRelease) return
 
     this.modeStatusRelease()

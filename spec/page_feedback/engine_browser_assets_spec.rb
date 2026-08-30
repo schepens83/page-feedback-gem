@@ -50,6 +50,33 @@ RSpec.describe PageFeedback::Engine do
     expect(small_screen_rules).to include(".page-feedback-widget__trigger--active")
   end
 
+  it "parks the touch trigger against the viewport edge" do
+    coarse_rules = declarations[/^@media \(pointer: coarse\) \{(.+?)^\}/m, 1]
+    handle = coarse_rules[/\.page-feedback-widget__trigger--handle \{(.+?)\}/m, 1]
+
+    # Only touch pays for the parked trigger. A fine pointer has both the room
+    # for the whole button and the activation shortcut to ignore it with.
+    expect(declarations).not_to match(/^\.page-feedback-widget__trigger--handle/)
+    expect(handle).to include("transform: translateX(", "var(--page-feedback-offset-inline)")
+  end
+
+  it "keeps the parked trigger tappable" do
+    coarse_rules = declarations[/^@media \(pointer: coarse\) \{(.+?)^\}/m, 1]
+    hit_area = coarse_rules[/\.page-feedback-widget__trigger--handle::before \{(.+?)\}/m, 1]
+
+    # Only a sliver of the button stays on screen, which is far under the 44px
+    # touch target the same media query gives every other control. An
+    # inert pseudo-element widens the hit area back over the parked edge.
+    expect(hit_area).to include("content:", "position: absolute")
+  end
+
+  it "stills the parked trigger for reduced motion" do
+    motion_rules = declarations[/^@media \(prefers-reduced-motion: reduce\) \{(.+?)^\}/m, 1]
+
+    expect(motion_rules).to include(".page-feedback-widget__trigger")
+    expect(motion_rules).to match(/transition:\s*none/)
+  end
+
   it "keeps the capture modal inside the visual viewport" do
     modal_blocks = stylesheet.scan(/^\s*\.page-feedback-modal \{(.+?)\}/m).flatten
 
