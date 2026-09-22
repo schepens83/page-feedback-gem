@@ -70,10 +70,20 @@ module PageFeedback
       PageFeedback.configuration.capture_authorizer.call(page_feedback_policy_controller)
     end
 
+    # The authorizer is handed an engine controller so a host policy can reach
+    # the current request through it. `set_request!` writes `controller_instance`
+    # back onto that request, though, so the host's own request would be left
+    # pointing at an engine controller that never ran: `assigns` in a host's
+    # request spec would read the wrong controller's ivars, and anything that
+    # reads `controller_instance` after the render would see a foreign
+    # controller. Hand the request back before returning.
     def page_feedback_policy_controller
+      host_controller = controller
+
       PageFeedback::CommentsController.new.tap do |engine_controller|
-        engine_controller.set_request!(controller.request)
-        engine_controller.set_response!(controller.response)
+        engine_controller.set_request!(host_controller.request)
+        engine_controller.set_response!(host_controller.response)
+        host_controller.request.controller_instance = host_controller
       end
     end
 
