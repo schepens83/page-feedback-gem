@@ -40,6 +40,11 @@ RSpec.describe PageFeedback::ActorLabel do
   end
 
   it "identifies records that expose no display reader" do
+    # Active Record generates `email` on first use, so there is nothing to undef
+    # until something has asked for it. Whether that had happened used to depend
+    # on which examples the random order put first.
+    User.define_attribute_methods
+
     record_class = Class.new(User) do
       undef_method :email
 
