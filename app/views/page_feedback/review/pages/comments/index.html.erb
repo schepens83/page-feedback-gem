@@ -36,9 +36,12 @@
         </dl>
       </article>
 
+      <%# Reject and Save edits submit via formaction to other URLs; a per-form token scoped
+          to the approval URL would fail those, so embed the session-global token instead. %>
       <%= form_with url: review_comment_approval_path(@current),
                     method: :post,
                     scope: :comment,
+                    authenticity_token: form_authenticity_token,
                     class: "page-feedback-review-form" do |form| %>
         <%= hidden_field_tag :return_to_queue, "1" %>
         <%= hidden_field_tag :page_key, @page_key %>

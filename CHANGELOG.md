@@ -132,6 +132,12 @@ to use semantic versioning after its first release.
 - Alt+F re-arms feedback mode on the press after a capture. The picker stops
   itself before invoking `onPick`, so the Stimulus adapter now clears its own
   handle and no longer spends the next shortcut discarding stale state.
+- Rejecting or saving edits from the review queue returned 422 in hosts with
+  Rails 8's per-form CSRF tokens. The queue form's Reject and Save edits
+  buttons submit to other URLs via `formaction`, so the form's embedded
+  token — scoped to the approval action alone — failed authenticity checks
+  there. The form now embeds the session-global authenticity token, which is
+  valid for any of the form's actions.
 
 ### Security
 

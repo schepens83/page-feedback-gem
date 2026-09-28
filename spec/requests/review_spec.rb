@@ -288,4 +288,61 @@ RSpec.describe "PageFeedback review workflow" do
       [:delete, "/feedback/review/comments/#{id}/rejection", {}]
     ]
   end
+
+  context "with per-form CSRF tokens enforced, as Rails 8 defaults enable in hosts" do
+    around do |example|
+      original_setting = ActionController::Base.allow_forgery_protection
+      ActionController::Base.allow_forgery_protection = true
+      example.run
+    ensure
+      ActionController::Base.allow_forgery_protection = original_setting
+    end
+
+    def queue_form(comment)
+      get queue_path(comment, filter: "pending")
+      response.parsed_body.at_css(".page-feedback-review-form")
+    end
+
+    def hidden_value(form, name)
+      form.at_css("input[name='#{name}']")&.[](:value)
+    end
+
+    def queue_form_params(form, comment:)
+      names = %w[authenticity_token return_to_queue page_key filter]
+      names.index_with { |name| hidden_value(form, name) }.merge(comment:)
+    end
+
+    it "rejects from the queue form's Reject formaction" do
+      comment = create(:page_feedback_comment)
+      form = queue_form(comment)
+      params = queue_form_params(form, comment: { reviewer_notes: "Needs more thought" })
+
+      post "/feedback/review/comments/#{comment.id}/rejection", params: params
+
+      expect(response).not_to have_http_status(:unprocessable_content)
+      expect(comment.reload).to have_attributes(status: "rejected", reviewer_notes: "Needs more thought")
+    end
+
+    it "saves edits from the queue form's Save edits formaction" do
+      comment = create(:page_feedback_comment)
+      form = queue_form(comment)
+      edits = { refined_text: "Refined via save edits", reviewer_notes: "Looks good" }
+
+      patch "/feedback/review/comments/#{comment.id}", params: queue_form_params(form, comment: edits)
+
+      expect(response).not_to have_http_status(:unprocessable_content)
+      expect(comment.reload).to have_attributes(**edits)
+    end
+
+    it "still approves from the queue form's default action" do
+      comment = create(:page_feedback_comment)
+      form = queue_form(comment)
+      params = queue_form_params(form, comment: { reviewer_notes: "Ready" })
+
+      post "/feedback/review/comments/#{comment.id}/approval", params: params
+
+      expect(response).not_to have_http_status(:unprocessable_content)
+      expect(comment.reload.status).to eq("approved")
+    end
+  end
 end
