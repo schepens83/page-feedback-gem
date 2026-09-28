@@ -48,5 +48,20 @@ architecture or implementation plan into generated files.
 
 ## Releases
 
-The project is unreleased and uses the MIT License. Do not push a gem or tag
-until the Phase 9 gates pass and release metadata is final.
+The gem is not published to RubyGems and uses the MIT License. Host apps
+install it from GitHub pinned to a release tag:
+
+```ruby
+gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.1"
+```
+
+To cut a release:
+
+1. Bump `PageFeedback::VERSION` and its spec (patch for fixes, minor for
+   features).
+2. Move the `[Unreleased]` CHANGELOG entries under a new
+   `## [x.y.z] - YYYY-MM-DD` heading.
+3. Run `bundle install` and, for each Rails gemfile,
+   `BUNDLE_GEMFILE=gemfiles/<name>.gemfile bundle install` to refresh lockfiles.
+4. Run the full gate, commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z`.
+5. In each host: change the Gemfile `tag:` and run `bundle update page_feedback`.

@@ -6,6 +6,8 @@ to use semantic versioning after its first release.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-28
+
 ### Added
 
 - Initial architecture and implementation plan.

@@ -4,7 +4,7 @@ require "spec_helper"
 require "page_feedback/version"
 
 RSpec.describe "PageFeedback::VERSION" do
-  it "starts at the planned first-release version" do
-    expect(PageFeedback::VERSION).to eq("0.1.0")
+  it "matches the current release" do
+    expect(PageFeedback::VERSION).to eq("0.1.1")
   end
 end
