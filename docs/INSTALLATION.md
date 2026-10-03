@@ -64,6 +64,47 @@ Update the gem, copy newly provided migrations, run database migrations, and
 then run the doctor. Never edit a migration that has already shipped; add a new
 migration. Review `CHANGELOG.md` for public behavior and configuration changes.
 
+### Adopting a new gem version
+
+Hosts install from a GitHub release tag, which is an exact ref. Bundler git
+sources cannot take a version constraint such as `~> 0.2` — that syntax only
+applies to gems resolved from a gem server. Every new release therefore arrives
+as a `tag:` change in the host's `Gemfile` plus a lockfile refresh:
+
+```ruby
+gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.2"
+```
+
+```bash
+bundle update page_feedback
+```
+
+To adopt releases without editing every host Gemfile by hand, let Dependabot do
+the change. Dependabot resolves git-source Bundler dependencies: as soon as a
+new tag is pushed it opens a pull request that bumps the `tag:` directive and
+refreshes the lockfile. Add to each host repo:
+
+```yaml
+# .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: daily
+```
+
+Dependabot cannot tell minor bumps from patch bumps for git tags; it offers
+every new tag at the chosen cadence. If you want true `~>` semantics (let
+patches through, hold minors), the gem must be installed from a gem server
+instead of a git tag.
+
+Kamal does not update bundled gems. `kamal deploy` builds the application
+image from the `Gemfile.lock` committed in the repo, so the pinned version is
+exactly what ships. Merge the Dependabot pull request — or run
+`bundle update page_feedback` and commit — before deploying; the deploy itself
+never fetches a newer version.
+
 ## Uninstall
 
 The destroy form of the installer removes generated host files where it can do

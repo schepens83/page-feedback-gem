@@ -69,6 +69,13 @@ continues on the next matching page automatically. Reviewers who trust the
 whole pending queue can approve it across all pages in one action; an active
 category filter limits that action to the selected category.
 
+**Getting updates.** Every release is a new GitHub tag. Hosts adopt it by
+merging a Dependabot pull request or running `bundle update page_feedback` —
+Dependabot bumps the `tag:` in the Gemfile and the lockfile automatically, so
+no per-host Gemfile edits are needed. Kamal ships exactly the lockfile
+committed in the repo; it never fetches a newer gem version during deploy. See
+[Upgrades](docs/INSTALLATION.md#adopting-a-new-gem-version).
+
 The doctor checks the mount, host files, callbacks, migrations, tables, assets,
 formatter, and packaged docs. Use `PAGE_FEEDBACK_FORMAT=json` for stable machine
 output; warnings such as intentionally open authorization do not make it fail.
