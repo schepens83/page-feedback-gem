@@ -19,6 +19,7 @@ data, layout integration, and deployment.
 - `config/`: engine routes, importmap pins, and locale strings
 - `db/migrate/`: migrations copied into host applications
 - `lib/`: public API, engine integration, generators, diagnostics, and tasks
+- `bin/`: maintainer-only scripts, not published in the gem
 - `spec/`: unit and integration tests using `spec/dummy` as the host application
 - `docs/`: canonical product, architecture, workflow, API, and maintenance docs
 - `exe/`: small end-user command-line interface
@@ -45,11 +46,25 @@ bundle exec yard doc --fail-on-warning --no-output --exclude '^sig/'
 gem build page_feedback.gemspec
 spec/dummy/bin/rails runner 'puts PageFeedback::VERSION'
 spec/dummy/bin/rails routes
+# Adopt a release in every local host repo (PAGE_FEEDBACK_DRY_RUN=1 previews)
+bin/update_hosts
 ```
 
 Use `bundle exec rspec path/to/spec.rb` for a focused red-green cycle. Run the
 full three-command Phase 0 gate before declaring a phase complete. Do not use
 browser proof tooling unless the user explicitly asks for it.
+
+## Releases
+
+Cut a release by bumping `PageFeedback::VERSION` and its spec, moving the
+`[Unreleased]` CHANGELOG entries under a dated heading, running the full gate,
+then `git tag vX.Y.Z && git push origin main vX.Y.Z`. Adopt the tag in every
+local host with `bin/update_hosts` (dry-run first with
+`PAGE_FEEDBACK_DRY_RUN=1`); it bumps each host's `tag:`, refreshes lockfiles,
+and commits and pushes. Do not use `rake release` — `bundler/gem_tasks`
+exposes it and it pushes the built gem to RubyGems. Kamal deploys the lockfile
+committed in each host repo; it never runs bundle updates. Full runbook:
+`docs/DEVELOPMENT.md`.
 
 ## Change discipline
 
