@@ -6,6 +6,15 @@ to use semantic versioning after its first release.
 
 ## [Unreleased]
 
+### Fixed
+
+- The feedback dialog no longer pins itself to the top-left of the viewport on
+  desktop when a host stylesheet resets dialog margins (for example
+  `* { margin: 0 }`). The sheet previously depended on the user agent's auto
+  margins to stay centered; it now positions and centers itself explicitly
+  (`position: fixed; inset: 0; margin: auto`), and the mobile bottom-sheet
+  behavior is unchanged.
+
 ## [0.1.1] - 2026-09-28
 
 ### Added

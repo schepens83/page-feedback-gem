@@ -81,7 +81,16 @@ body.page-feedback-capture-mode .page-feedback-widget__trigger--active {
   background: #e8e8e8;
 }
 
+/* Center the sheet itself instead of relying on the user-agent dialog
+   margins. Host resets like `* { margin: 0 }` remove those margins, which
+   turns the UA's `inset-inline: 0; margin: auto` centering into a top-left
+   pinning. `inset: 0` + `margin: auto` with a definite width and a
+   fit-content height is the standard centered-box recipe and wins over any
+   generic reset. The mobile query below re-anchors to the bottom edge. */
 .page-feedback-modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   padding: 0;
   border: 1px solid var(--page-feedback-border);
   border-radius: 0.4rem;
