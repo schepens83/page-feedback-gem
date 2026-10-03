@@ -4,7 +4,14 @@ All notable changes will be recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project intends
 to use semantic versioning after its first release.
 
-## [Unreleased]
+## [0.1.2] - 2026-10-03
+
+### Added
+
+- `bin/update_hosts` maintainer command adopts a release in every local host
+  repository: it bumps the host's `tag:` option, refreshes lockfiles, and
+  commits and pushes the change, skipping `ref:`/`branch:` pins and dirty
+  worktrees. See `docs/INSTALLATION.md#adopting-a-new-gem-version`.
 
 ### Fixed
 

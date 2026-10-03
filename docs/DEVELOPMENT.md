@@ -52,7 +52,7 @@ The gem is not published to RubyGems and uses the MIT License. Host apps
 install it from GitHub pinned to a release tag:
 
 ```ruby
-gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.1"
+gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.2"
 ```
 
 To cut a release:

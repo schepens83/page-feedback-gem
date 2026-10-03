@@ -5,6 +5,6 @@ require "page_feedback/version"
 
 RSpec.describe "PageFeedback::VERSION" do
   it "matches the current release" do
-    expect(PageFeedback::VERSION).to eq("0.1.1")
+    expect(PageFeedback::VERSION).to eq("0.1.2")
   end
 end
