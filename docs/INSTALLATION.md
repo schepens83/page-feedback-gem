@@ -83,6 +83,12 @@ about those. Preview the result first with
 `PAGE_FEEDBACK_DRY_RUN=1 bin/update_hosts`, or restrict the run with
 `PAGE_FEEDBACK_HOSTS="/path/to/app /path/to/other"`.
 
+The updater refreshes each host's bundle with the Ruby of the shell it runs
+in. A host that pins a different Ruby (via `.ruby-version`) fails its row
+with a version mismatch and its Gemfile is restored; update that host by
+hand — bump the `tag:` and run `bundle update page_feedback` in the host's
+own Ruby environment.
+
 Hosts that are not on that machine (CI, other developers, other machines) can
 be updated the usual way — bump the `tag:` in the Gemfile and refresh the
 lockfile:
