@@ -69,10 +69,10 @@ continues on the next matching page automatically. Reviewers who trust the
 whole pending queue can approve it across all pages in one action; an active
 category filter limits that action to the selected category.
 
-**Getting updates.** Every release is a new GitHub tag. Hosts adopt it by
-merging a Dependabot pull request or running `bundle update page_feedback` —
-Dependabot bumps the `tag:` in the Gemfile and the lockfile automatically, so
-no per-host Gemfile edits are needed. Kamal ships exactly the lockfile
+**Getting updates.** Every release is a new GitHub tag. After pushing the
+release tag, run `bin/update_hosts` in this repo: it bumps the `tag:` in every
+local host's Gemfile, refreshes lockfiles, and commits and pushes the change,
+so no per-host Gemfile edits are needed. Kamal ships exactly the lockfile
 committed in the repo; it never fetches a newer gem version during deploy. See
 [Upgrades](docs/INSTALLATION.md#adopting-a-new-gem-version).
 

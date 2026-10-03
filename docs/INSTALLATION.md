@@ -66,10 +66,26 @@ migration. Review `CHANGELOG.md` for public behavior and configuration changes.
 
 ### Adopting a new gem version
 
-Hosts install from a GitHub release tag, which is an exact ref. Bundler git
-sources cannot take a version constraint such as `~> 0.2` — that syntax only
-applies to gems resolved from a gem server. Every new release therefore arrives
-as a `tag:` change in the host's `Gemfile` plus a lockfile refresh:
+For local host repositories the gem repo ships a one-command updater that does
+the whole adoption after a release. It rewrites each host's `tag:` option,
+refreshes the lockfile with `bundle update page_feedback`, and commits and
+pushes the change:
+
+```bash
+# in the page-feedback-gem repo, right after pushing the release tag
+bin/update_hosts
+```
+
+It discovers every project under `~/Projects` that declares the gem and
+reports one row per repository. Repositories pinned by `ref:` or `branch:`
+are skipped, and dirty worktrees are left alone — the updater never guesses
+about those. Preview the result first with
+`PAGE_FEEDBACK_DRY_RUN=1 bin/update_hosts`, or restrict the run with
+`PAGE_FEEDBACK_HOSTS="/path/to/app /path/to/other"`.
+
+Hosts that are not on that machine (CI, other developers, other machines) can
+be updated the usual way — bump the `tag:` in the Gemfile and refresh the
+lockfile:
 
 ```ruby
 gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.2"
@@ -79,31 +95,13 @@ gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.2"
 bundle update page_feedback
 ```
 
-To adopt releases without editing every host Gemfile by hand, let Dependabot do
-the change. Dependabot resolves git-source Bundler dependencies: as soon as a
-new tag is pushed it opens a pull request that bumps the `tag:` directive and
-refreshes the lockfile. Add to each host repo:
-
-```yaml
-# .github/dependabot.yml
-version: 2
-updates:
-  - package-ecosystem: bundler
-    directory: "/"
-    schedule:
-      interval: daily
-```
-
-Dependabot cannot tell minor bumps from patch bumps for git tags; it offers
-every new tag at the chosen cadence. If you want true `~>` semantics (let
-patches through, hold minors), the gem must be installed from a gem server
-instead of a git tag.
-
 Kamal does not update bundled gems. `kamal deploy` builds the application
 image from the `Gemfile.lock` committed in the repo, so the pinned version is
-exactly what ships. Merge the Dependabot pull request — or run
+exactly what ships. Merge the updater's commit — or run
 `bundle update page_feedback` and commit — before deploying; the deploy itself
-never fetches a newer version.
+never fetches a newer version. Bundler git sources pin an exact ref, so a
+version constraint such as `~> 0.2` never applies to tag-based installs; for
+true `~>` semantics the gem would have to be installed from a gem server.
 
 ## Uninstall
 

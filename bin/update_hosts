@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Maintainer-only: adopt the released PageFeedback version in every local host
+# repository. Preview with PAGE_FEEDBACK_DRY_RUN=1, or point at specific repos
+# with PAGE_FEEDBACK_HOSTS="/path/to/app /path/to/other".
+
+require_relative "../lib/page_feedback/version"
+require_relative "../lib/page_feedback/host_updater"
+
+report = PageFeedback::HostUpdater.new(
+  version: PageFeedback::VERSION,
+  dry_run: ENV["PAGE_FEEDBACK_DRY_RUN"] == "1"
+).call
+
+report.each do |row|
+  repo = File.basename(row.repo)
+  puts format("%-18<repo>s %-13<status>s %<detail>s",
+              repo: repo, status: row.status.to_s, detail: row.detail)
+end
+
+exit 1 unless report.all?(&:ok?)

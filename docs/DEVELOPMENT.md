@@ -64,10 +64,10 @@ To cut a release:
 3. Run `bundle install` and, for each Rails gemfile,
    `BUNDLE_GEMFILE=gemfiles/<name>.gemfile bundle install` to refresh lockfiles.
 4. Run the full gate, commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z`.
-5. Hosts adopt the new tag. Do not run `rake release` here: `bundler/gem_tasks`
-   exposes it, and it tries to push the built gem to RubyGems after tagging —
-   follow the manual steps above instead. Hosts pick the version up through a
-   Dependabot pull request (see `docs/INSTALLATION.md#adopting-a-new-gem-version`)
-   or by changing the Gemfile `tag:` and running `bundle update page_feedback`.
-   Kamal never updates bundles during deploy; it ships the lockfile that is
+5. Adopt in local hosts with `bin/update_hosts` (preview first:
+   `PAGE_FEEDBACK_DRY_RUN=1 bin/update_hosts`); it bumps each host's `tag:`,
+   refreshes lockfiles, and commits and pushes. Do not run `rake release`
+   here: `bundler/gem_tasks` exposes it, and it tries to push the built gem
+   to RubyGems after tagging — follow the manual steps above instead. Kamal
+   never updates bundles during deploy; it ships the lockfile that is
    committed in the host repo.
