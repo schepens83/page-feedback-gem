@@ -52,6 +52,10 @@ module PageFeedback
     # @return [#call] formatter called with comments and generated_at keyword arguments
     attr_accessor :export_formatter
 
+    # @return [String, nil] absolute URL of the review handoff page on a host a
+    #   phone can reach; nil uses this host's own page
+    attr_accessor :handoff_url
+
     def initialize
       assign_callback_defaults
       assign_presentation_defaults

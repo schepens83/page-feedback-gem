@@ -85,6 +85,23 @@ feedback, notes, source locations, selectors, and captured HTML, and safely
 escapes text and code fences. Formatter substitution is a configured callable,
 so hosts can change representation without changing snapshot semantics.
 
+## Handing an export to a phone
+
+An export page has a "Send to phone" section: the stored Markdown, raw-deflated
+and base64url encoded, split into at most twelve QR codes. Each code is a link
+to the review handoff page (`config.handoff_url`, else this host's own) with a
+`#pf1.<id>.<index>.<total>.<chunk>` fragment. Browsers never send a fragment to
+the server, so the export crosses from screen to phone without touching a
+network, and the handoff page only serves the static unpacker.
+
+Scanning opens that page, which keeps received parts in `localStorage` until
+the set is complete (codes may be scanned in any order, in separate tabs),
+inflates the payload, shows the Markdown with a copy button, forgets the parts
+and removes the fragment from history. The page sits behind review
+authorization like every review screen, so the phone must be signed in to that
+host as a reviewer. An export too large for twelve codes says so and leaves the
+download as the route.
+
 ## Queue filters
 
 The primary filters are Pending, Ready to export, Exported, Changed, Rejected,

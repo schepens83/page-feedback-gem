@@ -22,8 +22,14 @@ PageFeedback.configure do |config|
   config.ignored_css_classes = []
   config.source_locator = ->(_comment) { nil }
   config.export_formatter = PageFeedback::Exporters::Markdown
+  config.handoff_url = nil
 end
 ```
+
+`handoff_url` is the absolute URL of `/review/handoff` on a host a phone can
+reach. Leave it nil and an export's "Send to phone" QR codes point at the
+current host's own handoff page; set it when the host runs somewhere a phone
+cannot reach (an offline laptop) and a second deployment of the same host can.
 
 Callbacks receive the current engine controller, except `actor_label`, which
 receives the resolved actor, and `source_locator`, which receives a comment.

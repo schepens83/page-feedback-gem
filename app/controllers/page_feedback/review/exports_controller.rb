@@ -18,7 +18,7 @@ module PageFeedback
       # @return [void]
       def show
         respond_to do |format|
-          format.html
+          format.html { @handoff = Handoff.new(@export.body, base_url: handoff_base_url) }
           format.md { send_stored_markdown }
         end
       end
@@ -56,6 +56,10 @@ module PageFeedback
         ids = Comment.ready_for_export.recent.pluck(:id) if default_to_all && ids.empty?
         comments_by_id = Comment.ready_for_export.where(id: ids).index_by(&:id)
         ids.filter_map { |id| comments_by_id[id] }
+      end
+
+      def handoff_base_url
+        PageFeedback.configuration.handoff_url.presence || review_handoff_url
       end
 
       def send_stored_markdown

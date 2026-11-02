@@ -859,3 +859,31 @@ body.page-feedback-capture-mode * {
     transition: none;
   }
 }
+
+.page-feedback-handoff-codes summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.page-feedback-handoff-codes__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.page-feedback-handoff-codes__list li {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: center;
+}
+
+/* Quiet zone and black-on-white regardless of theme, so phones can read it. */
+.page-feedback-handoff-codes__list img {
+  background: #fff;
+  height: auto;
+  padding: 16px;
+  width: min(22rem, 100%);
+}

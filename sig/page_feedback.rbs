@@ -38,6 +38,7 @@ module PageFeedback
     attr_accessor ignored_css_classes: Array[String]
     attr_accessor source_locator: _SourceLocator
     attr_accessor export_formatter: _ExportFormatter
+    attr_accessor handoff_url: String?
 
     def initialize: () -> void
   end
