@@ -3,6 +3,10 @@
 pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
 pin "page_feedback/clipboard", to: "page_feedback/clipboard.js", preload: false
 pin "page_feedback/controllers/copy_controller", to: "page_feedback/controllers/copy_controller.js", preload: false
+pin "page_feedback/controllers/handoff_controller",
+    to: "page_feedback/controllers/handoff_controller.js",
+    preload: false
+pin "page_feedback/handoff", to: "page_feedback/handoff.js", preload: false
 pin "page_feedback/controllers/capture_controller",
     to: "page_feedback/controllers/capture_controller.js",
     preload: false

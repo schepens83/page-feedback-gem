@@ -4,6 +4,16 @@ All notable changes will be recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project intends
 to use semantic versioning after its first release.
 
+## [0.1.3] - 2026-11-02
+
+### Added
+
+- "Send to phone" on export pages: the export as compressed QR codes that open
+  `/review/handoff`, which reassembles and shows the Markdown on the phone. The
+  data travels in the URL fragment, so an offline host can hand exports over.
+  `config.handoff_url` points the codes at a host the phone can reach. Adds the
+  `rqrcode` dependency. See `docs/WORKFLOW.md#handing-an-export-to-a-phone`.
+
 ## [0.1.2] - 2026-10-03
 
 ### Added

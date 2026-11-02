@@ -19,6 +19,7 @@ PageFeedback::Engine.routes.draw do
     resources :bulk_rejections, only: :create
     resources :queue_approvals, only: :create
     resources :exports, only: %i[index new create show]
+    resource :handoff, only: :show
   end
 
   root to: "review/pages#index"
