@@ -4,7 +4,7 @@ All notable changes will be recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project intends
 to use semantic versioning after its first release.
 
-## [Unreleased]
+## [0.1.3] - 2026-11-02
 
 ### Added
 
