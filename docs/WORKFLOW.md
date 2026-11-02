@@ -88,7 +88,8 @@ so hosts can change representation without changing snapshot semantics.
 ## Handing an export to a phone
 
 An export page has a "Send to phone" section: the stored Markdown, raw-deflated
-and base64url encoded, split into at most twelve QR codes. Each code is a link
+and base64url encoded, split into at most twelve QR codes of 700 characters each
+(roughly 20 KB of Markdown in all). Each code is a link
 to the review handoff page (`config.handoff_url`, else this host's own) with a
 `#pf1.<id>.<index>.<total>.<chunk>` fragment. Browsers never send a fragment to
 the server, so the export crosses from screen to phone without touching a

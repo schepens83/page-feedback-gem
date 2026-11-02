@@ -880,10 +880,10 @@ body.page-feedback-capture-mode * {
   justify-items: center;
 }
 
-/* Quiet zone and black-on-white regardless of theme, so phones can read it. */
+/* Shown at its own size (whole pixels per module) so phones can read it; the
+   SVG carries its own white quiet zone. */
 .page-feedback-handoff-codes__list img {
-  background: #fff;
   height: auto;
-  padding: 16px;
-  width: min(22rem, 100%);
+  image-rendering: pixelated;
+  max-width: 100%;
 }

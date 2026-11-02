@@ -33,6 +33,13 @@ RSpec.describe PageFeedback::Handoff do
     expect(unpack(parts)).to eq(body)
   end
 
+  it "honours a different chunk size for every handoff in the same process" do
+    body = SecureRandom.alphanumeric(2_000)
+
+    expect(described_class.new(body, base_url:, chunk_size: 500).parts.length)
+      .to be < described_class.new(body, base_url:, chunk_size: 200).parts.length
+  end
+
   it "renders each part as an SVG QR code" do
     part = described_class.new("Short", base_url:).parts.first
 

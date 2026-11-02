@@ -19,16 +19,22 @@ module PageFeedback
   class Handoff
     # Fragment format marker, bumped if the encoding ever changes.
     FORMAT = "pf1"
-    # Base64url characters per code: small enough to scan reliably off a screen.
-    CHUNK_SIZE = 1_000
+    # Base64url characters per code. 700 gives a 93-module code that decoded
+    # reliably off a screen at 100-150% display scaling; 1,000 (109 modules)
+    # did not.
+    CHUNK_SIZE = 700
     # More codes than this and downloading the Markdown is the better route.
     MAX_PARTS = 12
 
     # One scannable code.
     Part = Data.define(:url, :index, :total) do
+      # A fixed size (4px per module, 16px white quiet zone) rather than a
+      # scalable viewBox: a fractional pixel per module blurs the code.
+      #
       # @return [String] the QR code as a standalone SVG document
       def svg
-        RQRCode::QRCode.new(url, level: :l).as_svg(module_size: 4, use_path: true, viewbox: true)
+        RQRCode::QRCode.new(url, level: :l)
+                       .as_svg(module_size: 4, offset: 16, use_path: true, color: "000", fill: "fff")
       end
     end
 
@@ -64,7 +70,7 @@ module PageFeedback
     end
 
     def chunks
-      @chunks ||= payload.scan(/.{1,#{@chunk_size}}/o)
+      @chunks ||= payload.scan(/.{1,#{@chunk_size}}/)
     end
 
     def payload
