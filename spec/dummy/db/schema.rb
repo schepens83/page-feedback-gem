@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_000003) do
   create_table "page_feedback_comments", force: :cascade do |t|
     t.datetime "approved_at"
     t.string "category", default: "idea", null: false
@@ -69,6 +69,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_000001) do
     t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_4eb9949f3a"
   end
 
+  create_table "page_feedback_forward_items", force: :cascade do |t|
+    t.integer "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "forward_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_page_feedback_forward_items_on_comment_id"
+    t.index ["forward_id", "comment_id"], name: "index_page_feedback_forward_items_on_forward_id_and_comment_id", unique: true
+    t.index ["forward_id"], name: "index_page_feedback_forward_items_on_forward_id"
+  end
+
+  create_table "page_feedback_forwards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id"
+    t.string "created_by_type"
+    t.string "destination_url", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_page_feedback_forwards_on_created_at"
+    t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_f04878ab94"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", null: false
@@ -77,4 +97,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_000001) do
 
   add_foreign_key "page_feedback_export_items", "page_feedback_comments", column: "comment_id"
   add_foreign_key "page_feedback_export_items", "page_feedback_exports", column: "export_id"
+  add_foreign_key "page_feedback_forward_items", "page_feedback_comments", column: "comment_id"
+  add_foreign_key "page_feedback_forward_items", "page_feedback_forwards", column: "forward_id"
 end

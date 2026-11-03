@@ -2,7 +2,6 @@
 
 require "digest"
 require "json"
-require "securerandom"
 
 module PageFeedback
   # Captured feedback and its independent human review state.
@@ -15,7 +14,7 @@ module PageFeedback
       controller_action css_selector element_html
     ].freeze
     # Review queue filters accepted at the request boundary.
-    REVIEW_FILTERS = %w[pending ready exported changed rejected all].freeze
+    REVIEW_FILTERS = %w[pending ready exported changed rejected forwarded all].freeze
     # Maximum accepted feedback body length.
     MAX_COMMENT_TEXT_LENGTH = 10_000
     # Maximum accepted same-origin path length.
@@ -34,13 +33,10 @@ module PageFeedback
     MAX_CONSOLE_ERRORS = 10
     # Maximum number of captured navigation entries.
     MAX_NAVIGATION_EVENTS = 5
-    # Shape of the identity shared by a comment's copies across installations.
-    UUID_PATTERN = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/
-    # Maximum accepted length of an origin or submitter label.
-    MAX_LABEL_LENGTH = 255
 
     include PageFeedback::CapturedContext
     include PageFeedback::ReviewQueue
+    include PageFeedback::Forwardable
 
     belongs_to :submitter, polymorphic: true, optional: true
     belongs_to :reviewed_by, polymorphic: true, optional: true
@@ -54,14 +50,11 @@ module PageFeedback
 
     validates :category, presence: true, inclusion: { in: -> { PageFeedback.configuration.categories.keys } }
     validates :page_path, presence: true, format: { with: LOCAL_PAGE_PATH_PATTERN }
-    validates :uuid, presence: true, format: { with: UUID_PATTERN }, uniqueness: true
-    validates :origin, :submitter_label, length: { maximum: MAX_LABEL_LENGTH }, allow_nil: true
-
-    before_validation :assign_uuid, on: :create
 
     scope :by_category, ->(category) { where(category:) }
     scope :for_page, ->(path) { where(page_path: path) }
     scope :recent, -> { order(created_at: :desc) }
+
     scope :ready_for_export, lambda {
       candidates = approved.includes(:export_items).to_a
       where(id: candidates.select(&:ready_for_export?).map(&:id))
@@ -145,21 +138,7 @@ module PageFeedback
       approved? && export_state != "exported"
     end
 
-    # Who submitted this comment: the host actor, or for an imported comment the
-    # label its source installation sent.
-    #
-    # @return [String, nil]
-    def submitter_display_label
-      return PageFeedback.configuration.actor_label.call(submitter) if submitter
-
-      submitter_label.presence
-    end
-
     private
-
-    def assign_uuid
-      self.uuid = uuid.presence&.downcase || SecureRandom.uuid
-    end
 
     def export_fingerprint_payload
       FINGERPRINT_FIELDS.index_with { |field| public_send(field) }.merge(source_location:)

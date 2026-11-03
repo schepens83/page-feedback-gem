@@ -14,7 +14,7 @@ module PageFeedback
         @filter_counts = Comment::REVIEW_FILTERS.index_with do |filter|
           Comment.for_review_filter(filter).count
         end
-        pending = Comment.pending
+        pending = Comment.awaiting_review
         pending = pending.by_category(@category) if @category
         @pending_count = pending.count
       end

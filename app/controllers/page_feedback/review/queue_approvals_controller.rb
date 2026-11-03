@@ -9,7 +9,7 @@ module PageFeedback
       # @return [void]
       def create
         reviewer = page_feedback_current_actor
-        comments = Comment.pending
+        comments = Comment.awaiting_review
         comments = comments.by_category(review_category) if review_category
 
         Comment.transaction do

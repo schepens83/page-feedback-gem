@@ -7,6 +7,13 @@
     <div>
       <p><%= @page_rows.length %> matching <%= "page".pluralize(@page_rows.length) %></p>
       <%= link_to "Export ready feedback", new_review_export_path, class: "page-feedback-review-link" %>
+      <% if (handoff_url = PageFeedback.configuration.handoff_url.presence) && @pending_count.positive? %>
+        <%= button_to "Forward #{pluralize(@pending_count, "pending comment")} to #{URI(handoff_url).host}",
+                      review_forwards_path,
+                      class: "page-feedback-review-action",
+                      form_class: "page-feedback-forward-action",
+                      params: { category: @category }.compact %>
+      <% end %>
       <% if @pending_count.positive? %>
         <%= button_to "Approve all #{@pending_count} pending",
                       review_queue_approvals_path,

@@ -39,6 +39,7 @@ module PageFeedback
     attr_accessor source_locator: _SourceLocator
     attr_accessor export_formatter: _ExportFormatter
     attr_accessor handoff_url: String?
+    attr_accessor instance_name: String?
 
     def initialize: () -> void
   end

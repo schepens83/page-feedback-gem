@@ -42,7 +42,7 @@ module PageFeedback
       return :invalid unless entry.is_a?(Hash)
 
       uuid = entry["uuid"].to_s.downcase
-      return :invalid unless Comment::UUID_PATTERN.match?(uuid)
+      return :invalid unless Forwardable::UUID_PATTERN.match?(uuid)
       return :skipped if Comment.exists?(uuid:)
 
       comment = Comment.new(attributes(entry).merge(uuid:))
@@ -69,7 +69,7 @@ module PageFeedback
     end
 
     def label(value)
-      value.to_s.strip.presence&.truncate(Comment::MAX_LABEL_LENGTH)
+      value.to_s.strip.presence&.truncate(Forwardable::MAX_LABEL_LENGTH)
     end
 
     def category(value)

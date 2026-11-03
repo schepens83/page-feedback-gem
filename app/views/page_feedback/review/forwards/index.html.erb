@@ -1,0 +1,20 @@
+<section class="page-feedback-detail page-feedback-forwards">
+  <header>
+    <p class="page-feedback-review-eyebrow">Forwarded feedback</p>
+    <h1>Forward history</h1>
+    <p>Pending feedback goes to <strong><%= URI(PageFeedback.configuration.handoff_url).host %></strong> to be reviewed there.</p>
+  </header>
+  <% if @forwards.any? %>
+    <ol>
+      <% @forwards.each do |forward| %>
+        <li>
+          <%= link_to "Forward ##{forward.id}", review_forward_path(forward) %> ·
+          <%= pluralize(forward.forward_items.size, "comment") %> ·
+          <%= forward.created_at.to_fs(:long) %>
+        </li>
+      <% end %>
+    </ol>
+  <% else %>
+    <p>Nothing forwarded yet.</p>
+  <% end %>
+</section>
