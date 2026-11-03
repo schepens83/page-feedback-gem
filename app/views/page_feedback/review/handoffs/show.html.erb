@@ -8,7 +8,7 @@
   </header>
   <%= form_with url: review_imports_path,
                 class: "page-feedback-handoff__form",
-                data: { page_feedback_handoff_target: "form", action: "page-feedback-handoff#submit" },
+                data: { page_feedback_handoff_target: "form", action: "page-feedback-handoff#submit", turbo: false },
                 html: { hidden: true } do |form| %>
     <%= form.hidden_field :payload, data: { page_feedback_handoff_target: "payload" } %>
     <ol class="page-feedback-handoff__list" data-page-feedback-handoff-target="list"></ol>

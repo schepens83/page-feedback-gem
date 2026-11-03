@@ -22,11 +22,14 @@ RSpec.describe "PageFeedback imports" do
     )
   end
 
-  it "shows the receiving page with an import form for the browser to fill" do
+  it "shows the receiving page with an import form for the browser to fill", :aggregate_failures do
     get "/feedback/review/handoff"
 
     expect(response).to have_http_status(:ok)
-    expect(response.parsed_body.at_css("form[action='/feedback/review/imports'] input[name='payload']")).to be_present
+    form = response.parsed_body.at_css("form[action='/feedback/review/imports']")
+    expect(form.at_css("input[name='payload']")).to be_present
+    # The import renders its outcome instead of redirecting, which Turbo would ignore.
+    expect(form["data-turbo"]).to eq("false")
   end
 
   it "imports forwarded comments and reports what happened", :aggregate_failures do
