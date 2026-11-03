@@ -12,6 +12,12 @@
       <dt>Path</dt><dd><code><%= @comment.page_path %></code></dd>
       <dt>Element</dt><dd><code><%= @comment.css_selector.presence || "Page level" %></code></dd>
       <dt>Controller</dt><dd><code><%= @comment.controller_action.presence || "Unknown" %></code></dd>
+      <% if (submitter = @comment.submitter_display_label) %>
+        <dt>Submitted by</dt><dd><%= submitter %></dd>
+      <% end %>
+      <% if @comment.origin %>
+        <dt>Forwarded from</dt><dd><%= @comment.origin %></dd>
+      <% end %>
       <dt>Export state</dt><dd><%= @comment.export_state.humanize %></dd>
       <% if @comment.export_items.any? %>
         <dt>Exports</dt>

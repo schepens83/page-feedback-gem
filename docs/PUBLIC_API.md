@@ -23,13 +23,16 @@ PageFeedback.configure do |config|
   config.source_locator = ->(_comment) { nil }
   config.export_formatter = PageFeedback::Exporters::Markdown
   config.handoff_url = nil
+  config.instance_name = nil
 end
 ```
 
-`handoff_url` is the absolute URL of `/review/handoff` on a host a phone can
-reach. Leave it nil and an export's "Send to phone" QR codes point at the
-current host's own handoff page; set it when the host runs somewhere a phone
-cannot reach (an offline laptop) and a second deployment of the same host can.
+`handoff_url` is the absolute URL of `/review/handoff` on the installation that
+this one forwards pending feedback to (see "Forwarding" in `WORKFLOW.md`). Nil,
+the default, hides forwarding. A primary installation that only receives needs
+no configuration: its handoff page accepts imports from any signed-in reviewer.
+`instance_name` is how this installation names itself on what it forwards
+("Forwarded from Work laptop"); nil uses the request host.
 
 Callbacks receive the current engine controller, except `actor_label`, which
 receives the resolved actor, and `source_locator`, which receives a comment.

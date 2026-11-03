@@ -2,5 +2,5 @@
 
 module PageFeedback
   # Current gem version.
-  VERSION = "0.1.3"
+  VERSION = "0.2.0"
 end

@@ -1,15 +1,21 @@
 <article class="page-feedback-detail page-feedback-handoff" data-controller="page-feedback-handoff">
   <header>
-    <p class="page-feedback-review-eyebrow">Export from another device</p>
-    <h1>Unpack export</h1>
+    <p class="page-feedback-review-eyebrow">Forwarded feedback</p>
+    <h1>Import from another installation</h1>
     <p data-page-feedback-handoff-target="status" role="status">
-      Scan an export's QR code with this phone's camera to open it here.
+      Open a forward link from another installation of this app to import its feedback here.
     </p>
   </header>
-  <div class="page-feedback-review-actions" data-page-feedback-handoff-target="actions" hidden>
-    <button type="button" class="page-feedback-review-action page-feedback-review-action--approve"
-            data-action="page-feedback-handoff#copy">Copy Markdown</button>
-    <span data-page-feedback-handoff-target="copyStatus" role="status"></span>
-  </div>
-  <pre class="page-feedback-export-body" data-page-feedback-handoff-target="body" hidden></pre>
+  <%= form_with url: review_imports_path,
+                class: "page-feedback-handoff__form",
+                data: { page_feedback_handoff_target: "form", action: "page-feedback-handoff#submit", turbo: false },
+                html: { hidden: true } do |form| %>
+    <%= form.hidden_field :payload, data: { page_feedback_handoff_target: "payload" } %>
+    <ol class="page-feedback-handoff__list" data-page-feedback-handoff-target="list"></ol>
+    <div class="page-feedback-review-actions">
+      <%= form.submit "Import",
+                      class: "page-feedback-review-action page-feedback-review-action--approve",
+                      data: { page_feedback_handoff_target: "submit" } %>
+    </div>
+  <% end %>
 </article>

@@ -21,27 +21,6 @@
     <%= link_to "Download Markdown", review_export_path(@export, format: :md), class: "page-feedback-review-action" %>
     <span data-page-feedback-copy-target="status" role="status"></span>
   </div>
-  <details class="page-feedback-detail__section page-feedback-handoff-codes">
-    <summary>Send to phone</summary>
-    <% if @handoff.fits? %>
-      <% parts = @handoff.parts %>
-      <p>
-        Scan <%= parts.length == 1 ? "the code" : "each code, in any order," %> with your phone's camera.
-        The page that opens unpacks the Markdown there; the export travels inside the link, not over the network.
-      </p>
-      <ol class="page-feedback-handoff-codes__list">
-        <% parts.each do |part| %>
-          <li>
-            <img src="data:image/svg+xml;base64,<%= Base64.strict_encode64(part.svg) %>"
-                 alt="QR code <%= part.index %> of <%= part.total %>">
-            <span><%= part.index %> / <%= part.total %></span>
-          </li>
-        <% end %>
-      </ol>
-    <% else %>
-      <p>This export is too large for QR codes. Download the Markdown instead.</p>
-    <% end %>
-  </details>
   <pre class="page-feedback-export-body"><%= @export.body %></pre>
   <section class="page-feedback-detail__section">
     <h2>Included revisions</h2>

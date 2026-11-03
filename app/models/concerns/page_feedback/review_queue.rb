@@ -7,6 +7,11 @@ module PageFeedback
   module ReviewQueue
     extend ActiveSupport::Concern
 
+    # Review filters that map onto one scope; anything unknown means pending.
+    REVIEW_FILTER_SCOPES = {
+      "ready" => :ready_for_export, "rejected" => :rejected, "forwarded" => :forwarded, "all" => :all
+    }.freeze
+
     class_methods do
       # Encode a local page path for use as a nested route segment.
       #
@@ -36,12 +41,9 @@ module PageFeedback
       # @return [ActiveRecord::Relation<PageFeedback::Comment>]
       def for_review_filter(filter)
         case filter.to_s
-        when "ready" then ready_for_export
         when "exported" then with_export_state("exported")
         when "changed" then with_export_state("changed_since_export")
-        when "rejected" then rejected
-        when "all" then all
-        else pending
+        else public_send(REVIEW_FILTER_SCOPES.fetch(filter.to_s, :awaiting_review))
         end
       end
 

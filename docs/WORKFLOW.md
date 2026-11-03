@@ -85,26 +85,34 @@ feedback, notes, source locations, selectors, and captured HTML, and safely
 escapes text and code fences. Formatter substitution is a configured callable,
 so hosts can change representation without changing snapshot semantics.
 
-## Handing an export to a phone
+## Forwarding
 
-An export page has a "Send to phone" section: the stored Markdown, raw-deflated
-and base64url encoded, split into at most twelve QR codes of 700 characters each
-(roughly 20 KB of Markdown in all). Each code is a link
-to the review handoff page (`config.handoff_url`, else this host's own) with a
-`#pf1.<id>.<index>.<total>.<chunk>` fragment. Browsers never send a fragment to
-the server, so the export crosses from screen to phone without touching a
-network, and the handoff page only serves the static unpacker.
+One host app can run as several installations: production, an offline copy on
+a laptop, a staging server. Feedback captured on a secondary installation is
+forwarded to the primary and triaged there, next to everything else.
 
-Scanning opens that page, which keeps received parts in `localStorage` until
-the set is complete (codes may be scanned in any order, in separate tabs),
-inflates the payload, shows the Markdown with a copy button, forgets the parts
-and removes the fragment from history. The page sits behind review
-authorization like every review screen, so the phone must be signed in to that
-host as a reviewer. An export too large for twelve codes says so and leaves the
-download as the route.
+On the secondary (`config.handoff_url` set), the review overview offers
+**Forward N pending comments to <host>**. It records an immutable `Forward` of
+the oldest pending, not yet forwarded comments (at most 200; the active
+category filter applies) and shows one link to the primary's handoff page. The
+comments travel in that link's fragment as `pf2.` plus base64url of
+raw-deflated JSON (`PageFeedback::ForwardPayload`). A fragment is never sent to
+a server, so neither installation needs a token or a network path to the
+other: the reviewer's browser carries the data.
+
+The primary's handoff page decodes the link in the browser, previews the
+comments as plain text and imports them only when the reviewer clicks Import.
+Every comment is held to capture's validations and limits, arrives pending,
+keeps its capture time, and records its `origin` and `submitter_label`.
+Comments are identified by `uuid` across installations, so opening the same
+link twice imports nothing new; that is also how a failed import is retried.
+
+Forwarding is not a review status (ADR 0006). A forwarded comment stays
+pending; it leaves the secondary's Pending queue and appears under Forwarded.
 
 ## Queue filters
 
 The primary filters are Pending, Ready to export, Exported, Changed, Rejected,
-and All. Category filtering composes with those views. Page rows report counts
+Forwarded, and All. Pending leaves out comments forwarded to another
+installation. Category filtering composes with those views. Page rows report counts
 for each state so reviewers can understand the queue without opening every item.

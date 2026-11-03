@@ -1,0 +1,34 @@
+<article class="page-feedback-detail page-feedback-forward">
+  <header>
+    <%= link_to "← Forward history", review_forwards_path %>
+    <p class="page-feedback-review-eyebrow">Forward #<%= @forward.id %></p>
+    <h1><%= pluralize(@forward.comments.size, "comment") %> ready to send</h1>
+    <p>
+      Open the link to import them on <strong><%= URI(@forward.destination_url).host %></strong>.
+      The comments travel inside the link and are imported only after you confirm there.
+      They are now hidden from the pending queue here.
+    </p>
+  </header>
+  <div class="page-feedback-review-actions">
+    <%= link_to "Open #{URI(@forward.destination_url).host} to import",
+                @forward_url,
+                target: "_blank",
+                rel: "noopener",
+                class: "page-feedback-review-action page-feedback-review-action--approve" %>
+  </div>
+  <p>If the import did not work, open the link again: comments already imported are skipped.</p>
+  <% if @remaining.positive? %>
+    <p>
+      <%= pluralize(@remaining, "more pending comment") %> to forward.
+      <%= button_to "Forward the next batch", review_forwards_path, class: "page-feedback-review-action" %>
+    </p>
+  <% end %>
+  <section class="page-feedback-detail__section">
+    <h2>Included comments</h2>
+    <ol>
+      <% @forward.comments.each do |comment| %>
+        <li><%= link_to comment.comment_text.truncate(120), review_comment_path(comment) %></li>
+      <% end %>
+    </ol>
+  </section>
+</article>

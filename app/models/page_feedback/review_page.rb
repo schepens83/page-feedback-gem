@@ -19,7 +19,7 @@ module PageFeedback
     # @param path [String]
     # @return [PageFeedback::ReviewPage]
     def self.for_path(path)
-      comments = Comment.where(page_path: path).includes(:export_items).recent.to_a
+      comments = Comment.where(page_path: path).includes(:export_items, :forward_items).recent.to_a
       new(path:, comments:)
     end
 
@@ -39,11 +39,12 @@ module PageFeedback
 
     def count_states(comments)
       {
-        pending: comments.count(&:pending?),
+        pending: comments.count(&:awaiting_review?),
         ready: comments.count(&:ready_for_export?),
         exported: comments.count { |comment| exported?(comment) },
         changed: comments.count { |comment| changed?(comment) },
-        rejected: comments.count(&:rejected?)
+        rejected: comments.count(&:rejected?),
+        forwarded: comments.count(&:forwarded?)
       }
     end
 

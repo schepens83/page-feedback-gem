@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_03_000003) do
   create_table "page_feedback_comments", force: :cascade do |t|
     t.datetime "approved_at"
     t.string "category", default: "idea", null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
     t.datetime "created_at", null: false
     t.text "css_selector"
     t.text "element_html"
+    t.string "origin"
     t.string "page_path", null: false
     t.string "page_title"
     t.text "refined_text"
@@ -29,14 +30,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
     t.text "reviewer_notes"
     t.string "status", default: "pending", null: false
     t.bigint "submitter_id"
+    t.string "submitter_label"
     t.string "submitter_type"
     t.datetime "updated_at", null: false
+    t.string "uuid", null: false
     t.index ["category"], name: "index_page_feedback_comments_on_category"
     t.index ["created_at"], name: "index_page_feedback_comments_on_created_at"
     t.index ["page_path"], name: "index_page_feedback_comments_on_page_path"
     t.index ["reviewed_by_type", "reviewed_by_id"], name: "idx_on_reviewed_by_type_reviewed_by_id_2ace12f120"
     t.index ["status"], name: "index_page_feedback_comments_on_status"
     t.index ["submitter_type", "submitter_id"], name: "idx_on_submitter_type_submitter_id_c560a7d304"
+    t.index ["uuid"], name: "index_page_feedback_comments_on_uuid", unique: true
   end
 
   create_table "page_feedback_export_items", force: :cascade do |t|
@@ -65,6 +69,26 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
     t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_4eb9949f3a"
   end
 
+  create_table "page_feedback_forward_items", force: :cascade do |t|
+    t.integer "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "forward_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_page_feedback_forward_items_on_comment_id"
+    t.index ["forward_id", "comment_id"], name: "index_page_feedback_forward_items_on_forward_id_and_comment_id", unique: true
+    t.index ["forward_id"], name: "index_page_feedback_forward_items_on_forward_id"
+  end
+
+  create_table "page_feedback_forwards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id"
+    t.string "created_by_type"
+    t.string "destination_url", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_page_feedback_forwards_on_created_at"
+    t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_f04878ab94"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", null: false
@@ -73,4 +97,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_08_08_000004) do
 
   add_foreign_key "page_feedback_export_items", "page_feedback_comments", column: "comment_id"
   add_foreign_key "page_feedback_export_items", "page_feedback_exports", column: "export_id"
+  add_foreign_key "page_feedback_forward_items", "page_feedback_comments", column: "comment_id"
+  add_foreign_key "page_feedback_forward_items", "page_feedback_forwards", column: "forward_id"
 end

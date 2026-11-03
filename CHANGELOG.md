@@ -4,6 +4,33 @@ All notable changes will be recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project intends
 to use semantic versioning after its first release.
 
+## [0.2.0] - 2026-11-03
+
+### Added
+
+- Forwarding between installations of the same host app. A secondary
+  installation (`config.handoff_url` set) forwards pending feedback to the
+  primary through one link; the primary previews and imports it, skipping
+  comments it already has. Forwarded comments leave the Pending queue and get
+  a Forwarded filter; their status stays pending. `config.instance_name` names
+  the source. See `docs/WORKFLOW.md#forwarding` and ADR 0006.
+- Comments have a `uuid`, plus `origin` and `submitter_label` for imported
+  comments. New tables `page_feedback_forwards` and
+  `page_feedback_forward_items`.
+
+### Removed
+
+- The "Send to phone" QR codes on export pages, `PageFeedback::Handoff` and the
+  `rqrcode` dependency. Large exports needed too many codes; forwarding moves
+  the comments themselves instead.
+
+### Upgrading
+
+- Run `bin/rails page_feedback:install:migrations` and `bin/rails db:migrate`.
+  Existing comments get a uuid during the migration.
+- `config.handoff_url` now means "forward to this installation" and defaults
+  to nil. A host that set it only to receive QR handoffs should remove it.
+
 ## [0.1.3] - 2026-11-02
 
 ### Added

@@ -14,7 +14,7 @@ module PageFeedback
       controller_action css_selector element_html
     ].freeze
     # Review queue filters accepted at the request boundary.
-    REVIEW_FILTERS = %w[pending ready exported changed rejected all].freeze
+    REVIEW_FILTERS = %w[pending ready exported changed rejected forwarded all].freeze
     # Maximum accepted feedback body length.
     MAX_COMMENT_TEXT_LENGTH = 10_000
     # Maximum accepted same-origin path length.
@@ -36,6 +36,7 @@ module PageFeedback
 
     include PageFeedback::CapturedContext
     include PageFeedback::ReviewQueue
+    include PageFeedback::Forwardable
 
     belongs_to :submitter, polymorphic: true, optional: true
     belongs_to :reviewed_by, polymorphic: true, optional: true
@@ -53,6 +54,7 @@ module PageFeedback
     scope :by_category, ->(category) { where(category:) }
     scope :for_page, ->(path) { where(page_path: path) }
     scope :recent, -> { order(created_at: :desc) }
+
     scope :ready_for_export, lambda {
       candidates = approved.includes(:export_items).to_a
       where(id: candidates.select(&:ready_for_export?).map(&:id))

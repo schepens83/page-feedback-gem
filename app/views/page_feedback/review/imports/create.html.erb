@@ -1,0 +1,30 @@
+<article class="page-feedback-detail page-feedback-import">
+  <header>
+    <p class="page-feedback-review-eyebrow">Forwarded feedback</p>
+    <% if @error %>
+      <h1>Nothing imported</h1>
+      <p role="alert">This forward could not be read: <%= @error %>.</p>
+    <% else %>
+      <h1>
+        <%= pluralize(@result.imported.length, "comment") %> imported
+        <% if @result.source %>from <%= @result.source %><% end %>
+      </h1>
+      <p>
+        <% if @result.skipped.positive? %>
+          <%= pluralize(@result.skipped, "comment was", plural: "comments were") %> already here and skipped.
+        <% end %>
+        <% if @result.invalid.positive? %>
+          <%= pluralize(@result.invalid, "comment") %> could not be imported.
+        <% end %>
+      </p>
+    <% end %>
+  </header>
+  <% if @result&.imported&.any? %>
+    <ol class="page-feedback-import__list">
+      <% @result.imported.each do |comment| %>
+        <li><%= link_to comment.comment_text.truncate(120), review_comment_path(comment) %></li>
+      <% end %>
+    </ol>
+  <% end %>
+  <p><%= link_to "Review pending feedback", review_pages_path(filter: "pending"), class: "page-feedback-review-link" %></p>
+</article>
