@@ -1,6 +1,6 @@
 # ADR 0006: Forwarding is derived from batches, not a review status
 
-**Status:** proposed — 2026-11-03
+**Status:** accepted — 2026-11-03
 
 ## Decision
 

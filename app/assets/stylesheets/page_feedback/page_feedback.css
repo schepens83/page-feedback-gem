@@ -860,30 +860,16 @@ body.page-feedback-capture-mode * {
   }
 }
 
-.page-feedback-handoff-codes summary {
-  cursor: pointer;
-  font-weight: 600;
+.page-feedback-handoff__list,
+.page-feedback-import__list {
+  margin: 1rem 0;
+  padding-left: 1.25rem;
 }
 
-.page-feedback-handoff-codes__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
+.page-feedback-handoff__list li {
+  overflow-wrap: anywhere;
 }
 
-.page-feedback-handoff-codes__list li {
-  display: grid;
-  gap: 0.25rem;
-  justify-items: center;
-}
-
-/* Shown at its own size (whole pixels per module) so phones can read it; the
-   SVG carries its own white quiet zone. */
-.page-feedback-handoff-codes__list img {
-  height: auto;
-  image-rendering: pixelated;
-  max-width: 100%;
+.page-feedback-forward-action {
+  display: inline;
 }

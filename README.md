@@ -29,7 +29,7 @@ printable view of the current outcome, verification evidence, and roadmap.
 
 ```ruby
 # Gemfile
-gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.3"
+gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.2.0"
 ```
 
 ```bash

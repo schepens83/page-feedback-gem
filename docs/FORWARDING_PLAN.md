@@ -1,6 +1,6 @@
 # Forwarding feedback between installations — plan
 
-**Status:** proposed, not started — 2026-11-03
+**Status:** implemented in 0.2.0 — 2026-11-03 (kept as the design record)
 **Replaces:** the QR "Send to phone" handoff from 0.1.3
 **Target release:** 0.2.0 (removes a public feature, adds migrations)
 

@@ -98,7 +98,10 @@ The server authorizes the request, resolves the actor from trusted host code,
 normalizes the context, and persists a pending comment. Review transitions set
 decision timestamps and reviewer identity atomically. Export creation locks and
 rechecks selected approved comments, renders once, and stores the body plus each
-revision fingerprint in one transaction.
+revision fingerprint in one transaction. Forwarding records an immutable
+batch of pending comments and renders them into a link to another
+installation's handoff page, whose browser-side decoder posts them to an
+import that applies capture's rules and de-duplicates by `uuid`.
 
 ## Trust boundaries
 
@@ -114,3 +117,4 @@ and never renders captured markup as live HTML.
 - [Export batches and fingerprints](decisions/0003-export-batches-and-fingerprints.md)
 - [Importmap and Stimulus integration](decisions/0004-importmap-and-stimulus-integration.md)
 - [Open default authorization](decisions/0005-open-default-authorization.md)
+- [Forwarding is not a review status](decisions/0006-forwarding-is-not-a-review-status.md)

@@ -94,7 +94,7 @@ be updated the usual way — bump the `tag:` in the Gemfile and refresh the
 lockfile:
 
 ```ruby
-gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.1.3"
+gem "page_feedback", github: "schepens83/page-feedback-gem", tag: "v0.2.0"
 ```
 
 ```bash

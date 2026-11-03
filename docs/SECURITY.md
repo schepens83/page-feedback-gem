@@ -53,6 +53,19 @@ apply their normal database access, retention, and backup controls. Exports are
 immutable snapshots and can repeat sensitive content, so their copy/download
 routes require the same review authorization as their HTML views.
 
+## Forwarding between installations
+
+An import is an ordinary state-changing request on the receiving installation:
+review authorization, CSRF, and a preview first; opening a forward link alone
+changes nothing. The forwarded JSON is untrusted input held to capture's
+validations, limits, and context normalization. It cannot set status,
+reviewer, reviewer notes, or submitter; `origin` and `submitter_label` are
+labels a reviewer supplies, not proof of identity. The data travels in the URL
+fragment, so it reaches no server log on the way; the receiving page removes
+the fragment from history when the reviewer imports. Forwarding sends captured
+HTML and context to the other installation, so a host that must keep content
+on one installation should leave `handoff_url` unset there.
+
 ## Reporting
 
 This project is not yet released. Until a public security channel exists, report
