@@ -1,38 +1,10 @@
-// Reassembles an export handed over as QR codes (see PageFeedback::Handoff).
-// Each code is a link whose fragment is `pf1.<id>.<index>.<total>.<chunk>`;
-// chunks are pieces of one base64url, raw-deflated payload. Parts arrive one
-// scan at a time, often in separate tabs, so they wait in localStorage.
+// Decodes a forward link from another installation (see PageFeedback::ForwardPayload).
+// The fragment is `pf2.<base64url of raw-deflated JSON>`; it never reaches a
+// server, so the page decodes it here and posts the JSON to the import form.
 
-const FRAGMENT = /^#?pf1\.([0-9a-f]{8})\.(\d{1,2})\.(\d{1,2})\.([A-Za-z0-9_-]+)$/
-const PREFIX = "page-feedback-handoff:"
-
-export function parseFragment(hash) {
-  const match = FRAGMENT.exec(hash || "")
-  if (!match) return null
-
-  const [, id, index, total, chunk] = match
-  const part = { id, index: Number(index), total: Number(total), chunk }
-  return part.index >= 1 && part.index <= part.total ? part : null
-}
-
-function readParts(storage, key, total) {
-  try {
-    const stored = JSON.parse(storage?.getItem(key) || "null")
-    if (Array.isArray(stored) && stored.length === total) return stored
-  } catch {
-    // Unavailable or corrupt storage: start this export afresh.
-  }
-  return Array(total).fill(null)
-}
-
-function writeParts(storage, key, parts) {
-  try {
-    if (parts.every(Boolean)) storage?.removeItem(key)
-    else storage?.setItem(key, JSON.stringify(parts))
-  } catch {
-    // Without storage only single-code exports can be unpacked.
-  }
-}
+const FRAGMENT = /^#?pf2\.([A-Za-z0-9_-]+)$/
+const FORMAT = "page_feedback.forward"
+const VERSION = 1
 
 export function base64UrlToBytes(text) {
   const base64 = text.replace(/-/g, "+").replace(/_/g, "/")
@@ -46,24 +18,29 @@ export async function inflate(payload) {
   return new Response(stream).text()
 }
 
-// Returns { state: "empty" | "invalid" | "partial" | "complete", received, total, text }.
-export async function unpack(hash, storage) {
+// Returns { state: "empty" | "invalid" | "ready", json, source, comments }.
+export async function decodeForward(hash) {
   if (!hash || hash === "#") return { state: "empty" }
 
-  const part = parseFragment(hash)
-  if (!part) return { state: "invalid" }
-
-  const key = `${PREFIX}${part.id}:${part.total}`
-  const parts = readParts(storage, key, part.total)
-  parts[part.index - 1] = part.chunk
-  writeParts(storage, key, parts)
-
-  const received = parts.filter(Boolean).length
-  if (received < part.total) return { state: "partial", received, total: part.total }
+  const match = FRAGMENT.exec(hash)
+  if (!match) return { state: "invalid" }
 
   try {
-    return { state: "complete", received, total: part.total, text: await inflate(parts.join("")) }
+    const json = await inflate(match[1])
+    const payload = JSON.parse(json)
+    const valid = payload && payload.format === FORMAT && payload.version === VERSION &&
+      Array.isArray(payload.comments) && payload.comments.length > 0
+    if (!valid) return { state: "invalid" }
+
+    return { state: "ready", json, source: typeof payload.source === "string" ? payload.source : "", comments: payload.comments }
   } catch {
     return { state: "invalid" }
   }
+}
+
+// One short preview line per comment, as plain text.
+export function previewLine(comment) {
+  const text = String(comment?.comment_text ?? "").replace(/\s+/g, " ").trim()
+  const short = text.length > 140 ? `${text.slice(0, 139)}…` : text
+  return `${comment?.category ?? "?"} · ${comment?.page_path ?? "?"} — ${short}`
 }

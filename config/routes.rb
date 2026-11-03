@@ -20,6 +20,7 @@ PageFeedback::Engine.routes.draw do
     resources :queue_approvals, only: :create
     resources :exports, only: %i[index new create show]
     resource :handoff, only: :show
+    resources :imports, only: :create
   end
 
   root to: "review/pages#index"
