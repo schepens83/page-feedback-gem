@@ -4,6 +4,14 @@ All notable changes will be recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project intends
 to use semantic versioning after its first release.
 
+## [Unreleased]
+
+### Changed
+
+- The review exports list is paginated, 20 per page, newest first, with
+  Newer / Older links and `?page=N`. Invalid or out-of-range pages fall back
+  to the nearest real page.
+
 ## [0.2.0] - 2026-11-03
 
 ### Added

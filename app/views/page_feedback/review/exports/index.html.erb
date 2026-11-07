@@ -19,6 +19,13 @@
         </article>
       <% end %>
     </div>
+    <% if @pager.paged? %>
+      <nav class="page-feedback-pager" aria-label="Export pages">
+        <% if @pager.newer_page %><%= link_to "Newer", review_exports_path(page: @pager.newer_page), rel: "prev", class: "page-feedback-review-link" %><% end %>
+        <span>Page <%= @pager.page %> of <%= @pager.pages %></span>
+        <% if @pager.older_page %><%= link_to "Older", review_exports_path(page: @pager.older_page), rel: "next", class: "page-feedback-review-link" %><% end %>
+      </nav>
+    <% end %>
   <% else %>
     <div class="page-feedback-review-empty"><h2>No exports yet</h2></div>
   <% end %>

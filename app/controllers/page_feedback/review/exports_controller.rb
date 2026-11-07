@@ -6,11 +6,13 @@ module PageFeedback
     class ExportsController < BaseController
       before_action :set_export, only: :show
 
-      # List immutable export history newest first.
+      # List immutable export history newest first, one page at a time.
       #
       # @return [void]
       def index
-        @exports = Export.includes(:export_items).order(created_at: :desc)
+        @pager = Pager.new(page: params[:page], total: Export.count)
+        @exports = Export.includes(:export_items).order(created_at: :desc, id: :desc)
+                         .offset(@pager.offset).limit(@pager.limit)
       end
 
       # Show export membership or serve the exact stored Markdown body.

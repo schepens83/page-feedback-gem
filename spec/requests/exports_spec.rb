@@ -51,6 +51,31 @@ RSpec.describe "PageFeedback exports" do
     expect(response.body).to include("Legacy Diagnostic Engine import", "Export ##{export.id}", "1 revision")
   end
 
+  it "paginates export history newest first with newer and older links", :aggregate_failures do
+    21.times { |i| PageFeedback::Export.create_from!(comments: [ready_comment], label: "Batch #{i}") }
+
+    get "/feedback/review/exports"
+    expect(response.body).to include("Batch 20", "Page 1 of 2", "page=2")
+    expect(response.body).not_to include("Batch 0<")
+    expect(response.body).not_to include(">Newer<")
+
+    get "/feedback/review/exports", params: { page: 2 }
+    expect(response.body).to include("Batch 0<", "Page 2 of 2", ">Newer<")
+    expect(response.body).not_to include("Batch 20")
+    expect(response.body).not_to include(">Older<")
+  end
+
+  it "treats invalid or out-of-range pages leniently", :aggregate_failures do
+    comment = ready_comment(comment_text: "Paged")
+    PageFeedback::Export.create_from!(comments: [comment], label: "Only one")
+
+    %w[abc 0 -1 99].each do |page|
+      get "/feedback/review/exports", params: { page: }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Only one")
+    end
+  end
+
   it "shows the exact stored body and included feedback", :aggregate_failures do
     actor = create(:user, email: "reviewer@example.test")
     comment = ready_comment(comment_text: "Stored once")

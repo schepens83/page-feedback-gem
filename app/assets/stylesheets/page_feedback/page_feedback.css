@@ -613,6 +613,16 @@ body.page-feedback-capture-mode * {
   white-space: nowrap;
 }
 
+.page-feedback-pager {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  color: var(--page-feedback-muted);
+  font-size: 0.82rem;
+}
+
 .page-feedback-review-empty {
   display: grid;
   min-height: 18rem;

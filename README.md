@@ -64,7 +64,7 @@ end
 
 Open `/feedback/review/pages` to review captured feedback. The export screen
 previews ready comments, stores an exact Markdown snapshot, and lets reviewers
-copy or download that stored body. Reviewing the last matching item on a page
+copy or download that stored body; export history is paginated (20 per page). Reviewing the last matching item on a page
 continues on the next matching page automatically. Reviewers who trust the
 whole pending queue can approve it across all pages in one action; an active
 category filter limits that action to the selected category.
