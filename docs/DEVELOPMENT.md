@@ -66,7 +66,20 @@ To cut a release:
 4. Run the full gate, commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z`.
 5. Adopt in local hosts with `bin/update_hosts` (preview first:
    `PAGE_FEEDBACK_DRY_RUN=1 bin/update_hosts`); it bumps each host's `tag:`,
-   refreshes lockfiles, and commits and pushes. Do not run `rake release`
+   refreshes lockfiles, and commits and pushes. Run it from a plain shell,
+   never under a pinned Ruby (`mise x ruby@X --`). Per host it:
+   - skips a dirty worktree, or one behind its upstream (`git fetch` first;
+     pull, then rerun);
+   - runs `bundle` through `mise x -C <host>` with Ruby/Bundler variables
+     scrubbed, and fails the host if the active Ruby differs from its
+     `.ruby-version`;
+   - locks with `bundle lock --update page_feedback --conservative` and
+     refuses to commit if `Gemfile.lock` changes beyond page_feedback's
+     `revision:`, `tag:`, and version lines (the host is restored);
+   - runs `bundle install` before committing so the host's pre-push `bin/ci`
+     can load the new gems; any failure after editing restores the worktree.
+
+   The Ruby, remote, and dirty checks also run in dry-run mode. Do not run `rake release`
    here: `bundler/gem_tasks` exposes it, and it tries to push the built gem
    to RubyGems after tagging — follow the manual steps above instead. Kamal
    never updates bundles during deploy; it ships the lockfile that is

@@ -3,7 +3,8 @@
 
 # Maintainer-only: adopt the released PageFeedback version in every local host
 # repository. Preview with PAGE_FEEDBACK_DRY_RUN=1, or point at specific repos
-# with PAGE_FEEDBACK_HOSTS="/path/to/app /path/to/other".
+# with PAGE_FEEDBACK_HOSTS="/path/to/app /path/to/other". Run from a plain
+# shell, not under a pinned Ruby: each host is locked with its own Ruby.
 
 require_relative "../lib/page_feedback/version"
 require_relative "../lib/page_feedback/host_updater"

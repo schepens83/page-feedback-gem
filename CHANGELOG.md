@@ -6,6 +6,12 @@ to use semantic versioning after its first release.
 
 ## [Unreleased]
 
+### Changed
+
+- `bin/update_hosts` is safer: it locks conservatively, runs each host under
+  its own `.ruby-version`, rejects lockfile changes beyond page_feedback,
+  skips hosts behind their remote, and installs the bundle before committing.
+
 ## [0.3.0] - 2026-11-21
 
 ### Changed
