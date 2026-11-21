@@ -61,7 +61,7 @@ RSpec.describe PageFeedback::HostUpdater do
     expect(report.first.status).to eq(:updated)
     expect(File.read(File.join(dir, "Gemfile"))).to include("tag: 'v0.1.2'")
     expect(calls.map(&:last)).to include(
-      %w[bundle update page_feedback],
+      %w[bundle lock --update page_feedback --conservative],
       ["git", "-C", dir, "add", "Gemfile", "Gemfile.lock"],
       ["git", "-C", dir, "commit", "-m", "Bump page_feedback to v0.1.2"]
     )

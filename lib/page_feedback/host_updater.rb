@@ -104,11 +104,11 @@ module PageFeedback
 
     # @return [Result, nil] a failure report, or nil when dependencies refresh
     def refresh_dependencies(root, gemfile, original)
-      _out, err, status = @runner.call(%w[bundle update page_feedback], chdir: root)
+      _out, err, status = @runner.call(%w[bundle lock --update page_feedback --conservative], chdir: root)
       return nil if status.success?
 
       File.write(gemfile, original)
-      result(root, :failed, "bundle update failed: #{err.strip.lines.last}")
+      result(root, :failed, "bundle lock failed: #{err.strip.lines.last}")
     end
 
     # @return [Result, nil] a failure report, or nil when the change was pushed
