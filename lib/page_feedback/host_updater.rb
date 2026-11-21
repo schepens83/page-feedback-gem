@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "open3"
+require_relative "host_updater/command_runner"
 require_relative "host_updater/gemfile"
 require_relative "host_updater/result"
 
@@ -36,12 +36,12 @@ module PageFeedback
     # @param dry_run [Boolean] report intended changes without writing files or
     #   running bundle/git commands
     # @param runner [#call] command runner returning `[stdout, stderr, status]`;
-    #   defaults to {#run_command}
+    #   defaults to {CommandRunner}
     def initialize(version:, roots: nil, dry_run: false, runner: nil)
       @version = "v#{version.to_s.delete_prefix('v')}"
       @roots = Array(roots || configured_roots)
       @dry_run = dry_run
-      @runner = runner || method(:run_command)
+      @runner = runner || CommandRunner.new
     end
 
     # Update every configured host repository.
@@ -148,11 +148,6 @@ module PageFeedback
 
     def result(repo, status, detail)
       Result.new(repo: repo, status: status, detail: detail)
-    end
-
-    # @return [Array(String, String, Process::Status)]
-    def run_command(command, chdir:)
-      Open3.capture3(*command, chdir: chdir)
     end
   end
 end
