@@ -3,6 +3,14 @@
 require "rails_helper"
 
 RSpec.describe PageFeedback::Exporters::Markdown do
+  it "opens with a page-feedback preamble that explains how to work through the export" do
+    markdown = described_class.call(comments: [], generated_at: Time.utc(2026, 8, 8, 12, 30))
+
+    expect(markdown).to start_with("# Feedback Export\n\nGenerated: 2026-08-08 12:30 UTC\n\n")
+    expect(markdown).to include("page-feedback export", "PageFeedback")
+    expect(markdown).to include("CSS selector", "Current HTML", "template")
+  end
+
   it "groups deterministically by page, page-level feedback, selector, and category priority" do
     idea = create(:page_feedback_comment, category: "idea", page_path: "/b", css_selector: ".card")
     page_bug = create(:page_feedback_comment, category: "bug", page_path: "/b", css_selector: nil)

@@ -8,6 +8,11 @@ to use semantic versioning after its first release.
 
 ### Changed
 
+- Markdown exports open with a short preamble that names the document a
+  page-feedback export and explains how to work through it (notes say what,
+  selectors and HTML say where). Coding-agent skills keyed on the
+  "page-feedback" name now recognise pasted exports. Existing exports are
+  immutable and keep their original body.
 - The review exports list is paginated, 20 per page, newest first, with
   Newer / Older links and `?page=N`. Invalid or out-of-range pages fall back
   to the nearest real page.

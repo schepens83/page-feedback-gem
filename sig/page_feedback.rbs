@@ -85,6 +85,8 @@ module PageFeedback
 
   module Exporters
     class Markdown
+      PREAMBLE: String
+
       def self.call: (comments: untyped, generated_at: untyped) -> String
     end
   end

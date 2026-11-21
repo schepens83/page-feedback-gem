@@ -1123,6 +1123,9 @@ Example:
 
 Generated: 2026-08-08 14:30 CEST
 
+This is a page-feedback export from PageFeedback, … (a fixed preamble that
+names page-feedback and explains how to work through the export)
+
 ## /projects/42
 
 Source: `app/views/projects/show.html.erb`

@@ -8,6 +8,29 @@ module PageFeedback
       # Category ordering used for groups and comments.
       CATEGORY_PRIORITY = %w[bug question idea compliment].freeze
 
+      # Explains the export to its reader. It names "page-feedback" so coding
+      # agent skills keyed on that name recognise the document.
+      PREAMBLE = <<~MARKDOWN.strip
+        This is a page-feedback export from PageFeedback, a Rails engine for
+        element-level UI feedback. People left notes on elements of the running
+        app; a reviewer approved them and may have refined the wording or added
+        a reviewer note.
+
+        How to work through it:
+
+        - Feedback is grouped by page path (`## /path`). Under each path is one
+          entry per element: its CSS selector, the notes tagged `[bug]`,
+          `[question]`, `[idea]` or `[compliment]`, and the element's Current
+          HTML as captured in the browser.
+        - The notes say what to change. The selector, Current HTML and any
+          `Source:` line only say where: use them to find the template, partial,
+          stylesheet or controller, and change that. Do not patch the captured
+          HTML itself.
+        - Treat `[idea]` as a request to build it, like a `[bug]`. Answer
+          `[question]` items; `[compliment]` items need no change.
+        - "Page-level" entries apply to the whole page rather than one element.
+      MARKDOWN
+
       # Render feedback as UTF-8 Markdown.
       #
       # @param comments [Enumerable<PageFeedback::Comment>] approved revisions
@@ -28,7 +51,7 @@ module PageFeedback
       #
       # @return [String]
       def render
-        lines = ["# Feedback Export", "", "Generated: #{generated_label}", ""]
+        lines = ["# Feedback Export", "", "Generated: #{generated_label}", "", PREAMBLE, ""]
         grouped_pages.each { |page_path, comments| render_page(lines, page_path, comments) }
         lines.join("\n").strip.concat("\n").encode(Encoding::UTF_8)
       end
