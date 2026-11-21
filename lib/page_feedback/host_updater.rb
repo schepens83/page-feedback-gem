@@ -2,6 +2,9 @@
 
 require_relative "host_updater/command_runner"
 require_relative "host_updater/gemfile"
+require_relative "host_updater/lockfile_diff"
+require_relative "host_updater/preflight"
+require_relative "host_updater/publisher"
 require_relative "host_updater/result"
 
 module PageFeedback
@@ -66,10 +69,20 @@ module PageFeedback
 
       lines, tag = analysis
       return result(root, :up_to_date, "already on #{@version}") if tag[:value] == @version
-      return result(root, :dirty, "working tree has uncommitted changes") unless worktree_clean?(root)
+
+      blocked = preflight(root)
+      return blocked if blocked
       return result(root, :would_update, "#{tag[:value]} -> #{@version}") if @dry_run
 
       apply(root, gemfile, lines, tag)
+    end
+
+    # Read-only checks (clean worktree, fresh remote, right Ruby) that run even
+    # in a dry run.
+    # @return [Result, nil] a skip or failure report, or nil when safe to edit
+    def preflight(root)
+      problem = Preflight.new(root, @runner).problem
+      result(root, *problem) if problem
     end
 
     # Locate the page_feedback declaration and its tag option.
@@ -88,8 +101,8 @@ module PageFeedback
       original = lines.join
       lines[tag[:line_index]] = lines[tag[:line_index]].sub(Gemfile::TAG_OPTION, tag_replacement(tag))
       File.write(gemfile, lines.join)
-      failure = refresh_dependencies(root, gemfile, original)
-      return failure if failure
+      failure = refresh_dependencies(root) || guard_lockfile(root) || install_bundle(root)
+      return restore(root, gemfile, original, failure) if failure
 
       failure = commit_and_push(root)
       return failure if failure
@@ -97,53 +110,49 @@ module PageFeedback
       result(root, :updated, "#{tag[:value]} -> #{@version}")
     end
 
+    # Put the host's worktree back exactly as it was before the edit.
+    # @return [Result] the failure, unchanged
+    def restore(root, gemfile, original, failure)
+      File.write(gemfile, original)
+      @runner.call(["git", "-C", root, "checkout", "--", "Gemfile", "Gemfile.lock"], chdir: root)
+      failure
+    end
+
     # @return [String] the new `tag:` value, preserving the original style
     def tag_replacement(tag)
       "#{tag[:prefix]}#{tag[:colon]}#{tag[:quote]}#{@version}#{tag[:quote]}"
     end
 
-    # @return [Result, nil] a failure report, or nil when dependencies refresh
-    def refresh_dependencies(root, gemfile, original)
-      _out, err, status = @runner.call(%w[bundle lock --update page_feedback --conservative], chdir: root)
-      return nil if status.success?
-
-      File.write(gemfile, original)
-      result(root, :failed, "bundle lock failed: #{err.strip.lines.last}")
+    # @return [Result, nil] a failure report, or nil when the lock succeeded
+    def refresh_dependencies(root)
+      run_step(root, %w[bundle lock --update page_feedback --conservative], "bundle lock failed")
     end
 
-    # @return [Result, nil] a failure report, or nil when the change was pushed
-    def commit_and_push(root)
-      failure = run_git(root, ["git", "-C", root, "add", "Gemfile", "Gemfile.lock"], "git add failed")
-      return failure if failure
+    # @return [Result, nil] a failure when the lock touched unrelated gems
+    def guard_lockfile(root)
+      diff, = @runner.call(["git", "-C", root, "diff", "-U0", "--", "Gemfile.lock"], chdir: root)
+      unexpected = LockfileDiff.unexpected_lines(diff)
+      return nil if unexpected.empty?
 
-      commit = ["git", "-C", root, "commit", "-m", "Bump page_feedback to #{@version}"]
-      failure = run_git(root, commit, "git commit failed")
-      return failure if failure
-
-      run_git(root, push_command(root), "commit done; push failed")
+      result(root, :failed, "Gemfile.lock changed unexpectedly: #{unexpected.first(3).join(', ')}")
     end
 
-    # @return [Result, nil] a failure report, or nil when the command succeeded
-    def run_git(root, command, failure_detail)
+    # @return [Result, nil] a failure report, or nil when gems are installed
+    def install_bundle(root)
+      run_step(root, %w[bundle install], "bundle install failed")
+    end
+
+    def run_step(root, command, failure_detail)
       _out, err, status = @runner.call(command, chdir: root)
       return nil if status.success?
 
       result(root, :failed, "#{failure_detail}: #{err.strip.lines.last}")
     end
 
-    def push_command(root)
-      branch = current_branch(root)
-      ["git", "-C", root, "push", "origin", "HEAD:refs/heads/#{branch}"]
-    end
-
-    def current_branch(root)
-      out, = @runner.call(["git", "-C", root, "branch", "--show-current"], chdir: root)
-      out.strip
-    end
-
-    def worktree_clean?(root)
-      out, _err, status = @runner.call(["git", "-C", root, "status", "--porcelain"], chdir: root)
-      status.success? && out.strip.empty?
+    # @return [Result, nil] a failure report, or nil when the change was pushed
+    def commit_and_push(root)
+      problem = Publisher.new(root, "Bump page_feedback to #{@version}", @runner).publish
+      result(root, *problem) if problem
     end
 
     def result(repo, status, detail)
