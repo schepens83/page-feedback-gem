@@ -6,6 +6,8 @@ to use semantic versioning after its first release.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-21
+
 ### Changed
 
 - Markdown exports open with a short preamble that names the document a
@@ -16,6 +18,12 @@ to use semantic versioning after its first release.
 - The review exports list is paginated, 20 per page, newest first, with
   Newer / Older links and `?page=N`. Invalid or out-of-range pages fall back
   to the nearest real page.
+
+### Security
+
+- Development lockfile moves to Rails 8.1.4.1, rack 3.2.9, loofah 2.25.3,
+  rails-html-sanitizer 1.7.2, nokogiri 1.19.7, addressable 2.9.2 and
+  sqlite3 2.10.2, clearing all open Dependabot advisories.
 
 ## [0.2.0] - 2026-11-03
 
